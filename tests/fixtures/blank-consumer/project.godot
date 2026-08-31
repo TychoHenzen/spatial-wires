@@ -13,7 +13,7 @@ project/assembly_name="SpatialWires.BlankConsumer"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/spatial_circuits/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/spatial_circuits/plugin.cfg", "res://addons/editor_lifecycle_probe/plugin.cfg")
 
 [rendering]
 

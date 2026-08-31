@@ -43,14 +43,17 @@
 
 - [x] 4.1 Make partial initialization and `_ExitTree` cleanup remove every dock, registration, and connected handler owned by the plugin.
 <!-- status: completed -->
-- [ ] 4.2 Add a bounded gdUnit4 headless editor case that enables then disables the plugin and observes no remaining plugin-owned editor state.
+- [x] 4.2 Add a bounded gdUnit4 headless editor case that enables then disables the plugin and observes no remaining plugin-owned editor state.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Clean editor plugin lifecycle :: Plugin is disabled cleanly -->
-- [ ] 4.3 Extend the gdUnit4 lifecycle case to re-enable the plugin and observe exactly one dock and one copy of each registration.
+- [x] 4.3 Extend the gdUnit4 lifecycle case to re-enable the plugin and observe exactly one dock and one copy of each registration.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Clean editor plugin lifecycle :: Plugin is enabled again -->
 
 ## 5. Add bounded build and smoke checks
 
-- [ ] 5.1 Add one process runner that applies fixed timeouts, captures stdout and stderr, preserves exit codes, and terminates only its own child process tree.
+- [x] 5.1 Add one process runner that applies fixed timeouts, captures stdout and stderr, preserves exit codes, and terminates only its own child process tree.
+<!-- status: completed -->
 - [ ] 5.2 Add the successful managed build, Godot import, managed-solution build, and bounded gdUnit4 lifecycle and public-type pipeline.
 <!-- covers: spatial-circuits/package-baseline :: Bounded headless verification :: Headless baseline succeeds -->
 - [ ] 5.3 Add a negative gdUnit4 fixture whose failed public-type assertion exits nonzero before the outer `--quit-after 300` watchdog.
