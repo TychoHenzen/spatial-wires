@@ -68,11 +68,16 @@
 <!-- covers: spatial-circuits/package-baseline :: Portable second-consumer practice check :: Addon is moved to an independent consumer -->
 - [x] 6.2 Make temporary cleanup validate and remove only the unique practice directory created by the current run.
 <!-- status: completed -->
-- [ ] 6.3 Document the exact practice command, required Godot executable input, expected outputs, and rollback boundary.
+- [x] 6.3 Document the exact practice command, required Godot executable input, expected outputs, and rollback boundary.
+<!-- status: completed -->
 
 ## 7. Run the Stage 1 gates
 
-- [ ] 7.1 Run formatting, the managed test suite, and the dependency-graph check from a clean build output state.
-- [ ] 7.2 Run the maintained gdUnit4 blank-consumer acceptance command with the declared Godot 4.7.1 .NET executable.
-- [ ] 7.3 Run the independent-copy practice command and record its actual command, process codes, and generated manifest hash.
-- [ ] 7.4 Run strict OpenSpec validation and the dod-guard coverage check, requiring all eleven scenarios to be bound with zero regressions.
+- [x] 7.1 Run formatting, the managed test suite, and the dependency-graph check from a clean build output state.
+<!-- status: completed -->
+- [x] 7.2 Run the maintained gdUnit4 blank-consumer acceptance command with the declared Godot 4.7.1 .NET executable.
+<!-- status: completed -->
+- [x] 7.3 Run the independent-copy practice command and record its actual command, process codes, and generated manifest hash.
+<!-- status: completed -->
+- [x] 7.4 Run strict OpenSpec validation and the dod-guard coverage check, requiring all eleven scenarios to be bound with zero regressions.
+<!-- status: completed -->
