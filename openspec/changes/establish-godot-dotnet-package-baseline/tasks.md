@@ -63,9 +63,11 @@
 
 ## 6. Prove independent installation
 
-- [ ] 6.1 Add a practice command that creates a unique temporary Godot .NET project outside the repository, copies only the staged addon, and runs import, build, Node, and Resource checks through gdUnit4.
+- [x] 6.1 Add a practice command that creates a unique temporary Godot .NET project outside the repository, copies only the staged addon, and runs import, build, Node, and Resource checks through gdUnit4.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Portable second-consumer practice check :: Addon is moved to an independent consumer -->
-- [ ] 6.2 Make temporary cleanup validate and remove only the unique practice directory created by the current run.
+- [x] 6.2 Make temporary cleanup validate and remove only the unique practice directory created by the current run.
+<!-- status: completed -->
 - [ ] 6.3 Document the exact practice command, required Godot executable input, expected outputs, and rollback boundary.
 
 ## 7. Run the Stage 1 gates
