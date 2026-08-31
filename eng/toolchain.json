@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "dotnet": {
+    "sdkVersion": "8.0.410",
+    "rollForward": "disable",
+    "targetFrameworks": [
+      "net8.0"
+    ]
+  },
+  "godot": {
+    "version": "4.7.2",
+    "variant": "dotnet",
+    "executableEnvironmentVariable": "SPATIAL_WIRES_GODOT"
+  }
+}
