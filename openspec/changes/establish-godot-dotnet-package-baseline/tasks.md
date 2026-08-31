@@ -33,13 +33,16 @@
 - [x] 3.2 Add the `[GlobalClass]` Node and Resource types with no live simulation state or saved-format contract.
 <!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Public Node and Resource types :: Consumer uses public addon types -->
-- [ ] 3.3 Add the staging script that copies required source into one addon unit, writes its path and hash manifest, and rejects repository-relative references.
-- [ ] 3.4 Add the maintained blank-consumer fixture and verify through gdUnit4 that import discovers and enables the staged addon without load or compilation errors.
+- [x] 3.3 Add the staging script that copies required source into one addon unit, writes its path and hash manifest, and rejects repository-relative references.
+<!-- status: completed -->
+- [x] 3.4 Add the maintained blank-consumer fixture and verify through gdUnit4 that import discovers and enables the staged addon without load or compilation errors.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Installable addon unit :: Blank consumer discovers the addon -->
 
 ## 4. Verify the editor plugin lifecycle
 
-- [ ] 4.1 Make partial initialization and `_ExitTree` cleanup remove every dock, registration, and connected handler owned by the plugin.
+- [x] 4.1 Make partial initialization and `_ExitTree` cleanup remove every dock, registration, and connected handler owned by the plugin.
+<!-- status: completed -->
 - [ ] 4.2 Add a bounded gdUnit4 headless editor case that enables then disables the plugin and observes no remaining plugin-owned editor state.
 <!-- covers: spatial-circuits/package-baseline :: Clean editor plugin lifecycle :: Plugin is disabled cleanly -->
 - [ ] 4.3 Extend the gdUnit4 lifecycle case to re-enable the plugin and observe exactly one dock and one copy of each registration.

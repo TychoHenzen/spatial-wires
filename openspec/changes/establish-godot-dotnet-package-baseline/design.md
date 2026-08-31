@@ -58,7 +58,7 @@ Pin gdUnit4 `6.2.0`, which supports Godot 4.7.1, for editor, Node, Resource, sce
 
 Keep `tests/SpatialCircuits.Core.Tests` on xUnit because pure-project tests must not acquire `GodotSharp`. Use `tests/SpatialWires.Godot.Tests` only for Godot-facing tests, with `gdUnit4.api/5.0.0` and `gdUnit4.test.adapter/3.0.0`. Do not add `gdUnit4.analyzers/1.0.0` because its Roslyn 4.14 dependency is incompatible with the compiler in the pinned .NET SDK 8.0.410. Mark tests that instantiate Godot objects or scenes with gdUnit4's Godot-runtime requirement.
 
-Run the Godot-facing suite through `dotnet test` and the gdUnit4 test adapter. Supply the exact Godot 4.7.1 .NET executable as `GODOT_BIN`, apply bounded adapter and session timeouts, and preserve its real exit code. Thin `.mjs` files may launch these commands only because dod-guard 4.10.2 cannot discover C# test declarations; they contain no assertions and are removed when dod-guard gains native C# coverage bindings.
+Run the Godot-facing suite through `dotnet test` and the gdUnit4 test adapter. Supply the exact Godot 4.7.1 .NET executable as `GODOT_BIN`, apply bounded adapter and session timeouts, and preserve its real exit code. Thin `.mjs` files may launch these commands only because dod-guard 4.10.2 cannot discover C# test declarations; they may assert only successful gdUnit process exit, contain no behavioral assertions, and are removed when dod-guard gains native C# coverage bindings.
 
 ### Build a source addon unit through a staging step
 
