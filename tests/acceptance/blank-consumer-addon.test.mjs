@@ -33,6 +33,11 @@ function runGdUnitAcceptanceOnce() {
   return gdUnitAcceptanceExitCode;
 }
 
+// covers: spatial-circuits/package-baseline :: Bounded headless verification :: Headless baseline succeeds
+test("bounded headless baseline pipeline succeeds", () => {
+  assert.equal(runGdUnitAcceptanceOnce(), 0);
+});
+
 // covers: spatial-circuits/package-baseline :: Installable addon unit :: Blank consumer discovers the addon
 test("gdUnit4 accepts the blank consumer", () => {
   assert.equal(runGdUnitAcceptanceOnce(), 0);

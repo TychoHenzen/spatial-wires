@@ -1,0 +1,20 @@
+; Isolated project for proving that a failing gdUnit4 public-type assertion cannot pass.
+
+config_version=5
+
+[application]
+
+config/name="SpatialWires Expected gdUnit4 Failure"
+config/features=PackedStringArray("4.7", "C#")
+
+[dotnet]
+
+project/assembly_name="SpatialWires.FailingPublicType"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/spatial_circuits/plugin.cfg")
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"

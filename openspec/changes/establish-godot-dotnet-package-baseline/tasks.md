@@ -54,9 +54,11 @@
 
 - [x] 5.1 Add one process runner that applies fixed timeouts, captures stdout and stderr, preserves exit codes, and terminates only its own child process tree.
 <!-- status: completed -->
-- [ ] 5.2 Add the successful managed build, Godot import, managed-solution build, and bounded gdUnit4 lifecycle and public-type pipeline.
+- [x] 5.2 Add the successful managed build, Godot import, managed-solution build, and bounded gdUnit4 lifecycle and public-type pipeline.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Bounded headless verification :: Headless baseline succeeds -->
-- [ ] 5.3 Add a negative gdUnit4 fixture whose failed public-type assertion exits nonzero before the outer `--quit-after 300` watchdog.
+- [x] 5.3 Add a negative gdUnit4 fixture whose failed public-type assertion exits nonzero before the outer `--quit-after 300` watchdog.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Bounded headless verification :: Smoke assertion fails -->
 
 ## 6. Prove independent installation
