@@ -12,14 +12,18 @@
 - [x] 2.1 Create `SpatialWires.sln`, the three planned pure `net8.0` projects, and a managed test project with inward-only project references.
 <!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Enforced dependency boundary :: Pure projects build independently -->
-- [ ] 2.2 Add a project-graph and resolved-assembly test that rejects `GodotSharp` or Godot-facing references from every pure project, including a failing fixture.
+- [x] 2.2 Add a project-graph and resolved-assembly test that rejects `GodotSharp` or Godot-facing references from every pure project, including a failing fixture.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Enforced dependency boundary :: Godot dependency does not cross the boundary -->
-- [ ] 2.3 Add the `Godot.NET.Sdk/4.7.2` host project and include it in the solution without reversing a pure-project dependency.
+- [x] 2.3 Add the `Godot.NET.Sdk/4.7.2` host project and include it in the solution without reversing a pure-project dependency.
+<!-- status: completed -->
 
 ## 3. Build the portable addon unit
 
-- [ ] 3.1 Add `addons/spatial_circuits/plugin.cfg`, the `[Tool]` editor plugin, its dock, and stable registration names.
-- [ ] 3.2 Add the `[GlobalClass]` Node and Resource types with no live simulation state or saved-format contract.
+- [x] 3.1 Add `addons/spatial_circuits/plugin.cfg`, the `[Tool]` editor plugin, its dock, and stable registration names.
+<!-- status: completed -->
+- [x] 3.2 Add the `[GlobalClass]` Node and Resource types with no live simulation state or saved-format contract.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/package-baseline :: Public Node and Resource types :: Consumer uses public addon types -->
 - [ ] 3.3 Add the staging script that copies required source into one addon unit, writes its path and hash manifest, and rejects repository-relative references.
 - [ ] 3.4 Add the maintained blank-consumer fixture and verify that import discovers and enables the staged addon without load or compilation errors.
