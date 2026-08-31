@@ -38,7 +38,7 @@ function Test-MissingDotnetSdkFailsBeforeCompilation {
             -Name "dotnet" `
             -VersionOutput "A compatible installed .NET SDK for global.json version 8.0.410 was not found." `
             -ExitCode 1
-        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.2.stable.mono.official.test"
+        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.1.stable.mono.official.test"
 
         $result = Invoke-ToolchainFixture `
             -ToolchainScript $toolchainScript `
@@ -61,7 +61,7 @@ function Test-WrongDotnetSdkFailsBeforeCompilation {
 
     try {
         $dotnet = New-VersionFixture -Directory $fixtureDirectory -Name "dotnet" -VersionOutput "8.0.411"
-        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.2.stable.mono.official.test"
+        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.1.stable.mono.official.test"
 
         $result = Invoke-ToolchainFixture `
             -ToolchainScript $toolchainScript `
@@ -106,7 +106,7 @@ function Test-WrongGodotVersionFailsBeforeCompilation {
 
     try {
         $dotnet = New-VersionFixture -Directory $fixtureDirectory -Name "dotnet" -VersionOutput "8.0.410"
-        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.1.stable.mono.official.test"
+        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.2.stable.mono.official.test"
 
         $result = Invoke-ToolchainFixture `
             -ToolchainScript $toolchainScript `
@@ -128,7 +128,7 @@ function Test-StandardGodotEditorFailsBeforeCompilation {
 
     try {
         $dotnet = New-VersionFixture -Directory $fixtureDirectory -Name "dotnet" -VersionOutput "8.0.410"
-        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.2.stable.official.test"
+        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.1.stable.official.test"
 
         $result = Invoke-ToolchainFixture `
             -ToolchainScript $toolchainScript `

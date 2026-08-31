@@ -44,15 +44,31 @@ function Invoke-ToolVersion {
         [string] $Executable
     )
 
+    $standardOutputPath = [System.IO.Path]::GetTempFileName()
+    $standardErrorPath = [System.IO.Path]::GetTempFileName()
     try {
-        $versionOutput = & $Executable --version 2>&1
-        $exitCode = $LASTEXITCODE
+        $process = Start-Process `
+            -FilePath $Executable `
+            -ArgumentList "--version" `
+            -Wait `
+            -NoNewWindow `
+            -PassThru `
+            -RedirectStandardOutput $standardOutputPath `
+            -RedirectStandardError $standardErrorPath
+        $exitCode = $process.ExitCode
+        $versionOutput = @(
+            Get-Content -LiteralPath $standardOutputPath -Raw
+            Get-Content -LiteralPath $standardErrorPath -Raw
+        )
     }
     catch {
         throw "${ToolName}: version check could not run '$Executable'. $($_.Exception.Message)"
     }
+    finally {
+        Remove-Item -LiteralPath $standardOutputPath, $standardErrorPath -Force -ErrorAction SilentlyContinue
+    }
 
-    $text = (($versionOutput | ForEach-Object { $_.ToString() }) -join "`n").Trim()
+    $text = (($versionOutput | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }) -join "`n").Trim()
     if ($exitCode -ne 0) {
         throw "${ToolName}: version check failed with exit code $exitCode. $text"
     }

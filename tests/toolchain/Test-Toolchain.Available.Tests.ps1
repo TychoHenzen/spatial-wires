@@ -13,7 +13,7 @@ function Test-DeclaredToolchainIsAvailable {
 
     try {
         $dotnet = New-VersionFixture -Directory $fixtureDirectory -Name "dotnet" -VersionOutput "8.0.410"
-        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.2.stable.mono.official.test"
+        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.1.stable.mono.official.test"
 
         $result = Invoke-ToolchainFixture `
             -ToolchainScript $toolchainScript `
@@ -22,7 +22,7 @@ function Test-DeclaredToolchainIsAvailable {
 
         Assert-Equal -Expected 0 -Actual $result.ExitCode -Message "The declared toolchain should pass."
         Assert-Contains -Expected "8.0.410" -Actual $result.Output -Message "The selected .NET SDK should be reported."
-        Assert-Contains -Expected "4.7.2" -Actual $result.Output -Message "The selected Godot version should be reported."
+        Assert-Contains -Expected "4.7.1" -Actual $result.Output -Message "The selected Godot version should be reported."
         Assert-Equal -Expected "--version" -Actual (Get-Content -LiteralPath $dotnet.InvocationPath -Raw).Trim() -Message "dotnet should only receive a version probe."
         Assert-Equal -Expected "--version" -Actual (Get-Content -LiteralPath $godot.InvocationPath -Raw).Trim() -Message "Godot should only receive a version probe."
     }
@@ -39,7 +39,7 @@ function Test-DeclaredGodotCanBeSelectedFromProjectEnvironment {
 
     try {
         $dotnet = New-VersionFixture -Directory $fixtureDirectory -Name "dotnet" -VersionOutput "8.0.410"
-        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.2.stable.mono.official.test"
+        $godot = New-VersionFixture -Directory $fixtureDirectory -Name "godot" -VersionOutput "4.7.1.stable.mono.official.test"
         [Environment]::SetEnvironmentVariable("SPATIAL_WIRES_GODOT", $godot.Executable, "Process")
 
         $result = Invoke-ToolchainFixture `

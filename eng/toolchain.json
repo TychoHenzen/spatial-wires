@@ -8,7 +8,7 @@
     ]
   },
   "godot": {
-    "version": "4.7.2",
+    "version": "4.7.1",
     "variant": "dotnet",
     "executableEnvironmentVariable": "SPATIAL_WIRES_GODOT"
   }

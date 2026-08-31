@@ -1,0 +1,16 @@
+; Test-only Godot project used by the gdUnit4 VSTest adapter.
+
+config_version=5
+
+[application]
+
+config/name="SpatialWires.Godot.Tests"
+config/features=PackedStringArray("4.7", "C#")
+
+[dotnet]
+
+project/assembly_name="SpatialWires.Godot.Tests"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
