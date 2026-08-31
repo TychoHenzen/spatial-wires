@@ -1,0 +1,18 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Local IDE state
+.idea/
+.vs/
+*.user
+
+# Test output
+TestResults/
+
+# OpenSpec process locks
+openspec/changes/archive/.openspec-archive.lock

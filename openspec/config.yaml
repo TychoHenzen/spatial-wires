@@ -1,0 +1,42 @@
+schema: dod-guard-spec-driven
+
+context: |
+  Project: SpatialWires, a Godot 4.7 .NET spatial digital-circuit framework.
+  Language: C# for the simulation core, Godot adapters, tools, and gameplay integration.
+  Architecture: Keep the deterministic simulation core free of GodotSharp dependencies. Godot Nodes and Resources belong behind adapter boundaries.
+  Timing: Use explicit integer microticks. Do not use frame delta as circuit time.
+  Data: Portable, versioned core documents are authoritative. Godot Resources are editor-facing DTOs, not runtime state.
+  Delivery: Each implementation stage must leave an independently runnable system with an explicit practice test.
+  Current state: The Stage 1 package baseline exists with a solution, pure .NET projects, a Godot adapter, and automated boundary checks. Deterministic circuit behavior remains unimplemented.
+  Platform: Windows desktop first. Linux and macOS remain unverified until dedicated checks exist.
+
+# Project context (optional)
+# This is shown to AI when creating artifacts.
+# Add your tech stack, conventions, style guides, domain knowledge, etc.
+# Example:
+#   context: |
+#     Tech stack: TypeScript, React, Node.js
+#     We use conventional commits
+#     Domain: e-commerce platform
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing
