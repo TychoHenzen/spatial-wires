@@ -1,0 +1,13 @@
+{
+  "fixtureSchema": { "major": 1, "minor": 0 },
+  "traceSchema": { "major": 1, "minor": 0 },
+  "fixtureId": "invalid-drive",
+  "action": "resolveDrives",
+  "cases": [
+    {
+      "caseId": "invalid-drive",
+      "drives": ["Broken"],
+      "expected": "Unknown"
+    }
+  ]
+}

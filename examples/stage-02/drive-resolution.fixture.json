@@ -1,0 +1,23 @@
+{
+  "fixtureSchema": { "major": 1, "minor": 0 },
+  "traceSchema": { "major": 1, "minor": 0 },
+  "fixtureId": "stage-02-drive-resolution",
+  "action": "resolveDrives",
+  "cases": [
+    {
+      "caseId": "no-active-drive",
+      "drives": ["HighImpedance"],
+      "expected": "HighImpedance"
+    },
+    {
+      "caseId": "valid-low-drive",
+      "drives": ["Low", "Low"],
+      "expected": "Low"
+    },
+    {
+      "caseId": "contention",
+      "drives": ["Low", "High"],
+      "expected": "Unknown"
+    }
+  ]
+}

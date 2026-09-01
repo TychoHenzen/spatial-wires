@@ -1,0 +1,13 @@
+{
+  "fixtureSchema": { "major": 1, "minor": 0 },
+  "traceSchema": { "major": 1, "minor": 0 },
+  "fixtureId": "failed-expectation",
+  "action": "resolveDrives",
+  "cases": [
+    {
+      "caseId": "wrong-expectation",
+      "drives": ["Low"],
+      "expected": "High"
+    }
+  ]
+}

@@ -39,10 +39,13 @@
 
 ## 4. Build the public scenario runner
 
-- [ ] 4.1 Add the pure `SpatialCircuits.Runner` console project, versioned fixture envelope, and deterministic trace output.
-- [ ] 4.2 Add the public drive-resolution fixture and command that prints high impedance, a valid drive, and contention.
+- [x] 4.1 Add the pure `SpatialCircuits.Runner` console project, versioned fixture envelope, and deterministic trace output.
+<!-- status: completed -->
+- [x] 4.2 Add the public drive-resolution fixture and command that prints high impedance, a valid drive, and contention.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Core scenarios run without Godot :: Drive-resolution practice fixture runs -->
-- [ ] 4.3 Make invalid fixtures print structured diagnostics and return a nonzero process code.
+- [x] 4.3 Make invalid fixtures print structured diagnostics and return a nonzero process code.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Core scenarios run without Godot :: Invalid fixture fails the process -->
 
 ## 5. Run Stage 2 gates

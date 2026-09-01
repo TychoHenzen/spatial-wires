@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialWires", "SpatialWire
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialWires.Godot.Tests", "tests\SpatialWires.Godot.Tests\SpatialWires.Godot.Tests.csproj", "{79575B5F-4E04-4EF0-A12C-E90335C3A44B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Runner", "src\SpatialCircuits.Runner\SpatialCircuits.Runner.csproj", "{8EA62451-1170-483C-98CB-C114AC2B8A16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Runner.Tests", "tests\SpatialCircuits.Runner.Tests\SpatialCircuits.Runner.Tests.csproj", "{31D390FB-C733-40C9-88B4-C16513FA74E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{79575B5F-4E04-4EF0-A12C-E90335C3A44B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79575B5F-4E04-4EF0-A12C-E90335C3A44B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79575B5F-4E04-4EF0-A12C-E90335C3A44B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EA62451-1170-483C-98CB-C114AC2B8A16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EA62451-1170-483C-98CB-C114AC2B8A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EA62451-1170-483C-98CB-C114AC2B8A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EA62451-1170-483C-98CB-C114AC2B8A16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31D390FB-C733-40C9-88B4-C16513FA74E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31D390FB-C733-40C9-88B4-C16513FA74E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31D390FB-C733-40C9-88B4-C16513FA74E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31D390FB-C733-40C9-88B4-C16513FA74E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
