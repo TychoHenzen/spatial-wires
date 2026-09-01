@@ -9,16 +9,20 @@
 - [x] 1.3 Add resolver cases for conflicting and unknown active drives across shuffled source order.
 <!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Four-state digital values resolve consistently :: Contention resolves to unknown -->
-- [ ] 1.4 Add typed stable identifiers, ownership records, and schema-version values to the pure core.
+- [x] 1.4 Add typed stable identifiers, ownership records, and schema-version values to the pure core.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Portable definitions use stable identities and ownership :: Document identity survives process boundaries -->
-- [ ] 1.5 Reject persisted CLR type names where stable behavior identifiers are required.
+- [x] 1.5 Reject persisted CLR type names where stable behavior identifiers are required.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Portable definitions use stable identities and ownership :: CLR type name is used as persisted behavior identity -->
 
 ## 2. Add canonical portable documents
 
-- [ ] 2.1 Add immutable document builders and canonical UTF-8 JSON round-trip fixtures.
+- [x] 2.1 Add immutable document builders and canonical UTF-8 JSON round-trip fixtures.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Canonical documents round-trip exactly :: Canonical round trip is byte stable -->
-- [ ] 2.2 Normalize permitted source ordering and prove equivalent inputs produce identical canonical hashes.
+- [x] 2.2 Normalize permitted source ordering and prove equivalent inputs produce identical canonical hashes.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Canonical documents round-trip exactly :: Equivalent input ordering is normalized -->
 - [ ] 2.3 Add ordered structured diagnostics with stable codes and element paths for invalid fixtures.
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Validation diagnostics are stable and structured :: Invalid fixture reports a stable diagnostic -->
