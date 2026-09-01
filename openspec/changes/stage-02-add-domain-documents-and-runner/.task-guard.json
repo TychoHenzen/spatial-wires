@@ -54,13 +54,16 @@
       "status": "completed"
     },
     "5.1": {
-      "checked": false
+      "checked": true,
+      "status": "completed"
     },
     "5.2": {
-      "checked": false
+      "checked": true,
+      "status": "completed"
     },
     "5.3": {
-      "checked": false
+      "checked": true,
+      "status": "completed"
     }
   },
   "hmac": "4c1f05b3ebaf202fe4ef7a661a1b6247b10fcb3d5e493395b5bf041b0d14f279"

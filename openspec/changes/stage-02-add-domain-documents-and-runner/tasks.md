@@ -50,6 +50,9 @@
 
 ## 5. Run Stage 2 gates
 
-- [ ] 5.1 Run formatting, pure dependency checks, `dotnet build`, and the narrow Stage 2 test suite.
-- [ ] 5.2 Run the public drive-resolution practice command and record its exact trace and process code.
-- [ ] 5.3 Run strict OpenSpec validation and `dod-guard cover` for this change before handoff.
+- [x] 5.1 Run formatting, pure dependency checks, `dotnet build`, and the narrow Stage 2 test suite.
+<!-- status: completed -->
+- [x] 5.2 Run the public drive-resolution practice command and record its exact trace and process code.
+<!-- status: completed -->
+- [x] 5.3 Run strict OpenSpec validation and `dod-guard cover` for this change before handoff.
+<!-- status: completed -->
