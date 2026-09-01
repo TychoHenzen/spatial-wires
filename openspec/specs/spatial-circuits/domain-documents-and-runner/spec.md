@@ -68,4 +68,3 @@ The command-line scenario runner SHALL load a versioned fixture, validate it, ex
 #### Scenario: Invalid fixture fails the process
 - **WHEN** the runner receives an invalid fixture
 - **THEN** it prints the stable validation diagnostic and returns a nonzero process code
-
