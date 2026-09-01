@@ -30,4 +30,24 @@ public sealed class DriveResolverTests
         Assert.Equal(LogicValue.Unknown, DriveResolver.Resolve([LogicValue.Unknown, LogicValue.Low]));
         Assert.Equal(LogicValue.Unknown, DriveResolver.Resolve([LogicValue.Low, LogicValue.Unknown]));
     }
+
+    [Fact]
+    public void EveryThreeDriveCombinationIsOrderIndependent()
+    {
+        var values = Enum.GetValues<LogicValue>();
+
+        foreach (var first in values)
+        {
+            foreach (var second in values)
+            {
+                foreach (var third in values)
+                {
+                    var expected = DriveResolver.Resolve([first, second, third]);
+                    Assert.Equal(expected, DriveResolver.Resolve([third, first, second]));
+                    Assert.Equal(expected, DriveResolver.Resolve([second, third, first]));
+                    Assert.Equal(expected, DriveResolver.Resolve([third, second, first]));
+                }
+            }
+        }
+    }
 }

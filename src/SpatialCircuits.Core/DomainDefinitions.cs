@@ -1,88 +1,137 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Collections.Immutable;
 
 namespace SpatialCircuits.Core;
-
-public readonly record struct StableId
-{
-    public StableId(string value)
-    {
-        if (string.IsNullOrWhiteSpace(value) || value.Contains(':'))
-        {
-            throw new ArgumentException("Stable identifiers must be non-empty and must not contain ':'", nameof(value));
-        }
-        Value = value;
-    }
-
-    public string Value { get; }
-
-    public override string ToString() => Value;
-}
 
 public readonly record struct SchemaVersion(int Major, int Minor)
 {
     public static SchemaVersion Current => new(1, 0);
 }
 
-public sealed record Ownership(StableId OwnerId, StableId DefinitionId);
+public readonly record struct GridCoordinate(int X, int Y);
 
-public sealed record CircuitDocument(
-    SchemaVersion Schema,
-    StableId DocumentId,
-    IReadOnlyList<StableId> Definitions,
-    IReadOnlyList<Ownership> Ownerships,
-    IReadOnlyList<StableId> Behaviors)
+public sealed record PortDefinition(PortId Id, GridCoordinate Location);
+
+public sealed record ParameterDefinition(string Name, string DefaultValue);
+
+public sealed class CircuitDefinition
 {
-    public IReadOnlyList<string> Validate() => Behaviors
-        .Where(x => x.Value.Contains('.', StringComparison.Ordinal))
-        .Select(_ => "SCHEMA_BEHAVIOR_ID:behaviors")
-        .ToArray();
-
-    public static CircuitDocument Create(
-        StableId documentId,
-        IEnumerable<StableId> definitions,
-        IEnumerable<Ownership> ownerships,
-        IEnumerable<StableId> behaviors) => new(
-            SchemaVersion.Current,
-            documentId,
-            definitions.OrderBy(x => x.Value, StringComparer.Ordinal).ToArray(),
-            ownerships.OrderBy(x => x.OwnerId.Value, StringComparer.Ordinal).ThenBy(x => x.DefinitionId.Value, StringComparer.Ordinal).ToArray(),
-            behaviors.OrderBy(x => x.Value, StringComparer.Ordinal).ToArray());
-}
-
-public static class CircuitDocumentCodec
-{
-    private static readonly JsonSerializerOptions Options = new()
+    private CircuitDefinition(
+        DefinitionId id,
+        BehaviorId behaviorId,
+        ImmutableArray<PortDefinition> ports,
+        ImmutableArray<ParameterDefinition> parameters)
     {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        WriteIndented = false,
-        DefaultIgnoreCondition = JsonIgnoreCondition.Never
-    };
-
-    public static byte[] Write(CircuitDocument document)
-    {
-        var payload = new
-        {
-            schema = new { major = document.Schema.Major, minor = document.Schema.Minor },
-            documentId = document.DocumentId.Value,
-            definitions = document.Definitions.Select(x => x.Value).ToArray(),
-            ownerships = document.Ownerships.Select(x => new { ownerId = x.OwnerId.Value, definitionId = x.DefinitionId.Value }).ToArray(),
-            behaviors = document.Behaviors.Select(x => x.Value).ToArray()
-        };
-        return JsonSerializer.SerializeToUtf8Bytes(payload, Options);
+        Id = id;
+        BehaviorId = behaviorId;
+        Ports = ports;
+        Parameters = parameters;
     }
 
-    public static CircuitDocument Read(ReadOnlySpan<byte> bytes)
+    public DefinitionId Id { get; }
+
+    public BehaviorId BehaviorId { get; }
+
+    public ImmutableArray<PortDefinition> Ports { get; }
+
+    public ImmutableArray<ParameterDefinition> Parameters { get; }
+
+    public static CircuitDefinition Create(
+        DefinitionId id,
+        BehaviorId behaviorId,
+        IEnumerable<PortDefinition> ports,
+        IEnumerable<ParameterDefinition>? parameters = null)
     {
-        using var json = JsonDocument.Parse(bytes.ToArray());
-        var root = json.RootElement;
-        var schema = root.GetProperty("schema");
-        var definitions = root.GetProperty("definitions").EnumerateArray().Select(x => new StableId(x.GetString()!));
-        var ownerships = root.GetProperty("ownerships").EnumerateArray().Select(x => new Ownership(new StableId(x.GetProperty("ownerId").GetString()!), new StableId(x.GetProperty("definitionId").GetString()!)));
-        var behaviors = root.GetProperty("behaviors").EnumerateArray().Select(x => new StableId(x.GetString()!));
-        return CircuitDocument.Create(new StableId(root.GetProperty("documentId").GetString()!), definitions, ownerships, behaviors) with
-        {
-            Schema = new SchemaVersion(schema.GetProperty("major").GetInt32(), schema.GetProperty("minor").GetInt32())
-        };
+        ArgumentNullException.ThrowIfNull(ports);
+
+        return new CircuitDefinition(
+            id,
+            behaviorId,
+            ports.OrderBy(port => port.Id.Value, StringComparer.Ordinal).ToImmutableArray(),
+            (parameters ?? []).OrderBy(parameter => parameter.Name, StringComparer.Ordinal).ToImmutableArray());
+    }
+}
+
+public sealed class ComponentDefinition
+{
+    private ComponentDefinition(
+        ComponentId id,
+        DefinitionId definitionId,
+        GridCoordinate location,
+        ImmutableSortedDictionary<string, string> parameters)
+    {
+        Id = id;
+        DefinitionId = definitionId;
+        Location = location;
+        Parameters = parameters;
+    }
+
+    public ComponentId Id { get; }
+
+    public DefinitionId DefinitionId { get; }
+
+    public GridCoordinate Location { get; }
+
+    public ImmutableSortedDictionary<string, string> Parameters { get; }
+
+    public static ComponentDefinition Create(
+        ComponentId id,
+        DefinitionId definitionId,
+        GridCoordinate location,
+        IEnumerable<KeyValuePair<string, string>>? parameters = null) => new(
+            id,
+            definitionId,
+            location,
+            (parameters ?? []).ToImmutableSortedDictionary(
+                pair => pair.Key,
+                pair => pair.Value,
+                StringComparer.Ordinal));
+}
+
+public sealed record Ownership(OwnerId OwnerId, ComponentId ComponentId);
+
+public sealed class CircuitDocument
+{
+    private CircuitDocument(
+        SchemaVersion schema,
+        DocumentId documentId,
+        ImmutableArray<CircuitDefinition> definitions,
+        ImmutableArray<ComponentDefinition> components,
+        ImmutableArray<Ownership> ownerships)
+    {
+        Schema = schema;
+        DocumentId = documentId;
+        Definitions = definitions;
+        Components = components;
+        Ownerships = ownerships;
+    }
+
+    public SchemaVersion Schema { get; }
+
+    public DocumentId DocumentId { get; }
+
+    public ImmutableArray<CircuitDefinition> Definitions { get; }
+
+    public ImmutableArray<ComponentDefinition> Components { get; }
+
+    public ImmutableArray<Ownership> Ownerships { get; }
+
+    public static CircuitDocument Create(
+        DocumentId documentId,
+        IEnumerable<CircuitDefinition> definitions,
+        IEnumerable<ComponentDefinition>? components = null,
+        IEnumerable<Ownership>? ownerships = null,
+        SchemaVersion? schema = null)
+    {
+        ArgumentNullException.ThrowIfNull(definitions);
+
+        return new CircuitDocument(
+            schema ?? SchemaVersion.Current,
+            documentId,
+            definitions.OrderBy(definition => definition.Id.Value, StringComparer.Ordinal).ToImmutableArray(),
+            (components ?? []).OrderBy(component => component.Id.Value, StringComparer.Ordinal).ToImmutableArray(),
+            (ownerships ?? [])
+                .OrderBy(ownership => ownership.ComponentId.Value, StringComparer.Ordinal)
+                .ThenBy(ownership => ownership.OwnerId.Value, StringComparer.Ordinal)
+                .ToImmutableArray());
     }
 }

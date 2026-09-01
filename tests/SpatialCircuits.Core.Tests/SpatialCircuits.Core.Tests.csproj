@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\src\SpatialCircuits.Cells\SpatialCircuits.Cells.csproj" />
     <ProjectReference Include="..\..\src\SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ProcessProbe\**\*.cs" />
+  </ItemGroup>
 </Project>

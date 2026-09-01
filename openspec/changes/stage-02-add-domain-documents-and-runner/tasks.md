@@ -24,14 +24,17 @@
 - [x] 2.2 Normalize permitted source ordering and prove equivalent inputs produce identical canonical hashes.
 <!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Canonical documents round-trip exactly :: Equivalent input ordering is normalized -->
-- [ ] 2.3 Add ordered structured diagnostics with stable codes and element paths for invalid fixtures.
+- [x] 2.3 Add ordered structured diagnostics with stable codes and element paths for invalid fixtures.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Validation diagnostics are stable and structured :: Invalid fixture reports a stable diagnostic -->
-- [ ] 2.4 Reject unsupported schema versions before any runtime factory is invoked.
+- [x] 2.4 Reject unsupported schema versions before any runtime factory is invoked.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Validation diagnostics are stable and structured :: Unsupported schema is rejected before instantiation -->
 
 ## 3. Separate definitions from runtime state
 
-- [ ] 3.1 Add runtime factories that deep-copy mutable state and prove two instances from one definition diverge independently.
+- [x] 3.1 Add runtime factories that deep-copy mutable state and prove two instances from one definition diverge independently.
+<!-- status: completed -->
 <!-- covers: spatial-circuits/domain-documents-and-runner :: Runtime instances do not share mutable state :: Two instances diverge independently -->
 
 ## 4. Build the public scenario runner
