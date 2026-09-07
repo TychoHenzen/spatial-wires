@@ -5,7 +5,6 @@ namespace SpatialCircuits.Core.Tests;
 
 public sealed class DriveResolverTests
 {
-    // covers: spatial-circuits/domain-documents-and-runner :: Four-state digital values resolve consistently :: No active drive resolves to high impedance
     [Fact]
     public void NoActiveDriveResolvesToHighImpedance()
     {
@@ -13,7 +12,6 @@ public sealed class DriveResolverTests
         Assert.Equal(LogicValue.HighImpedance, DriveResolver.Resolve([LogicValue.HighImpedance, LogicValue.HighImpedance]));
     }
 
-    // covers: spatial-circuits/domain-documents-and-runner :: Four-state digital values resolve consistently :: One compatible driven value is preserved
     [Fact]
     public void UnanimousActiveDriveIsPreserved()
     {
@@ -21,7 +19,6 @@ public sealed class DriveResolverTests
         Assert.Equal(LogicValue.High, DriveResolver.Resolve([LogicValue.High, LogicValue.High]));
     }
 
-    // covers: spatial-circuits/domain-documents-and-runner :: Four-state digital values resolve consistently :: Contention resolves to unknown
     [Fact]
     public void ConflictingAndUnknownDrivesResolveToUnknownRegardlessOfOrder()
     {

@@ -1,8 +1,8 @@
 namespace SpatialCircuits.Core;
 
-public readonly record struct DocumentId
+public readonly record struct CircuitId
 {
-    public DocumentId(string value) => Value = value ?? string.Empty;
+    public CircuitId(string value) => Value = value ?? string.Empty;
 
     public string Value { get; }
 

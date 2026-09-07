@@ -2,48 +2,35 @@ using System.Text.RegularExpressions;
 
 namespace SpatialCircuits.Core;
 
-public static partial class CircuitDocumentValidator
+public static partial class CircuitValidator
 {
-    public static IReadOnlyList<Diagnostic> Validate(CircuitDocument document)
+    public static IReadOnlyList<Diagnostic> Validate(Circuit circuit)
     {
-        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(circuit);
 
         var diagnostics = new List<Diagnostic>();
-        ValidateSchema(document, diagnostics);
-        ValidateDocumentId(document, diagnostics);
-        ValidateDefinitions(document, diagnostics);
-        ValidateComponents(document, diagnostics);
-        ValidateOwnerships(document, diagnostics);
+        ValidateCircuitId(circuit, diagnostics);
+        ValidateDefinitions(circuit, diagnostics);
+        ValidateComponents(circuit, diagnostics);
+        ValidateOwnerships(circuit, diagnostics);
         return diagnostics.AsReadOnly();
     }
 
-    private static void ValidateSchema(CircuitDocument document, ICollection<Diagnostic> diagnostics)
+    private static void ValidateCircuitId(Circuit circuit, ICollection<Diagnostic> diagnostics)
     {
-        if (document.Schema != SchemaVersion.Current)
+        if (!IsStableId(circuit.Id.Value))
         {
-            Add(
-                diagnostics,
-                DiagnosticCodes.UnsupportedSchema,
-                "$.schema",
-                $"Schema {document.Schema.Major}.{document.Schema.Minor} is not supported.");
+            Add(diagnostics, DiagnosticCodes.InvalidCircuitId, "$.circuitId", "Circuit identifier is not stable data.");
         }
     }
 
-    private static void ValidateDocumentId(CircuitDocument document, ICollection<Diagnostic> diagnostics)
-    {
-        if (!IsStableId(document.DocumentId.Value))
-        {
-            Add(diagnostics, DiagnosticCodes.InvalidDocumentId, "$.documentId", "Document identifier is not stable data.");
-        }
-    }
-
-    private static void ValidateDefinitions(CircuitDocument document, ICollection<Diagnostic> diagnostics)
+    private static void ValidateDefinitions(Circuit circuit, ICollection<Diagnostic> diagnostics)
     {
         var seenDefinitions = new HashSet<string>(StringComparer.Ordinal);
 
-        for (var definitionIndex = 0; definitionIndex < document.Definitions.Length; definitionIndex++)
+        for (var definitionIndex = 0; definitionIndex < circuit.Definitions.Length; definitionIndex++)
         {
-            var definition = document.Definitions[definitionIndex];
+            var definition = circuit.Definitions[definitionIndex];
             var path = $"$.definitions[{definitionIndex}]";
 
             if (!IsStableId(definition.Id.Value))
@@ -116,16 +103,16 @@ public static partial class CircuitDocumentValidator
         }
     }
 
-    private static void ValidateComponents(CircuitDocument document, ICollection<Diagnostic> diagnostics)
+    private static void ValidateComponents(Circuit circuit, ICollection<Diagnostic> diagnostics)
     {
-        var definitionById = document.Definitions
+        var definitionById = circuit.Definitions
             .GroupBy(definition => definition.Id.Value, StringComparer.Ordinal)
             .ToDictionary(group => group.Key, group => group.First(), StringComparer.Ordinal);
         var seenComponents = new HashSet<string>(StringComparer.Ordinal);
 
-        for (var componentIndex = 0; componentIndex < document.Components.Length; componentIndex++)
+        for (var componentIndex = 0; componentIndex < circuit.Components.Length; componentIndex++)
         {
-            var component = document.Components[componentIndex];
+            var component = circuit.Components[componentIndex];
             var path = $"$.components[{componentIndex}]";
 
             if (!IsStableId(component.Id.Value))
@@ -178,16 +165,16 @@ public static partial class CircuitDocumentValidator
         }
     }
 
-    private static void ValidateOwnerships(CircuitDocument document, ICollection<Diagnostic> diagnostics)
+    private static void ValidateOwnerships(Circuit circuit, ICollection<Diagnostic> diagnostics)
     {
-        var componentIds = document.Components
+        var componentIds = circuit.Components
             .Select(component => component.Id.Value)
             .ToHashSet(StringComparer.Ordinal);
         var ownedComponents = new HashSet<string>(StringComparer.Ordinal);
 
-        for (var ownershipIndex = 0; ownershipIndex < document.Ownerships.Length; ownershipIndex++)
+        for (var ownershipIndex = 0; ownershipIndex < circuit.Ownerships.Length; ownershipIndex++)
         {
-            var ownership = document.Ownerships[ownershipIndex];
+            var ownership = circuit.Ownerships[ownershipIndex];
             var path = $"$.ownerships[{ownershipIndex}]";
 
             if (!IsStableId(ownership.OwnerId.Value))

@@ -10,6 +10,7 @@ public sealed class DependencyBoundaryTests
         "src/SpatialCircuits.Core/SpatialCircuits.Core.csproj",
         "src/SpatialCircuits.Cells/SpatialCircuits.Cells.csproj",
         "src/SpatialCircuits.Hierarchy/SpatialCircuits.Hierarchy.csproj",
+        "src/SpatialCircuits.Runner/SpatialCircuits.Runner.csproj",
     ];
 
     private static readonly string[] PureAssemblyNames =
@@ -17,6 +18,7 @@ public sealed class DependencyBoundaryTests
         "SpatialCircuits.Core",
         "SpatialCircuits.Cells",
         "SpatialCircuits.Hierarchy",
+        "SpatialCircuits.Runner",
     ];
 
     [Fact]

@@ -72,13 +72,13 @@ function New-SpatialWiresPracticeDirectory {
         throw "Practice directory cannot be a linked filesystem entry: '$resolvedPracticePath'."
     }
 
-    $identityDocument = [ordered]@{
+    $identityRecord = [ordered]@{
         schemaVersion = 1
         purpose = $script:PracticePurpose
         identity = $identity
     } | ConvertTo-Json
     $identityPath = Join-Path $resolvedPracticePath $script:IdentityFileName
-    [System.IO.File]::WriteAllText($identityPath, "$identityDocument`n", [System.Text.UTF8Encoding]::new($false))
+    [System.IO.File]::WriteAllText($identityPath, "$identityRecord`n", [System.Text.UTF8Encoding]::new($false))
 
     return [pscustomobject]@{
         Root = $resolvedPracticePath
@@ -123,15 +123,15 @@ function Remove-SpatialWiresPracticeDirectory {
     }
 
     try {
-        $identityDocument = Get-Content -LiteralPath $identityPath -Raw | ConvertFrom-Json
+        $identityRecord = Get-Content -LiteralPath $identityPath -Raw | ConvertFrom-Json
     }
     catch {
         throw "Refusing to clean practice directory with an invalid identity file: '$resolvedPracticePath'."
     }
 
-    if ([int]$identityDocument.schemaVersion -ne 1 -or
-        [string]$identityDocument.purpose -cne $script:PracticePurpose -or
-        [string]$identityDocument.identity -cne $Identity) {
+    if ([int]$identityRecord.schemaVersion -ne 1 -or
+        [string]$identityRecord.purpose -cne $script:PracticePurpose -or
+        [string]$identityRecord.identity -cne $Identity) {
         throw "Refusing to clean practice directory whose identity does not match the current run: '$resolvedPracticePath'."
     }
 
