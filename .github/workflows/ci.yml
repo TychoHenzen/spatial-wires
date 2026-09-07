@@ -58,7 +58,7 @@ jobs:
 
       - name: Run unavailable-toolchain checks
         shell: pwsh
-        run: ./tests/toolchain/Test-Toolchain.Unavailable.Tests.ps1
+        run: pwsh -NoProfile -File ./tests/toolchain/Test-Toolchain.Unavailable.Tests.ps1
 
       - name: Run bounded-process checks
         shell: pwsh
