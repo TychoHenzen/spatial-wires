@@ -1,0 +1,71 @@
+name: godot-adapter
+
+on:
+  schedule:
+    - cron: '17 3 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  GODOT_VERSION: 4.7.1
+  GODOT_RELEASE_TAG: 4.7.1-stable
+  GODOT_ASSET: Godot_v4.7.1-stable_mono_win64.zip
+
+jobs:
+  godot-adapter:
+    name: godot-adapter
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1f # v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 8.0.410
+
+      - name: Download and verify Godot .NET
+        shell: pwsh
+        run: |
+          $godotDirectory = Join-Path $env:RUNNER_TEMP 'godot'
+          $archivePath = Join-Path $env:RUNNER_TEMP $env:GODOT_ASSET
+          $baseUrl = "https://github.com/godotengine/godot/releases/download/$env:GODOT_RELEASE_TAG"
+          $archiveUrl = "$baseUrl/$env:GODOT_ASSET"
+          $sumsUrl = "$baseUrl/SHA512-SUMS.txt"
+
+          New-Item -ItemType Directory -Path $godotDirectory -Force | Out-Null
+          Invoke-WebRequest -Uri $archiveUrl -OutFile $archivePath
+          $sums = (Invoke-WebRequest -Uri $sumsUrl).Content -split "`r?`n"
+          $expected = ($sums | Where-Object { $_ -match [regex]::Escape($env:GODOT_ASSET) + '$' } | Select-Object -First 1) -split '\s+' | Select-Object -First 1
+          $actual = (Get-FileHash -LiteralPath $archivePath -Algorithm SHA512).Hash.ToLowerInvariant()
+          if ([string]::IsNullOrWhiteSpace($expected) -or $actual -ne $expected.ToLowerInvariant()) {
+            throw "Godot archive checksum mismatch."
+          }
+
+          Expand-Archive -LiteralPath $archivePath -DestinationPath $godotDirectory -Force
+          $godotExecutable = Get-ChildItem -LiteralPath $godotDirectory -Filter 'Godot_v4.7.1-stable_mono_win64.exe' -Recurse -File | Select-Object -First 1 -ExpandProperty FullName
+          if ([string]::IsNullOrWhiteSpace($godotExecutable)) {
+            throw "Godot executable was not found below '$godotDirectory'."
+          }
+          "GODOT_BIN=$godotExecutable" >> $env:GITHUB_ENV
+          "SPATIAL_WIRES_GODOT=$godotExecutable" >> $env:GITHUB_ENV
+
+      - name: Build Godot managed solution
+        shell: pwsh
+        run: '& $env:GODOT_BIN --headless --path $env:GITHUB_WORKSPACE --build-solutions --quit-after 300'
+
+      - name: Run Godot adapter tests
+        shell: pwsh
+        run: pwsh -NoProfile -File tests/SpatialWires.Godot.Tests/Run-GdUnit.ps1 -GodotExecutable $env:GODOT_BIN
+
+      - name: Run Godot acceptance tests
+        shell: pwsh
+        run: >-
+          node --test --test-concurrency=1
+          tests/SpatialWires.Godot.Tests/public-addon-types.test.mjs
+          tests/acceptance/blank-consumer-addon.test.mjs
+          tests/acceptance/failing-public-type.test.mjs
+          tests/acceptance/independent-copy-practice.test.mjs

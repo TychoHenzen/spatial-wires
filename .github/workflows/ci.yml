@@ -1,0 +1,102 @@
+name: portable-core
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  portable-core:
+    name: portable-core
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1f # v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 8.0.410
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22
+
+      - name: Restore pure test projects
+        run: |
+          dotnet restore tests/SpatialCircuits.Core.Tests/SpatialCircuits.Core.Tests.csproj
+          dotnet restore tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj
+
+      - name: Run core tests
+        run: dotnet test tests/SpatialCircuits.Core.Tests/SpatialCircuits.Core.Tests.csproj --configuration Release --no-restore --nologo --verbosity minimal
+
+      - name: Run runner tests
+        run: dotnet test tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj --configuration Release --no-restore --nologo --verbosity minimal
+
+      - name: Run portable boundary tests
+        run: >-
+          node --test --test-concurrency=1
+          tests/SpatialCircuits.Core.Tests/dependency-boundary.test.mjs
+          tests/SpatialCircuits.Core.Tests/domain-documents.binding.test.mjs
+          tests/SpatialCircuits.Core.Tests/PureProjectBuild.Binding.test.mjs
+          tests/SpatialCircuits.Runner.Tests/runner-process.binding.test.mjs
+
+  dependency-audit:
+    name: dependency-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1f # v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 8.0.410
+
+      - name: Fail on vulnerable NuGet packages
+        shell: pwsh
+        run: |
+          $projects = @(
+            'tests/SpatialCircuits.Core.Tests/SpatialCircuits.Core.Tests.csproj',
+            'tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj'
+          )
+          $findings = foreach ($project in $projects) {
+            $report = dotnet list $project package --vulnerable --include-transitive --format json | ConvertFrom-Json
+            foreach ($framework in @($report.projects.frameworks)) {
+              foreach ($package in @($framework.transitivePackages)) {
+                foreach ($vulnerability in @($package.vulnerabilities)) {
+                  [pscustomobject]@{
+                    project = $project
+                    package = $package.id
+                    version = $package.resolvedVersion
+                    severity = $vulnerability.severity
+                    advisory = $vulnerability.advisoryurl
+                  }
+                }
+              }
+            }
+          }
+          if (@($findings).Count -gt 0) {
+            $findings | ConvertTo-Json -Depth 5
+            throw 'NuGet vulnerability audit failed.'
+          }
+          'No vulnerable NuGet packages found.'
+
+  workflow-syntax:
+    name: workflow-syntax
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1f # v7
+
+      - name: Validate GitHub Actions workflows
+        run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12

@@ -1,0 +1,6 @@
+name: SpatialWires CodeQL configuration
+
+paths-ignore:
+  - .godot/**
+  - addons/gdUnit4/**
+  - tests/fixtures/**

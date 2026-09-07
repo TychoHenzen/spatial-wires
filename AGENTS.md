@@ -51,6 +51,17 @@ Do not create the full layout before its first OpenSpec change requires it.
 - Report exact commands and outcomes. State clearly when a check cannot run.
 - Do not claim completion from task boxes, commit text, or fixture-only tests.
 
+## GitHub delivery workflow
+
+- Ideas enter the linked Project through `/add-backlog-idea` as Backlog issues.
+- `/refine-backlog-item` makes a Todo PBI.
+- `/next-ticket` implements and pushes one issue branch.
+- `/submit-draft-pr` creates its draft pull request.
+- Review is read-only until explicit acceptance.
+- `/complete-pr` alone owns ready, merge, issue confirmation, and branch deletion.
+- `portable-core` is the required CI gate for pure .NET simulation and runner tests.
+- The Godot adapter runs in a separate weekly or manually dispatched workflow.
+
 ## C# conventions
 
 - Enable nullable reference types in new projects.
