@@ -71,8 +71,15 @@ jobs:
           $findings = foreach ($project in $projects) {
             $report = dotnet list $project package --vulnerable --include-transitive --format json | ConvertFrom-Json
             foreach ($framework in @($report.projects.frameworks)) {
-              foreach ($package in @($framework.transitivePackages)) {
+              $packages = @($framework.topLevelPackages) + @($framework.transitivePackages)
+              foreach ($package in $packages) {
+                if ($null -eq $package) {
+                  continue
+                }
                 foreach ($vulnerability in @($package.vulnerabilities)) {
+                  if ($null -eq $vulnerability) {
+                    continue
+                  }
                   [pscustomobject]@{
                     project = $project
                     package = $package.id

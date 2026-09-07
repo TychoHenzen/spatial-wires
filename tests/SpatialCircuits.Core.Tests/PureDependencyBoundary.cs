@@ -55,8 +55,11 @@ internal static class PureDependencyBoundary
                     continue;
                 }
 
+                var normalizedInclude = include
+                    .Replace('\\', Path.DirectorySeparatorChar)
+                    .Replace('/', Path.DirectorySeparatorChar);
                 var referencedPath = Path.GetFullPath(
-                    Path.Combine(Path.GetDirectoryName(projectPath)!, include));
+                    Path.Combine(Path.GetDirectoryName(projectPath)!, normalizedInclude));
                 if (!normalizedPureProjects.Contains(referencedPath))
                 {
                     violations.Add($"{projectPath} references non-pure project {referencedPath}.");
