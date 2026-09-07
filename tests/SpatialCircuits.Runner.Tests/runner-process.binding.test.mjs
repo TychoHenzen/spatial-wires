@@ -48,7 +48,6 @@ function parseJsonLines(output) {
     .map((line) => JSON.parse(line));
 }
 
-// covers: spatial-circuits/domain-documents-and-runner :: Core scenarios run without Godot :: Drive-resolution practice fixture runs
 test("public drive-resolution fixture prints the exact ordered trace", () => {
   const fixture = path.join(
     repositoryRoot,
@@ -115,7 +114,6 @@ test("a failed expectation prints its observation and returns a nonzero code", (
   ]);
 });
 
-// covers: spatial-circuits/domain-documents-and-runner :: Core scenarios run without Godot :: Invalid fixture fails the process
 test("invalid fixtures print stable diagnostics and fail without stack traces", () => {
   const cases = [
     {

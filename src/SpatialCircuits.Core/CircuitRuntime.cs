@@ -52,18 +52,18 @@ public sealed class ComponentRuntimeState
 
 public class CircuitRuntimeFactory
 {
-    public RuntimeCreationResult Create(CircuitDocument document)
+    public RuntimeCreationResult Create(Circuit circuit)
     {
-        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(circuit);
 
-        var diagnostics = CircuitDocumentValidator.Validate(document);
+        var diagnostics = CircuitValidator.Validate(circuit);
         if (diagnostics.Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error))
         {
             return new RuntimeCreationResult(null, diagnostics);
         }
 
-        return new RuntimeCreationResult(CreateInstance(document), diagnostics);
+        return new RuntimeCreationResult(CreateInstance(circuit), diagnostics);
     }
 
-    protected virtual CircuitRuntimeInstance CreateInstance(CircuitDocument document) => new(document.Components);
+    protected virtual CircuitRuntimeInstance CreateInstance(Circuit circuit) => new(circuit.Components);
 }

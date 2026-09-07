@@ -9,13 +9,12 @@ public enum DiagnosticSeverity
 public sealed record Diagnostic(
     string Code,
     DiagnosticSeverity Severity,
-    string DocumentPath,
+    string Path,
     string Message);
 
 public static class DiagnosticCodes
 {
-    public const string UnsupportedSchema = "SCHEMA_UNSUPPORTED";
-    public const string InvalidDocumentId = "ID_DOCUMENT_INVALID";
+    public const string InvalidCircuitId = "ID_CIRCUIT_INVALID";
     public const string InvalidDefinitionId = "ID_DEFINITION_INVALID";
     public const string InvalidComponentId = "ID_COMPONENT_INVALID";
     public const string InvalidPortId = "ID_PORT_INVALID";

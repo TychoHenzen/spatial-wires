@@ -6,29 +6,34 @@ namespace SpatialCircuits.Core.Tests;
 public sealed class RuntimeFactoryTests
 {
     [Fact]
-    public void UnsupportedSchemaIsRejectedBeforeInstantiation()
+    public void InvalidCircuitIsRejectedBeforeInstantiation()
     {
-        var document = TestDocuments.ValidDocument(new SchemaVersion(2, 0));
+        var source = TestCircuits.ValidCircuit();
+        var circuit = Circuit.Create(
+            new CircuitId("Bad Circuit"),
+            source.Definitions,
+            source.Components,
+            source.Ownerships);
         var factory = new ProbeRuntimeFactory();
 
-        var result = factory.Create(document);
+        var result = factory.Create(circuit);
 
         Assert.Null(result.Instance);
         Assert.Equal(0, factory.ActivationCount);
         var diagnostic = Assert.Single(result.Diagnostics);
-        Assert.Equal(DiagnosticCodes.UnsupportedSchema, diagnostic.Code);
-        Assert.Equal("$.schema", diagnostic.DocumentPath);
+        Assert.Equal(DiagnosticCodes.InvalidCircuitId, diagnostic.Code);
+        Assert.Equal("$.circuitId", diagnostic.Path);
         Assert.Equal(DiagnosticSeverity.Error, diagnostic.Severity);
     }
 
     [Fact]
     public void TwoInstancesDivergeIndependently()
     {
-        var document = TestDocuments.ValidDocument();
+        var circuit = TestCircuits.ValidCircuit();
         var factory = new CircuitRuntimeFactory();
 
-        var firstResult = factory.Create(document);
-        var secondResult = factory.Create(document);
+        var firstResult = factory.Create(circuit);
+        var secondResult = factory.Create(circuit);
 
         var first = Assert.IsType<CircuitRuntimeInstance>(firstResult.Instance);
         var second = Assert.IsType<CircuitRuntimeInstance>(secondResult.Instance);
@@ -41,7 +46,7 @@ public sealed class RuntimeFactoryTests
         Assert.NotSame(firstComponent, secondComponent);
         Assert.Equal("9", firstComponent.Parameters["delay"]);
         Assert.Equal("1", secondComponent.Parameters["delay"]);
-        Assert.Equal("1", Assert.Single(document.Components).Parameters["delay"]);
+        Assert.Equal("1", Assert.Single(circuit.Components).Parameters["delay"]);
         Assert.Empty(firstResult.Diagnostics);
         Assert.Empty(secondResult.Diagnostics);
     }
@@ -50,10 +55,10 @@ public sealed class RuntimeFactoryTests
     {
         public int ActivationCount { get; private set; }
 
-        protected override CircuitRuntimeInstance CreateInstance(CircuitDocument document)
+        protected override CircuitRuntimeInstance CreateInstance(Circuit circuit)
         {
             ActivationCount++;
-            return base.CreateInstance(document);
+            return base.CreateInstance(circuit);
         }
     }
 }
