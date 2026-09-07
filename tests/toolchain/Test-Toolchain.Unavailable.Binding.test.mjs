@@ -20,3 +20,20 @@ test("declared toolchain is unavailable", () => {
   assert.equal(result.error, undefined, output);
   assert.equal(result.status, 0, output);
 });
+
+test("unavailable toolchain checks return zero through a PowerShell wrapper", () => {
+  const escapedTestPath = powershellTest.replaceAll("'", "''");
+  const wrapper = [
+    `pwsh -NoProfile -File '${escapedTestPath}'`,
+    "if ((Test-Path -LiteralPath variable:\\LASTEXITCODE)) { exit $LASTEXITCODE }",
+  ].join("; ");
+  const result = spawnSync(
+    "pwsh",
+    ["-NoProfile", "-Command", wrapper],
+    { cwd: repositoryRoot, encoding: "utf8" },
+  );
+
+  const output = [result.stdout, result.stderr].filter(Boolean).join("\n");
+  assert.equal(result.error, undefined, output);
+  assert.equal(result.status, 0, output);
+});

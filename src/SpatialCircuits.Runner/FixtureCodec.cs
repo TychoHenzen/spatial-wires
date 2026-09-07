@@ -20,7 +20,7 @@ public static class FixtureCodec
         {
             return Failure(
                 FixtureDiagnosticCodes.StructureInvalid,
-                exception.DocumentPath,
+                exception.Path,
                 "Fixture field is missing or has the wrong JSON type.");
         }
     }
@@ -116,8 +116,8 @@ public static class FixtureCodec
     private static FixtureReadResult Failure(string code, string path, string message) =>
         new(null, [new FixtureDiagnostic(code, path, message)]);
 
-    private sealed class FixtureStructureException(string documentPath) : Exception
+    private sealed class FixtureStructureException(string path) : Exception
     {
-        internal string DocumentPath { get; } = documentPath;
+        internal string Path { get; } = path;
     }
 }

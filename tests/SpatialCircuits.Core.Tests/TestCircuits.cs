@@ -2,7 +2,7 @@ using SpatialCircuits.Core;
 
 namespace SpatialCircuits.Core.Tests;
 
-internal static class TestDocuments
+internal static class TestCircuits
 {
     internal static CircuitDefinition AndDefinition() => CircuitDefinition.Create(
         new DefinitionId("def-and"),
@@ -13,8 +13,7 @@ internal static class TestDocuments
         ],
         [new ParameterDefinition("delay", "1")]);
 
-    internal static CircuitDocument ValidDocument(
-        SchemaVersion? schema = null,
+    internal static Circuit ValidCircuit(
         IEnumerable<KeyValuePair<string, string>>? parameters = null)
     {
         var component = ComponentDefinition.Create(
@@ -23,11 +22,10 @@ internal static class TestDocuments
             new GridCoordinate(8, 5),
             parameters ?? [new KeyValuePair<string, string>("delay", "1")]);
 
-        return CircuitDocument.Create(
-            new DocumentId("doc-1"),
+        return Circuit.Create(
+            new CircuitId("circuit-1"),
             [AndDefinition()],
             [component],
-            [new Ownership(new OwnerId("panel-main"), component.Id)],
-            schema);
+            [new Ownership(new OwnerId("panel-main"), component.Id)]);
     }
 }

@@ -2,11 +2,6 @@ using System.Collections.Immutable;
 
 namespace SpatialCircuits.Core;
 
-public readonly record struct SchemaVersion(int Major, int Minor)
-{
-    public static SchemaVersion Current => new(1, 0);
-}
-
 public readonly record struct GridCoordinate(int X, int Y);
 
 public sealed record PortDefinition(PortId Id, GridCoordinate Location);
@@ -89,25 +84,21 @@ public sealed class ComponentDefinition
 
 public sealed record Ownership(OwnerId OwnerId, ComponentId ComponentId);
 
-public sealed class CircuitDocument
+public sealed class Circuit
 {
-    private CircuitDocument(
-        SchemaVersion schema,
-        DocumentId documentId,
+    private Circuit(
+        CircuitId id,
         ImmutableArray<CircuitDefinition> definitions,
         ImmutableArray<ComponentDefinition> components,
         ImmutableArray<Ownership> ownerships)
     {
-        Schema = schema;
-        DocumentId = documentId;
+        Id = id;
         Definitions = definitions;
         Components = components;
         Ownerships = ownerships;
     }
 
-    public SchemaVersion Schema { get; }
-
-    public DocumentId DocumentId { get; }
+    public CircuitId Id { get; }
 
     public ImmutableArray<CircuitDefinition> Definitions { get; }
 
@@ -115,18 +106,16 @@ public sealed class CircuitDocument
 
     public ImmutableArray<Ownership> Ownerships { get; }
 
-    public static CircuitDocument Create(
-        DocumentId documentId,
+    public static Circuit Create(
+        CircuitId id,
         IEnumerable<CircuitDefinition> definitions,
         IEnumerable<ComponentDefinition>? components = null,
-        IEnumerable<Ownership>? ownerships = null,
-        SchemaVersion? schema = null)
+        IEnumerable<Ownership>? ownerships = null)
     {
         ArgumentNullException.ThrowIfNull(definitions);
 
-        return new CircuitDocument(
-            schema ?? SchemaVersion.Current,
-            documentId,
+        return new Circuit(
+            id,
             definitions.OrderBy(definition => definition.Id.Value, StringComparer.Ordinal).ToImmutableArray(),
             (components ?? []).OrderBy(component => component.Id.Value, StringComparer.Ordinal).ToImmutableArray(),
             (ownerships ?? [])

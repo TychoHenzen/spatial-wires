@@ -6,7 +6,7 @@ Date: 2026-08-31
 
 Status: Planning only. No target repository was provided.
 
-Initial platform: Windows desktop development with Godot 4.7.2 .NET. Linux and macOS remain intended later targets, but they are not claimed until their build and smoke checks exist.
+Initial platform: Windows desktop development with Godot 4.7.1 .NET. Linux and macOS remain intended later targets, but they are not claimed until their build and smoke checks exist.
 
 ## 1. Intended result
 
@@ -331,7 +331,7 @@ Every stage leaves a runnable system. Pre-UI stages use the core scenario runner
 
 **Depends on:** Nothing.
 
-**Work:** Create the pure .NET projects, `res://addons/spatial_circuits`, `plugin.cfg`, a `[Tool]` C# editor plugin, one custom Node, one custom Resource, and a blank consumer project. Pin Godot 4.7.2 and the .NET SDK used by the project.
+**Work:** Create the pure .NET projects, `res://addons/spatial_circuits`, `plugin.cfg`, a `[Tool]` C# editor plugin, one custom Node, one custom Resource, and a blank consumer project. Pin Godot 4.7.1 and the .NET SDK used by the project.
 
 **Verification:**
 
@@ -616,7 +616,7 @@ Do not freeze scheduler or serialized contracts merely to enable parallel work. 
 
 ## 18. Verified Godot constraints
 
-- Godot 4.7.2 is the current stable maintenance release at the plan date.
+- Godot 4.7.1 is the pinned maintenance release for this repository.
 - C# requires the .NET-enabled Godot editor.
 - Godot 4 C# projects currently cannot export to the web platform.
 - C# Godot signals use `[Signal]` delegates and generated C# events.
@@ -628,7 +628,7 @@ Do not freeze scheduler or serialized contracts merely to enable parallel work. 
 
 Official references:
 
-- [Godot 4.7.2 maintenance release](https://godotengine.org/article/maintenance-release-godot-4-7-2/)
+- [Godot 4.7.1 maintenance release](https://godotengine.org/article/maintenance-release-godot-4-7-1/)
 - [Godot 4.7 C#/.NET](https://docs.godotengine.org/en/4.7/tutorials/scripting/c_sharp/index.html)
 - [Godot 4.7 Signal](https://docs.godotengine.org/en/4.7/classes/class_signal.html)
 - [Godot 4.7 C# exported properties](https://docs.godotengine.org/en/4.7/tutorials/scripting/c_sharp/c_sharp_exports.html)

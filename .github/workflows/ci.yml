@@ -44,9 +44,29 @@ jobs:
         run: >-
           node --test --test-concurrency=1
           tests/SpatialCircuits.Core.Tests/dependency-boundary.test.mjs
-          tests/SpatialCircuits.Core.Tests/domain-documents.binding.test.mjs
+          tests/SpatialCircuits.Core.Tests/circuit-core.binding.test.mjs
           tests/SpatialCircuits.Core.Tests/PureProjectBuild.Binding.test.mjs
           tests/SpatialCircuits.Runner.Tests/runner-process.binding.test.mjs
+
+  repository-safety:
+    name: repository-safety
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1f # v7
+
+      - name: Run unavailable-toolchain checks
+        shell: pwsh
+        run: pwsh -NoProfile -File ./tests/toolchain/Test-Toolchain.Unavailable.Tests.ps1
+
+      - name: Run bounded-process checks
+        shell: pwsh
+        run: ./tests/process/Test-SpatialWires.Process.ps1
+
+      - name: Run addon-staging checks
+        shell: pwsh
+        run: ./tests/staging/Test-Stage-SpatialCircuitsAddon.ps1
 
   dependency-audit:
     name: dependency-audit
