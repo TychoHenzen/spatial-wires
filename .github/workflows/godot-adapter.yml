@@ -38,8 +38,16 @@ jobs:
 
           New-Item -ItemType Directory -Path $godotDirectory -Force | Out-Null
           Invoke-WebRequest -Uri $archiveUrl -OutFile $archivePath
-          $sums = (Invoke-WebRequest -Uri $sumsUrl).Content -split "`r?`n"
-          $expected = ($sums | Where-Object { $_ -match [regex]::Escape($env:GODOT_ASSET) + '$' } | Select-Object -First 1) -split '\s+' | Select-Object -First 1
+          $sumsResponse = Invoke-WebRequest -Uri $sumsUrl
+          $sumsContent = if ($sumsResponse.Content -is [byte[]]) {
+            [System.Text.Encoding]::UTF8.GetString($sumsResponse.Content)
+          } else {
+            [string]$sumsResponse.Content
+          }
+          $matchingLine = $sumsContent -split "`r?`n" |
+            Where-Object { $_.TrimEnd() -match [regex]::Escape($env:GODOT_ASSET) + '\s*$' } |
+            Select-Object -First 1
+          $expected = ($matchingLine.Trim() -split '\s+' | Select-Object -First 1)
           $actual = (Get-FileHash -LiteralPath $archivePath -Algorithm SHA512).Hash.ToLowerInvariant()
           if ([string]::IsNullOrWhiteSpace($expected) -or $actual -ne $expected.ToLowerInvariant()) {
             throw "Godot archive checksum mismatch."
