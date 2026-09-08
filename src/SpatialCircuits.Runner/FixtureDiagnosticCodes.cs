@@ -13,6 +13,8 @@ public static class FixtureDiagnosticCodes
     public const string CaseIdDuplicate = "FIXTURE_CASE_ID_DUPLICATE";
     public const string DriveInvalid = "FIXTURE_DRIVE_INVALID";
     public const string ExpectedInvalid = "FIXTURE_EXPECTED_INVALID";
+    public const string ScheduledDriveRequired = "FIXTURE_SCHEDULED_DRIVE_REQUIRED";
+    public const string ScheduledDriveInvalid = "FIXTURE_SCHEDULED_DRIVE_INVALID";
     public const string PathRequired = "FIXTURE_PATH_REQUIRED";
     public const string FileNotFound = "FIXTURE_FILE_NOT_FOUND";
     public const string FileUnreadable = "FIXTURE_FILE_UNREADABLE";

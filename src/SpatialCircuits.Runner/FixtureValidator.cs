@@ -25,18 +25,69 @@ public static partial class FixtureValidator
             Add(diagnostics, FixtureDiagnosticCodes.IdInvalid, "$.fixtureId", "Fixture identifier is not stable data.");
         }
 
-        if (fixture.Action != FixtureAction.ResolveDrives)
+        if (fixture.Action is not (FixtureAction.ResolveDrives or FixtureAction.ScheduledDrive))
         {
             Add(diagnostics, FixtureDiagnosticCodes.ActionUnsupported, "$.action", "Fixture action is not supported.");
         }
 
-        if (fixture.Cases.Length == 0)
+        if (fixture.Action == FixtureAction.ScheduledDrive)
+        {
+            ValidateScheduledDrive(fixture.ScheduledDrive, diagnostics);
+        }
+        else if (fixture.Cases.Length == 0)
         {
             Add(diagnostics, FixtureDiagnosticCodes.CasesRequired, "$.cases", "Fixture must contain at least one case.");
         }
-
-        ValidateCases(fixture, diagnostics);
+        else
+        {
+            ValidateCases(fixture, diagnostics);
+        }
         return diagnostics.AsReadOnly();
+    }
+
+    private static void ValidateScheduledDrive(
+        ScheduledDrivePlan? plan,
+        ICollection<FixtureDiagnostic> diagnostics)
+    {
+        if (plan is null)
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.ScheduledDriveRequired,
+                "$.scheduledDrive",
+                "Scheduled-drive fixtures require a scheduledDrive object.");
+            return;
+        }
+
+        if (plan.Microticks < 1 || plan.SnapshotAfter < 1 || plan.SnapshotAfter >= plan.Microticks)
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.ScheduledDriveInvalid,
+                "$.scheduledDrive.microticks",
+                "Microticks must be positive and snapshotAfter must be inside the run.");
+        }
+
+        if (plan.ReleaseAt < plan.SnapshotAfter || plan.ReleaseAt >= plan.Microticks)
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.ScheduledDriveInvalid,
+                "$.scheduledDrive.releaseAt",
+                "releaseAt must occur after the snapshot and before the run ends.");
+        }
+
+        if (!StableIdPattern().IsMatch(plan.SourceId) || !StableIdPattern().IsMatch(plan.TargetId) ||
+            string.Equals(plan.SourceId, plan.TargetId, StringComparison.Ordinal) ||
+            string.IsNullOrWhiteSpace(plan.SourcePort) || string.IsNullOrWhiteSpace(plan.TargetPort) ||
+            !FixtureLogicValue.TryParse(plan.Drive, out _))
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.ScheduledDriveInvalid,
+                "$.scheduledDrive",
+                "Scheduled-drive identifiers, ports, and drive value are invalid.");
+        }
     }
 
     private static void ValidateCases(RunnerFixture fixture, ICollection<FixtureDiagnostic> diagnostics)

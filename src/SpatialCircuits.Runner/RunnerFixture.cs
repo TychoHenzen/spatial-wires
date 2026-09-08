@@ -9,7 +9,8 @@ public sealed class RunnerFixture
         TraceVersion traceSchema,
         string fixtureId,
         FixtureAction action,
-        IEnumerable<ResolutionCase> cases)
+        IEnumerable<ResolutionCase> cases,
+        ScheduledDrivePlan? scheduledDrive = null)
     {
         ArgumentNullException.ThrowIfNull(cases);
 
@@ -18,6 +19,7 @@ public sealed class RunnerFixture
         FixtureId = fixtureId ?? string.Empty;
         Action = action;
         Cases = cases.ToImmutableArray();
+        ScheduledDrive = scheduledDrive;
     }
 
     public FixtureVersion FixtureSchema { get; }
@@ -29,4 +31,16 @@ public sealed class RunnerFixture
     public FixtureAction Action { get; }
 
     public ImmutableArray<ResolutionCase> Cases { get; }
+
+    public ScheduledDrivePlan? ScheduledDrive { get; }
 }
+
+public sealed record ScheduledDrivePlan(
+    int Microticks,
+    int SnapshotAfter,
+    int ReleaseAt,
+    string SourceId,
+    string SourcePort,
+    string TargetId,
+    string TargetPort,
+    string Drive);

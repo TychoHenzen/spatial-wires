@@ -32,6 +32,17 @@ public static class RunnerApplication
             return Fail(output, diagnostics);
         }
 
+        if (fixture.Action == FixtureAction.ScheduledDrive)
+        {
+            var scheduledDriveRecords = ScheduledDriveFixtureExecutor.Execute(fixture);
+            foreach (var record in scheduledDriveRecords)
+            {
+                TraceOutput.WriteScheduledDriveTrace(output, record);
+            }
+
+            return scheduledDriveRecords.All(record => record.Passed) ? Success : FailedExpectation;
+        }
+
         var records = FixtureExecutor.Execute(fixture);
         foreach (var record in records)
         {

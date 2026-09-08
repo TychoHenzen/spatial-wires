@@ -7,6 +7,37 @@ namespace SpatialCircuits.Runner.Tests;
 public sealed class FixtureCodecTests
 {
     [Fact]
+    public void ScheduledDrivePracticeParsesWithoutResolutionCases()
+    {
+        const string json = """
+            {
+              "fixtureSchema":{"major":1,"minor":0},
+              "traceSchema":{"major":1,"minor":0},
+              "fixtureId":"stage-03-scheduled-drive",
+              "action":"scheduledDrive",
+              "scheduledDrive":{
+                "microticks":10,
+                "snapshotAfter":5,
+                "releaseAt":6,
+                "sourceId":"scheduled-source",
+                "sourcePort":"out",
+                "targetId":"scheduled-target",
+                "targetPort":"input",
+                "drive":"High"
+              }
+            }
+            """;
+
+        var result = FixtureCodec.Read(Encoding.UTF8.GetBytes(json));
+
+        Assert.NotNull(result.Fixture);
+        Assert.Empty(result.Diagnostics);
+        Assert.Equal(FixtureAction.ScheduledDrive, result.Fixture!.Action);
+        Assert.Empty(result.Fixture.Cases);
+        Assert.Equal(10, result.Fixture.ScheduledDrive!.Microticks);
+    }
+
+    [Fact]
     public void SupportedFixtureParsesWithoutDiagnostics()
     {
         const string json = """
