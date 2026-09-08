@@ -47,6 +47,10 @@ public sealed class RuntimeFactoryTests
         Assert.Equal("9", firstComponent.Parameters["delay"]);
         Assert.Equal("1", secondComponent.Parameters["delay"]);
         Assert.Equal("1", Assert.Single(circuit.Components).Parameters["delay"]);
+        Assert.NotSame(first.Scheduler, second.Scheduler);
+        Assert.Equal(
+            1,
+            first.Scheduler.GetTarget("component-a").Incarnation);
         Assert.Empty(firstResult.Diagnostics);
         Assert.Empty(secondResult.Diagnostics);
     }

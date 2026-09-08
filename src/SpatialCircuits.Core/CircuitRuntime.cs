@@ -12,13 +12,22 @@ public sealed class CircuitRuntimeInstance
 
     internal CircuitRuntimeInstance(IEnumerable<ComponentDefinition> components)
     {
-        var stateByComponent = components.ToDictionary(
+        ArgumentNullException.ThrowIfNull(components);
+        var componentDefinitions = components.ToArray();
+        var stateByComponent = componentDefinitions.ToDictionary(
             component => component.Id,
             component => new ComponentRuntimeState(component.Parameters));
         _components = new ReadOnlyDictionary<ComponentId, ComponentRuntimeState>(stateByComponent);
+        Scheduler = new DeterministicScheduler();
+        foreach (var component in componentDefinitions.OrderBy(component => component.Id.Value, StringComparer.Ordinal))
+        {
+            Scheduler.RegisterTarget(component.Id.Value);
+        }
     }
 
     public IReadOnlyDictionary<ComponentId, ComponentRuntimeState> Components => _components;
+
+    public DeterministicScheduler Scheduler { get; }
 
     public ComponentRuntimeState GetComponent(ComponentId componentId) => _components[componentId];
 }

@@ -32,12 +32,55 @@ public static class FixtureCodec
         var traceSchema = ReadTraceVersion(RequireProperty(root, "traceSchema", "$.traceSchema"));
         var fixtureId = ReadString(RequireProperty(root, "fixtureId", "$.fixtureId"), "$.fixtureId");
         var actionText = ReadString(RequireProperty(root, "action", "$.action"), "$.action");
+        if (actionText == "scheduledDrive")
+        {
+            var scheduledDrive = ReadScheduledDrive(
+                RequireProperty(root, "scheduledDrive", "$.scheduledDrive"));
+            return new RunnerFixture(
+                fixtureSchema,
+                traceSchema,
+                fixtureId,
+                FixtureAction.ScheduledDrive,
+                [],
+                scheduledDrive);
+        }
+
         var casesElement = RequireProperty(root, "cases", "$.cases");
         RequireKind(casesElement, JsonValueKind.Array, "$.cases");
 
         var cases = casesElement.EnumerateArray().Select(ReadCase).ToArray();
         var action = actionText == "resolveDrives" ? FixtureAction.ResolveDrives : FixtureAction.Unsupported;
         return new RunnerFixture(fixtureSchema, traceSchema, fixtureId, action, cases);
+    }
+
+    private static ScheduledDrivePlan ReadScheduledDrive(JsonElement element)
+    {
+        RequireKind(element, JsonValueKind.Object, "$.scheduledDrive");
+        return new ScheduledDrivePlan(
+            ReadInt32(
+                RequireProperty(element, "microticks", "$.scheduledDrive.microticks"),
+                "$.scheduledDrive.microticks"),
+            ReadInt32(
+                RequireProperty(element, "snapshotAfter", "$.scheduledDrive.snapshotAfter"),
+                "$.scheduledDrive.snapshotAfter"),
+            ReadInt32(
+                RequireProperty(element, "releaseAt", "$.scheduledDrive.releaseAt"),
+                "$.scheduledDrive.releaseAt"),
+            ReadString(
+                RequireProperty(element, "sourceId", "$.scheduledDrive.sourceId"),
+                "$.scheduledDrive.sourceId"),
+            ReadString(
+                RequireProperty(element, "sourcePort", "$.scheduledDrive.sourcePort"),
+                "$.scheduledDrive.sourcePort"),
+            ReadString(
+                RequireProperty(element, "targetId", "$.scheduledDrive.targetId"),
+                "$.scheduledDrive.targetId"),
+            ReadString(
+                RequireProperty(element, "targetPort", "$.scheduledDrive.targetPort"),
+                "$.scheduledDrive.targetPort"),
+            ReadString(
+                RequireProperty(element, "drive", "$.scheduledDrive.drive"),
+                "$.scheduledDrive.drive"));
     }
 
     private static ResolutionCase ReadCase(JsonElement element, int index)

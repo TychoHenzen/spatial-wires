@@ -91,6 +91,44 @@ test("public drive-resolution fixture prints the exact ordered trace", () => {
   ]);
 });
 
+test("public scheduled-drive practice restores and replays identical hashes", () => {
+  const fixture = path.join(
+    repositoryRoot,
+    "examples",
+    "stage-03",
+    "scheduled-drive.fixture.json",
+  );
+  const result = runFixture(fixture);
+  const output = [result.stdout, result.stderr].filter(Boolean).join("\n");
+
+  assert.equal(result.status, 0, output);
+  assert.equal(result.stderr, "");
+  const records = parseJsonLines(result.stdout);
+  assert.equal(records.length, 10);
+  assert.deepEqual(
+    records.map((record) => record.originalHash),
+    records.map((record) => record.replayedHash),
+  );
+  assert.ok(records.slice(0, 5).every((record) => record.restoredHash === null));
+  assert.ok(
+    records.slice(5).every((record) => record.originalHash === record.restoredHash),
+  );
+  assert.ok(records.slice(5).every((record) => record.observed === record.restoredObserved));
+  assert.ok(
+    records.slice(5).every(
+      (record) => record.deliveredEvents === record.restoredDeliveredEvents,
+    ),
+  );
+  assert.ok(
+    records.slice(5).every(
+      (record) => record.diagnostics === record.restoredDiagnostics,
+    ),
+  );
+  assert.ok(records.every((record) => record.passed));
+  assert.equal(records[0].observed, "High");
+  assert.equal(records[6].observed, "HighImpedance");
+});
+
 test("a failed expectation prints its observation and returns a nonzero code", () => {
   const fixture = path.join(
     testDirectory,
