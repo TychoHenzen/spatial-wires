@@ -39,4 +39,29 @@ public sealed class ScheduledDriveFixtureTests
         Assert.All(records.Skip(5), record =>
             Assert.Equal(record.Diagnostics, record.RestoredDiagnostics));
     }
+
+    [Fact]
+    public void ScheduledDriveMicroticksHaveAResourceBound()
+    {
+        var fixture = new RunnerFixture(
+            FixtureVersion.Current,
+            TraceVersion.Current,
+            "bounded-scheduled-drive",
+            FixtureAction.ScheduledDrive,
+            [],
+            new ScheduledDrivePlan(
+                FixtureValidator.MaxScheduledDriveMicroticks + 1,
+                1,
+                1,
+                "source",
+                "out",
+                "target",
+                "input",
+                "High"));
+
+        var diagnostic = Assert.Single(FixtureValidator.Validate(fixture));
+
+        Assert.Equal(FixtureDiagnosticCodes.ScheduledDriveInvalid, diagnostic.Code);
+        Assert.Throws<ArgumentOutOfRangeException>(() => ScheduledDriveFixtureExecutor.Execute(fixture));
+    }
 }

@@ -5,6 +5,9 @@ namespace SpatialCircuits.Runner;
 
 public static partial class FixtureValidator
 {
+    /// <summary>Maximum number of scheduled-drive microticks accepted by the runner.</summary>
+    public const int MaxScheduledDriveMicroticks = 100_000;
+
     public static IReadOnlyList<FixtureDiagnostic> Validate(RunnerFixture fixture)
     {
         ArgumentNullException.ThrowIfNull(fixture);
@@ -59,13 +62,14 @@ public static partial class FixtureValidator
             return;
         }
 
-        if (plan.Microticks < 1 || plan.SnapshotAfter < 1 || plan.SnapshotAfter >= plan.Microticks)
+        if (plan.Microticks < 1 || plan.Microticks > MaxScheduledDriveMicroticks ||
+            plan.SnapshotAfter < 1 || plan.SnapshotAfter >= plan.Microticks)
         {
             Add(
                 diagnostics,
                 FixtureDiagnosticCodes.ScheduledDriveInvalid,
                 "$.scheduledDrive.microticks",
-                "Microticks must be positive and snapshotAfter must be inside the run.");
+                $"Microticks must be between 1 and {MaxScheduledDriveMicroticks}, and snapshotAfter must be inside the run.");
         }
 
         if (plan.ReleaseAt < plan.SnapshotAfter || plan.ReleaseAt >= plan.Microticks)

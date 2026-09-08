@@ -9,6 +9,14 @@ public static class ScheduledDriveFixtureExecutor
         ArgumentNullException.ThrowIfNull(fixture);
         var plan = fixture.ScheduledDrive
             ?? throw new ArgumentException("Fixture does not contain a scheduled-drive plan.", nameof(fixture));
+        if (plan.Microticks is < 1 or > FixtureValidator.MaxScheduledDriveMicroticks)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(plan.Microticks),
+                plan.Microticks,
+                $"Scheduled-drive microticks must be between 1 and {FixtureValidator.MaxScheduledDriveMicroticks}.");
+        }
+
         var commands = BuildCommands(plan);
 
         var original = DeterministicScheduler.Replay(commands);

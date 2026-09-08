@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Text.Json;
 
 namespace SpatialCircuits.Core;
 
@@ -107,8 +108,8 @@ public readonly record struct ScheduledEventKey(
         return CausalOrdinal.CompareTo(other.CausalOrdinal);
     }
 
-    public override string ToString() => string.Join(
-        "|",
+    public override string ToString() => JsonSerializer.Serialize(new object?[]
+    {
         DueTick,
         (byte)Phase,
         TargetStableId,
@@ -117,7 +118,8 @@ public readonly record struct ScheduledEventKey(
         SourceStableId,
         SourcePort,
         EventKind,
-        CausalOrdinal);
+        CausalOrdinal
+    });
 }
 
 public sealed record ScheduledEvent(

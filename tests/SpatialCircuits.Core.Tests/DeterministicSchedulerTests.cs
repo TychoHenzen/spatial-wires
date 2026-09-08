@@ -19,6 +19,28 @@ public sealed class DeterministicSchedulerTests
     }
 
     [Fact]
+    public void ScheduledEventKeySerializationDoesNotCollideOnDelimitedStrings()
+    {
+        var first = new ScheduledEventKey(
+            0,
+            SchedulerPhase.Deliver,
+            "sink",
+            1,
+            "port|a",
+            "source",
+            "out",
+            "drive",
+            1);
+        var second = first with
+        {
+            TargetPortOrLane = "port",
+            SourceStableId = "a|source"
+        };
+
+        Assert.NotEqual(first.ToString(), second.ToString());
+    }
+
+    [Fact]
     public void ShuffledInsertionProducesTheSameTraceAndHash()
     {
         var events = new[]
@@ -50,6 +72,28 @@ public sealed class DeterministicSchedulerTests
         var result = scheduler.Step();
 
         Assert.Equal(["port-a", "port-b"], result.DeliveredEvents.Select(item => item.TargetPortOrLane));
+    }
+
+    [Fact]
+    public void TraceHashSeparatesDelimitedEventMetadata()
+    {
+        var first = new DeterministicScheduler();
+        first.RegisterTarget("sink");
+        first.SeedEvent(new ScheduledEvent(
+            Key("input", "source", 1),
+            LogicValue.High,
+            "payload|root",
+            "id"));
+
+        var second = new DeterministicScheduler();
+        second.RegisterTarget("sink");
+        second.SeedEvent(new ScheduledEvent(
+            Key("input", "source", 1),
+            LogicValue.High,
+            "payload",
+            "root|id"));
+
+        Assert.NotEqual(first.Step().Hash, second.Step().Hash);
     }
 
     [Fact]
@@ -103,6 +147,35 @@ public sealed class DeterministicSchedulerTests
     }
 
     [Fact]
+    public void InvalidAcceptedCommandsAreRejectedBeforeTheyCanPoisonRollback()
+    {
+        var scheduler = new DeterministicScheduler();
+        var invalidIdentifier = Assert.Throws<SchedulerException>(() =>
+            scheduler.Accept(SchedulerCommand.RegisterTarget("")));
+        var invalidKind = Assert.Throws<SchedulerException>(() =>
+            scheduler.Accept(new SchedulerCommand((SchedulerCommandKind)255, 0)));
+        var invalidDueTick = Assert.Throws<SchedulerException>(() =>
+            scheduler.Accept(SchedulerCommand.ScheduleEvent(
+                new ScheduledEvent(Key("input", "source", 1), LogicValue.High),
+                applyAtTick: 1)));
+        var invalidValue = Assert.Throws<SchedulerException>(() =>
+            scheduler.Accept(SchedulerCommand.SetPersistentDrive(
+                "source",
+                "out",
+                "sink",
+                0,
+                "input",
+                (LogicValue)255)));
+
+        Assert.Equal(SchedulerDiagnosticCodes.InvalidCommand, invalidIdentifier.Diagnostic.Code);
+        Assert.Equal(SchedulerDiagnosticCodes.InvalidCommand, invalidKind.Diagnostic.Code);
+        Assert.Equal(SchedulerDiagnosticCodes.InvalidCommand, invalidDueTick.Diagnostic.Code);
+        Assert.Equal(SchedulerDiagnosticCodes.InvalidCommand, invalidValue.Diagnostic.Code);
+        Assert.Empty(scheduler.AcceptedCommands);
+        Assert.Equal(1, scheduler.NextAcceptedOrdinal);
+    }
+
+    [Fact]
     public void SameTargetCommandsFollowAcceptanceOrder()
     {
         var scheduler = new DeterministicScheduler();
@@ -153,6 +226,22 @@ public sealed class DeterministicSchedulerTests
 
         Assert.Equal(firstResult.Hash, secondResult.Hash);
         Assert.Equal(first.PendingEvents, second.PendingEvents);
+    }
+
+    [Fact]
+    public void ProposalReductionOrdersDistinctSourceIncarnations()
+    {
+        var first = CreateSourceIncarnationProposalScheduler(reverse: false);
+        var second = CreateSourceIncarnationProposalScheduler(reverse: true);
+
+        var firstResult = first.Step();
+        var secondResult = second.Step();
+
+        Assert.Equal(firstResult.Hash, secondResult.Hash);
+        Assert.Equal(
+            first.PendingEvents.Select(item => item.SourceIncarnation),
+            second.PendingEvents.Select(item => item.SourceIncarnation));
+        Assert.Equal([1L, 2L], first.PendingEvents.Select(item => item.SourceIncarnation));
     }
 
     [Fact]
@@ -339,6 +428,36 @@ public sealed class DeterministicSchedulerTests
     }
 
     [Fact]
+    public void StaleSourceEventIsIgnoredAfterSourceReplacement()
+    {
+        var scheduler = new DeterministicScheduler();
+        var source = scheduler.RegisterTarget("source");
+        var sink = scheduler.RegisterTarget("sink");
+        scheduler.SeedEvent(new ScheduledEvent(
+            new ScheduledEventKey(
+                1,
+                SchedulerPhase.Deliver,
+                sink.StableId,
+                sink.Incarnation,
+                "input",
+                source.StableId,
+                "out",
+                "drive",
+                1),
+            LogicValue.High,
+            SourceIncarnation: source.Incarnation));
+
+        scheduler.RemoveTarget(source.StableId);
+        scheduler.RegisterTarget(source.StableId);
+        scheduler.Step();
+        var result = scheduler.Step();
+
+        Assert.Empty(result.DeliveredEvents);
+        Assert.Contains(result.Diagnostics, diagnostic => diagnostic.Code == SchedulerDiagnosticCodes.StaleEvent);
+        Assert.Empty(scheduler.PersistentDrives);
+    }
+
+    [Fact]
     public void RemovingDrivingTargetCreatesAReleaseAndClearsItsDrives()
     {
         var scheduler = new DeterministicScheduler();
@@ -429,6 +548,46 @@ public sealed class DeterministicSchedulerTests
     }
 
     [Fact]
+    public void InvalidTemporalRootReplacementPreservesItsExistingEvent()
+    {
+        var scheduler = new DeterministicScheduler();
+        var target = scheduler.RegisterTarget("timer");
+        scheduler.AddTemporalRoot(new SchedulerTemporalRoot(
+            "timer-root",
+            new ScheduledEvent(new ScheduledEventKey(
+                2,
+                SchedulerPhase.Deliver,
+                target.StableId,
+                target.Incarnation,
+                "fire",
+                "timer",
+                "out",
+                "timer",
+                1))));
+
+        var exception = Assert.Throws<SchedulerException>(() =>
+            scheduler.AddTemporalRoot(new SchedulerTemporalRoot(
+                "timer-root",
+                new ScheduledEvent(new ScheduledEventKey(
+                    3,
+                    SchedulerPhase.Record,
+                    target.StableId,
+                    target.Incarnation,
+                    "fire",
+                    "timer",
+                    "out",
+                    "timer",
+                    2)))));
+
+        Assert.Equal(SchedulerDiagnosticCodes.InvalidPhase, exception.Diagnostic.Code);
+        Assert.Equal(2, scheduler.PendingEvents.Single().Key.DueTick);
+        scheduler.Step();
+        scheduler.Step();
+        var result = scheduler.Step();
+        Assert.Equal(2, result.DeliveredEvents.Single().Key.DueTick);
+    }
+
+    [Fact]
     public void RestoreReproducesTheRemainingHashSequence()
     {
         var scheduler = CreateTenTickScheduler();
@@ -443,6 +602,41 @@ public sealed class DeterministicSchedulerTests
         var restoredHashes = Enumerable.Range(0, 5).Select(_ => restored.Step().Hash).ToArray();
 
         Assert.Equal(originalHashes, restoredHashes);
+    }
+
+    [Fact]
+    public void InvalidSnapshotDoesNotPartiallyReplaceSchedulerState()
+    {
+        var scheduler = new DeterministicScheduler();
+        var target = scheduler.RegisterTarget("keep");
+        var snapshot = scheduler.CaptureSnapshot();
+        var malformed = snapshot with
+        {
+            Targets = snapshot.Targets.Add(new SchedulerTargetSnapshot("keep", target.Incarnation + 1, true))
+        };
+
+        var exception = Assert.Throws<SchedulerException>(() => scheduler.RestoreSnapshot(malformed));
+
+        Assert.Equal(SchedulerDiagnosticCodes.InvalidCommand, exception.Diagnostic.Code);
+        Assert.Equal(target, scheduler.GetTarget("keep"));
+        Assert.Empty(scheduler.PendingEvents);
+        Assert.Empty(scheduler.AcceptedCommands);
+    }
+
+    [Fact]
+    public void AcceptedScheduledEventPreservesItsTemporalRootId()
+    {
+        var scheduler = new DeterministicScheduler();
+        scheduler.RegisterTarget("sink");
+        scheduler.Accept(SchedulerCommand.ScheduleEvent(
+            new ScheduledEvent(
+                Key("input", "source", 1),
+                LogicValue.High,
+                TemporalRootId: "timer-root")));
+
+        var result = scheduler.Step();
+
+        Assert.Equal("timer-root", result.DeliveredEvents.Single().TemporalRootId);
     }
 
     [Fact]
@@ -491,6 +685,39 @@ public sealed class DeterministicSchedulerTests
             {
                 new SchedulerProposal(context.Tick + 1, "sink", 1, "a", "source-b", "out", "drive", LogicValue.High, 1),
                 new SchedulerProposal(context.Tick + 1, "sink", 1, "b", "source-a", "out", "drive", LogicValue.Low, 0)
+            };
+            return reverse ? proposals.Reverse() : proposals;
+        });
+        scheduler.RegisterTarget("sink");
+        return scheduler;
+    }
+
+    private static DeterministicScheduler CreateSourceIncarnationProposalScheduler(bool reverse)
+    {
+        var scheduler = new DeterministicScheduler(context =>
+        {
+            var proposals = new[]
+            {
+                new SchedulerProposal(
+                    context.Tick + 1,
+                    "sink",
+                    1,
+                    "input",
+                    "source",
+                    "out",
+                    "drive",
+                    LogicValue.High,
+                    SourceIncarnation: 1),
+                new SchedulerProposal(
+                    context.Tick + 1,
+                    "sink",
+                    1,
+                    "input",
+                    "source",
+                    "out",
+                    "drive",
+                    LogicValue.High,
+                    SourceIncarnation: 2)
             };
             return reverse ? proposals.Reverse() : proposals;
         });

@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 
 namespace SpatialCircuits.Core;
 
@@ -82,12 +83,7 @@ public sealed class DeterministicScheduler
     {
         ArgumentNullException.ThrowIfNull(command);
         EnsureCanMutateOutsideStep();
-        if (command.ApplyAtTick < CurrentTick)
-        {
-            throw InvalidCommand($"Command is scheduled for past tick {command.ApplyAtTick}.");
-        }
-
-        ValidateCommandPhase(command);
+        ValidateCommand(command);
 
         var accepted = new AcceptedSchedulerCommand(_nextAcceptedOrdinal++, command);
         _acceptedCommands.Add(accepted);
@@ -333,7 +329,7 @@ public sealed class DeterministicScheduler
             case SchedulerCommandKind.ScheduleEvent:
                 AddEventCore(CreateCommandEvent(
                     command,
-                    temporalRootId: "",
+                    command.RootId,
                     causalOrdinal: accepted.AcceptedOrdinal));
                 break;
             case SchedulerCommandKind.AddTemporalRoot:
@@ -382,6 +378,17 @@ public sealed class DeterministicScheduler
                     SchedulerDiagnosticCodes.StaleEvent,
                     $"Event for target '{scheduledEvent.TargetStableId}' incarnation " +
                     $"{scheduledEvent.TargetIncarnation} was ignored.",
+                    CurrentTick,
+                    CurrentPhase));
+                continue;
+            }
+
+            if (scheduledEvent.EventKind != "drive-release" && !IsCurrentSource(scheduledEvent))
+            {
+                diagnostics.Add(new SchedulerDiagnostic(
+                    SchedulerDiagnosticCodes.StaleEvent,
+                    $"Event from source '{scheduledEvent.SourceStableId}' incarnation " +
+                    $"{scheduledEvent.SourceIncarnation} was ignored.",
                     CurrentTick,
                     CurrentPhase));
                 continue;
@@ -466,6 +473,7 @@ public sealed class DeterministicScheduler
             .ThenBy(proposal => proposal.TargetPortOrLane, StringComparer.Ordinal)
             .ThenBy(proposal => proposal.SourceStableId, StringComparer.Ordinal)
             .ThenBy(proposal => proposal.SourcePort, StringComparer.Ordinal)
+            .ThenBy(proposal => proposal.SourceIncarnation)
             .ThenBy(proposal => proposal.OutputSlot)
             .ThenBy(proposal => proposal.EventKind, StringComparer.Ordinal)
             .ThenBy(proposal => proposal.Value)
@@ -650,11 +658,61 @@ public sealed class DeterministicScheduler
     private void AddTemporalRootCore(SchedulerTemporalRoot root)
     {
         ValidateStableId(root.RootId, nameof(root.RootId));
-        RemovePendingTemporalRootEvents(root.RootId);
-        var scheduledEvent = NormalizeEvent(root.Event with { TemporalRootId = root.RootId }, true);
-        _temporalRoots[root.RootId] = new SchedulerTemporalRoot(root.RootId, scheduledEvent);
-        _cancelledTemporalRoots.Remove(root.RootId);
-        AddEventCore(scheduledEvent);
+        var previousEvents = _pendingEvents
+            .Where(scheduledEvent => scheduledEvent.TemporalRootId == root.RootId)
+            .ToArray();
+        var hadPreviousRoot = _temporalRoots.TryGetValue(root.RootId, out var previousRoot);
+        var wasCancelled = _cancelledTemporalRoots.Contains(root.RootId);
+        var previousNextCausalOrdinal = _nextCausalOrdinal;
+        ScheduledEvent? scheduledEvent = null;
+        var added = false;
+
+        try
+        {
+            scheduledEvent = NormalizeEvent(root.Event with { TemporalRootId = root.RootId }, true);
+            RemovePendingTemporalRootEvents(root.RootId);
+            if (!_pendingEvents.Add(scheduledEvent))
+            {
+                throw InvalidCommand($"Scheduled event key '{scheduledEvent.Key}' is duplicated.");
+            }
+
+            added = true;
+            _temporalRoots[root.RootId] = new SchedulerTemporalRoot(root.RootId, scheduledEvent);
+            _cancelledTemporalRoots.Remove(root.RootId);
+        }
+        catch
+        {
+            if (added && scheduledEvent is not null)
+            {
+                _pendingEvents.Remove(scheduledEvent);
+            }
+
+            foreach (var previousEvent in previousEvents)
+            {
+                _pendingEvents.Add(previousEvent);
+            }
+
+            if (hadPreviousRoot && previousRoot is not null)
+            {
+                _temporalRoots[root.RootId] = previousRoot;
+            }
+            else
+            {
+                _temporalRoots.Remove(root.RootId);
+            }
+
+            if (wasCancelled)
+            {
+                _cancelledTemporalRoots.Add(root.RootId);
+            }
+            else
+            {
+                _cancelledTemporalRoots.Remove(root.RootId);
+            }
+
+            _nextCausalOrdinal = previousNextCausalOrdinal;
+            throw;
+        }
     }
 
     private void CancelTemporalRootCore(string rootId)
@@ -766,6 +824,21 @@ public sealed class DeterministicScheduler
         state.Active &&
         state.Incarnation == incarnation;
 
+    private bool IsCurrentSource(ScheduledEvent scheduledEvent)
+    {
+        if (string.IsNullOrEmpty(scheduledEvent.SourceStableId))
+        {
+            return scheduledEvent.SourceIncarnation == 0;
+        }
+
+        if (!_targets.TryGetValue(scheduledEvent.SourceStableId, out var source))
+        {
+            return scheduledEvent.SourceIncarnation == 0;
+        }
+
+        return source.Active && source.Incarnation == scheduledEvent.SourceIncarnation;
+    }
+
     private SchedulerSnapshot CaptureSnapshotCore() => new(
         CurrentTick,
         _nextAcceptedOrdinal,
@@ -797,55 +870,139 @@ public sealed class DeterministicScheduler
 
     private void RestoreSnapshotCore(SchedulerSnapshot snapshot)
     {
-        foreach (var scheduledEvent in snapshot.PendingEvents
-                     .Concat(snapshot.TemporalRoots.Select(root => root.Event)))
+        if (snapshot.CurrentTick < 0 || snapshot.NextAcceptedOrdinal <= 0 || snapshot.NextCausalOrdinal <= 0)
         {
-            if (scheduledEvent.Key.Phase != SchedulerPhase.Deliver)
+            throw InvalidCommand("Snapshot counters must contain non-negative ticks and positive ordinals.");
+        }
+
+        var pendingEvents = new SortedSet<ScheduledEvent>(ScheduledEventComparer.Instance);
+        foreach (var scheduledEvent in snapshot.PendingEvents)
+        {
+            ValidateSnapshotEvent(scheduledEvent, snapshot.CurrentTick);
+            if (!pendingEvents.Add(scheduledEvent))
             {
-                throw InvalidPhase(
-                    $"Snapshot contains unsupported event phase '{scheduledEvent.Key.Phase}'.");
+                throw InvalidCommand($"Snapshot contains duplicated event key '{scheduledEvent.Key}'.");
             }
         }
+
+        var temporalRoots = new Dictionary<string, SchedulerTemporalRoot>(StringComparer.Ordinal);
+        foreach (var root in snapshot.TemporalRoots)
+        {
+            ValidateSnapshotIdentifier(root.RootId, nameof(root.RootId));
+            ValidateSnapshotEvent(root.Event, snapshot.CurrentTick);
+            if (!string.Equals(root.RootId, root.Event.TemporalRootId, StringComparison.Ordinal))
+            {
+                throw InvalidCommand($"Snapshot temporal root '{root.RootId}' does not match its event.");
+            }
+
+            if (!pendingEvents.Contains(root.Event))
+            {
+                throw InvalidCommand($"Snapshot temporal root '{root.RootId}' has no pending event.");
+            }
+
+            if (!temporalRoots.TryAdd(root.RootId, root))
+            {
+                throw InvalidCommand($"Snapshot contains duplicated temporal root '{root.RootId}'.");
+            }
+        }
+
+        var acceptedCommands = new List<AcceptedSchedulerCommand>(snapshot.AcceptedCommands.Length);
+        var acceptedOrdinals = new HashSet<long>();
+        foreach (var accepted in snapshot.AcceptedCommands)
+        {
+            if (accepted is null || accepted.Command is null)
+            {
+                throw InvalidCommand("Snapshot contains a null accepted command.");
+            }
+
+            if (!acceptedOrdinals.Add(accepted.AcceptedOrdinal))
+            {
+                throw InvalidCommand($"Snapshot contains duplicated accepted command ordinal {accepted.AcceptedOrdinal}.");
+            }
+
+            ValidateCommandShape(accepted.Command);
+            acceptedCommands.Add(accepted);
+        }
+
+        var appliedCommandOrdinals = snapshot.AppliedCommandOrdinals.ToHashSet();
+        if (!appliedCommandOrdinals.IsSubsetOf(acceptedOrdinals))
+        {
+            throw InvalidCommand("Snapshot contains an applied command ordinal that was not accepted.");
+        }
+
+        var targets = new Dictionary<string, TargetState>(StringComparer.Ordinal);
+        foreach (var target in snapshot.Targets)
+        {
+            ValidateSnapshotIdentifier(target.StableId, nameof(target.StableId));
+            if (target.Incarnation <= 0)
+            {
+                throw InvalidCommand($"Snapshot target '{target.StableId}' has invalid incarnation {target.Incarnation}.");
+            }
+
+            if (!targets.TryAdd(target.StableId, new TargetState(target.Incarnation, target.Active)))
+            {
+                throw InvalidCommand($"Snapshot contains duplicated target '{target.StableId}'.");
+            }
+        }
+
+        var drives = new Dictionary<SchedulerDriveKey, LogicValue>();
+        foreach (var drive in snapshot.Drives)
+        {
+            if (drive.Key.SourceIncarnation < 0 || drive.Key.TargetIncarnation < 0 ||
+                !Enum.IsDefined(typeof(LogicValue), drive.Value))
+            {
+                throw InvalidCommand("Snapshot contains an invalid persistent drive.");
+            }
+
+            if (!drives.TryAdd(drive.Key, drive.Value))
+            {
+                throw InvalidCommand("Snapshot contains duplicated persistent drive state.");
+            }
+        }
+
+        var cancelledTemporalRoots = snapshot.CancelledTemporalRoots.ToHashSet(StringComparer.Ordinal);
+        foreach (var rootId in cancelledTemporalRoots)
+        {
+            ValidateSnapshotIdentifier(rootId, nameof(rootId));
+        }
+
+        var trace = snapshot.Trace.ToList();
+        var currentInputs = trace.Count == 0
+            ? ImmutableDictionary<SchedulerPortAddress, LogicValue>.Empty
+            : trace[^1].ResolvedInputs;
 
         CurrentTick = snapshot.CurrentTick;
         _nextAcceptedOrdinal = snapshot.NextAcceptedOrdinal;
         _nextCausalOrdinal = snapshot.NextCausalOrdinal;
         _pendingEvents.Clear();
-        foreach (var scheduledEvent in snapshot.PendingEvents)
-        {
-            _pendingEvents.Add(scheduledEvent);
-        }
-
+        _pendingEvents.UnionWith(pendingEvents);
         _acceptedCommands.Clear();
-        _acceptedCommands.AddRange(snapshot.AcceptedCommands);
+        _acceptedCommands.AddRange(acceptedCommands);
         _appliedCommandOrdinals.Clear();
-        _appliedCommandOrdinals.UnionWith(snapshot.AppliedCommandOrdinals);
-
+        _appliedCommandOrdinals.UnionWith(appliedCommandOrdinals);
         _targets.Clear();
-        foreach (var target in snapshot.Targets)
+        foreach (var target in targets)
         {
-            _targets.Add(target.StableId, new TargetState(target.Incarnation, target.Active));
+            _targets.Add(target.Key, target.Value);
         }
 
         _drives.Clear();
-        foreach (var drive in snapshot.Drives)
+        foreach (var drive in drives)
         {
             _drives.Add(drive.Key, drive.Value);
         }
 
         _temporalRoots.Clear();
-        foreach (var root in snapshot.TemporalRoots)
+        foreach (var root in temporalRoots)
         {
-            _temporalRoots.Add(root.RootId, root);
+            _temporalRoots.Add(root.Key, root.Value);
         }
 
         _cancelledTemporalRoots.Clear();
-        _cancelledTemporalRoots.UnionWith(snapshot.CancelledTemporalRoots);
+        _cancelledTemporalRoots.UnionWith(cancelledTemporalRoots);
         _trace.Clear();
-        _trace.AddRange(snapshot.Trace);
-        _currentInputs = snapshot.Trace.Length == 0
-            ? ImmutableDictionary<SchedulerPortAddress, LogicValue>.Empty
-            : snapshot.Trace[^1].ResolvedInputs;
+        _trace.AddRange(trace);
+        _currentInputs = currentInputs;
     }
 
     private string ComputeHash(
@@ -855,21 +1012,22 @@ public sealed class DeterministicScheduler
         IEnumerable<SchedulerDiagnostic> diagnostics)
     {
         var builder = new StringBuilder();
-        builder.Append("tick=").Append(tick).Append('\n');
-        builder.Append("next-accepted=").Append(_nextAcceptedOrdinal).Append('\n');
-        builder.Append("next-causal=").Append(_nextCausalOrdinal).Append('\n');
+        AppendCanonical(builder, "tick", tick);
+        AppendCanonical(builder, "next-accepted", _nextAcceptedOrdinal);
+        AppendCanonical(builder, "next-causal", _nextCausalOrdinal);
         foreach (var accepted in _acceptedCommands.OrderBy(item => item.AcceptedOrdinal))
         {
-            builder.Append("command=").Append(accepted.AcceptedOrdinal).Append('|');
-            AppendCommand(builder, accepted.Command);
-            builder.Append("|applied=").Append(_appliedCommandOrdinals.Contains(accepted.AcceptedOrdinal)).Append('\n');
+            AppendCanonical(
+                builder,
+                "command",
+                accepted.AcceptedOrdinal,
+                CanonicalCommandValues(accepted.Command),
+                _appliedCommandOrdinals.Contains(accepted.AcceptedOrdinal));
         }
 
         foreach (var target in _targets.OrderBy(pair => pair.Key, StringComparer.Ordinal))
         {
-            builder.Append("target=").Append(target.Key).Append('|')
-                .Append(target.Value.Incarnation).Append('|')
-                .Append(target.Value.Active).Append('\n');
+            AppendCanonical(builder, "target", target.Key, target.Value.Incarnation, target.Value.Active);
         }
 
         foreach (var drive in _drives
@@ -879,34 +1037,31 @@ public sealed class DeterministicScheduler
                      .ThenBy(pair => pair.Key.SourceStableId, StringComparer.Ordinal)
                      .ThenBy(pair => pair.Key.SourcePort, StringComparer.Ordinal))
         {
-            builder.Append("drive=").Append(drive.Key).Append('|').Append((byte)drive.Value).Append('\n');
+            AppendCanonical(
+                builder,
+                "drive",
+                CanonicalDriveKeyValues(drive.Key),
+                (byte)drive.Value);
         }
 
         foreach (var scheduledEvent in _pendingEvents)
         {
-            builder.Append("pending=").Append(scheduledEvent.Key).Append('|')
-                .Append((byte)scheduledEvent.Value).Append('|')
-                .Append(scheduledEvent.Payload).Append('|')
-                .Append(scheduledEvent.TemporalRootId).Append('|')
-                .Append(scheduledEvent.SourceIncarnation).Append('\n');
+            AppendCanonical(builder, "pending", CanonicalEventValues(scheduledEvent));
         }
 
         foreach (var root in _temporalRoots.OrderBy(pair => pair.Key, StringComparer.Ordinal))
         {
-            builder.Append("root=").Append(root.Key).Append('|').Append(root.Value.Event.Key).Append('\n');
+            AppendCanonical(builder, "root", root.Key, CanonicalEventValues(root.Value.Event));
         }
 
         foreach (var root in _cancelledTemporalRoots.OrderBy(root => root, StringComparer.Ordinal))
         {
-            builder.Append("cancelled-root=").Append(root).Append('\n');
+            AppendCanonical(builder, "cancelled-root", root);
         }
 
         foreach (var scheduledEvent in delivered.OrderBy(item => item.Key))
         {
-            builder.Append("delivered=").Append(scheduledEvent.Key).Append('|')
-                .Append((byte)scheduledEvent.Value).Append('|')
-                .Append(scheduledEvent.Payload).Append('|')
-                .Append(scheduledEvent.SourceIncarnation).Append('\n');
+            AppendCanonical(builder, "delivered", CanonicalEventValues(scheduledEvent));
         }
 
         foreach (var input in resolvedInputs
@@ -914,33 +1069,69 @@ public sealed class DeterministicScheduler
                      .ThenBy(pair => pair.Key.TargetIncarnation)
                      .ThenBy(pair => pair.Key.PortOrLane, StringComparer.Ordinal))
         {
-            builder.Append("input=").Append(input.Key).Append('|').Append((byte)input.Value).Append('\n');
+            AppendCanonical(
+                builder,
+                "input",
+                input.Key.TargetStableId,
+                input.Key.TargetIncarnation,
+                input.Key.PortOrLane,
+                (byte)input.Value);
         }
 
         foreach (var diagnostic in diagnostics)
         {
-            builder.Append("diagnostic=").Append(diagnostic.Code).Append('|').Append(diagnostic.Message).Append('\n');
+            AppendCanonical(
+                builder,
+                "diagnostic",
+                diagnostic.Code,
+                diagnostic.Message,
+                diagnostic.Tick,
+                (byte)diagnostic.Phase);
         }
 
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString()))).ToLowerInvariant();
     }
 
-    private static void AppendCommand(StringBuilder builder, SchedulerCommand command)
+    private static object?[] CanonicalCommandValues(SchedulerCommand command) =>
+    [
+        (byte)command.Kind,
+        command.ApplyAtTick,
+        command.TargetStableId,
+        command.TargetIncarnation,
+        command.TargetPortOrLane,
+        command.SourceStableId,
+        command.SourcePort,
+        command.EventKind,
+        (byte)command.Value,
+        command.DueTick,
+        command.RootId,
+        command.Payload,
+        command.SourceIncarnation,
+        (byte)command.EventPhase
+    ];
+
+    private static object?[] CanonicalEventValues(ScheduledEvent scheduledEvent) =>
+    [
+        scheduledEvent.Key.ToString(),
+        (byte)scheduledEvent.Value,
+        scheduledEvent.Payload,
+        scheduledEvent.TemporalRootId,
+        scheduledEvent.SourceIncarnation
+    ];
+
+    private static object?[] CanonicalDriveKeyValues(SchedulerDriveKey key) =>
+    [
+        key.SourceStableId,
+        key.SourceIncarnation,
+        key.SourcePort,
+        key.TargetStableId,
+        key.TargetIncarnation,
+        key.TargetPortOrLane
+    ];
+
+    private static void AppendCanonical(StringBuilder builder, string label, params object?[] values)
     {
-        builder.Append((byte)command.Kind).Append('|')
-            .Append(command.ApplyAtTick).Append('|')
-            .Append(command.TargetStableId).Append('|')
-            .Append(command.TargetIncarnation).Append('|')
-            .Append(command.TargetPortOrLane).Append('|')
-            .Append(command.SourceStableId).Append('|')
-            .Append(command.SourcePort).Append('|')
-            .Append(command.EventKind).Append('|')
-            .Append((byte)command.Value).Append('|')
-            .Append(command.DueTick).Append('|')
-            .Append(command.RootId).Append('|')
-            .Append(command.Payload).Append('|')
-            .Append(command.SourceIncarnation).Append('|')
-            .Append((byte)command.EventPhase);
+        builder.Append(label).Append('=').Append(JsonSerializer.Serialize(values)).Append('\n');
     }
 
     private void EnsureCanMutateOutsideStep()
@@ -956,6 +1147,77 @@ public sealed class DeterministicScheduler
         ArgumentException.ThrowIfNullOrWhiteSpace(value, parameterName);
     }
 
+    private void ValidateCommand(SchedulerCommand command)
+    {
+        ValidateCommandShape(command);
+        if (command.ApplyAtTick < CurrentTick)
+        {
+            throw InvalidCommand($"Command is scheduled for past tick {command.ApplyAtTick}.");
+        }
+    }
+
+    private void ValidateCommandShape(SchedulerCommand command)
+    {
+        if (!Enum.IsDefined(typeof(SchedulerCommandKind), command.Kind))
+        {
+            throw InvalidCommand($"Unsupported scheduler command '{command.Kind}'.");
+        }
+
+        if (command.ApplyAtTick < 0)
+        {
+            throw InvalidCommand($"Command apply tick {command.ApplyAtTick} is invalid.");
+        }
+
+        if (!Enum.IsDefined(typeof(SchedulerPhase), command.EventPhase))
+        {
+            throw InvalidPhase($"Scheduled command phase '{command.EventPhase}' is not supported by this scheduler.");
+        }
+
+        switch (command.Kind)
+        {
+            case SchedulerCommandKind.RegisterTarget:
+            case SchedulerCommandKind.RemoveTarget:
+                ValidateCommandIdentifier(command.TargetStableId, nameof(command.TargetStableId));
+                break;
+            case SchedulerCommandKind.SetPersistentDrive:
+                ValidateCommandIdentifier(command.SourceStableId, nameof(command.SourceStableId));
+                ValidateCommandIdentifier(command.SourcePort, nameof(command.SourcePort));
+                ValidateCommandIdentifier(command.TargetStableId, nameof(command.TargetStableId));
+                ValidateCommandIdentifier(command.TargetPortOrLane, nameof(command.TargetPortOrLane));
+                ValidateNonNegative(command.TargetIncarnation, nameof(command.TargetIncarnation));
+                ValidateNonNegative(command.SourceIncarnation, nameof(command.SourceIncarnation));
+                ValidateLogicValue(command.Value);
+                break;
+            case SchedulerCommandKind.ReleaseSource:
+                ValidateCommandIdentifier(command.SourceStableId, nameof(command.SourceStableId));
+                ValidateNonNegative(command.SourceIncarnation, nameof(command.SourceIncarnation));
+                break;
+            case SchedulerCommandKind.ScheduleEvent:
+                ValidateScheduledCommand(command);
+                break;
+            case SchedulerCommandKind.AddTemporalRoot:
+                ValidateCommandIdentifier(command.RootId, nameof(command.RootId));
+                ValidateScheduledCommand(command);
+                break;
+            case SchedulerCommandKind.CancelTemporalRoot:
+                ValidateCommandIdentifier(command.RootId, nameof(command.RootId));
+                break;
+        }
+    }
+
+    private void ValidateScheduledCommand(SchedulerCommand command)
+    {
+        ValidateNonNegative(command.TargetIncarnation, nameof(command.TargetIncarnation));
+        ValidateNonNegative(command.SourceIncarnation, nameof(command.SourceIncarnation));
+        ValidateLogicValue(command.Value);
+        ValidateCommandPhase(command);
+        if (command.DueTick < command.ApplyAtTick)
+        {
+            throw InvalidCommand(
+                $"Scheduled event due tick {command.DueTick} precedes its application tick {command.ApplyAtTick}.");
+        }
+    }
+
     private void ValidateCommandPhase(SchedulerCommand command)
     {
         if ((command.Kind is SchedulerCommandKind.ScheduleEvent or SchedulerCommandKind.AddTemporalRoot) &&
@@ -963,6 +1225,59 @@ public sealed class DeterministicScheduler
         {
             throw InvalidPhase(
                 $"Scheduled command phase '{command.EventPhase}' is not supported by this scheduler.");
+        }
+    }
+
+    private void ValidateSnapshotEvent(ScheduledEvent scheduledEvent, long snapshotTick)
+    {
+        if (scheduledEvent is null)
+        {
+            throw InvalidCommand("Snapshot contains a null scheduled event.");
+        }
+
+        if (scheduledEvent.Key.Phase != SchedulerPhase.Deliver)
+        {
+            throw InvalidPhase(
+                $"Snapshot contains unsupported event phase '{scheduledEvent.Key.Phase}'.");
+        }
+
+        if (scheduledEvent.Key.DueTick < snapshotTick || scheduledEvent.Key.CausalOrdinal <= 0 ||
+            scheduledEvent.Key.TargetIncarnation < 0 || scheduledEvent.SourceIncarnation < 0 ||
+            !Enum.IsDefined(typeof(LogicValue), scheduledEvent.Value))
+        {
+            throw InvalidCommand("Snapshot contains an invalid scheduled event.");
+        }
+    }
+
+    private void ValidateSnapshotIdentifier(string value, string parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw InvalidCommand($"Snapshot field '{parameterName}' must be a non-empty identifier.");
+        }
+    }
+
+    private void ValidateCommandIdentifier(string value, string parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw InvalidCommand($"Command field '{parameterName}' must be a non-empty identifier.");
+        }
+    }
+
+    private void ValidateNonNegative(long value, string parameterName)
+    {
+        if (value < 0)
+        {
+            throw InvalidCommand($"Command field '{parameterName}' cannot be negative.");
+        }
+    }
+
+    private void ValidateLogicValue(LogicValue value)
+    {
+        if (!Enum.IsDefined(typeof(LogicValue), value))
+        {
+            throw InvalidCommand($"Logic value '{value}' is invalid.");
         }
     }
 
