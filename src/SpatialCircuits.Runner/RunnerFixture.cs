@@ -10,7 +10,8 @@ public sealed class RunnerFixture
         string fixtureId,
         FixtureAction action,
         IEnumerable<ResolutionCase> cases,
-        ScheduledDrivePlan? scheduledDrive = null)
+        ScheduledDrivePlan? scheduledDrive = null,
+        PanelScenarioPlan? panelScenario = null)
     {
         ArgumentNullException.ThrowIfNull(cases);
 
@@ -20,6 +21,7 @@ public sealed class RunnerFixture
         Action = action;
         Cases = cases.ToImmutableArray();
         ScheduledDrive = scheduledDrive;
+        PanelScenario = panelScenario;
     }
 
     public FixtureVersion FixtureSchema { get; }
@@ -33,6 +35,8 @@ public sealed class RunnerFixture
     public ImmutableArray<ResolutionCase> Cases { get; }
 
     public ScheduledDrivePlan? ScheduledDrive { get; }
+
+    public PanelScenarioPlan? PanelScenario { get; }
 }
 
 public sealed record ScheduledDrivePlan(

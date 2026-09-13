@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using SpatialCircuits.Cells;
 using SpatialCircuits.Core;
 
 namespace SpatialCircuits.Runner;
@@ -28,7 +29,10 @@ public static partial class FixtureValidator
             Add(diagnostics, FixtureDiagnosticCodes.IdInvalid, "$.fixtureId", "Fixture identifier is not stable data.");
         }
 
-        if (fixture.Action is not (FixtureAction.ResolveDrives or FixtureAction.ScheduledDrive))
+        if (fixture.Action is not (
+                FixtureAction.ResolveDrives or
+                FixtureAction.ScheduledDrive or
+                FixtureAction.PanelScenario))
         {
             Add(diagnostics, FixtureDiagnosticCodes.ActionUnsupported, "$.action", "Fixture action is not supported.");
         }
@@ -36,6 +40,10 @@ public static partial class FixtureValidator
         if (fixture.Action == FixtureAction.ScheduledDrive)
         {
             ValidateScheduledDrive(fixture.ScheduledDrive, diagnostics);
+        }
+        else if (fixture.Action == FixtureAction.PanelScenario)
+        {
+            ValidatePanelScenario(fixture.PanelScenario, diagnostics);
         }
         else if (fixture.Cases.Length == 0)
         {
@@ -46,6 +54,136 @@ public static partial class FixtureValidator
             ValidateCases(fixture, diagnostics);
         }
         return diagnostics.AsReadOnly();
+    }
+
+    private static void ValidatePanelScenario(
+        PanelScenarioPlan? plan,
+        ICollection<FixtureDiagnostic> diagnostics)
+    {
+        if (plan is null)
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.PanelScenarioRequired,
+                "$.panelScenario",
+                "Panel-scenario fixtures require a panelScenario object.");
+            return;
+        }
+
+        if (plan.Microticks < 1 || plan.Microticks > MaxScheduledDriveMicroticks)
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.PanelScenarioInvalid,
+                "$.panelScenario.microticks",
+                $"Microticks must be between 1 and {MaxScheduledDriveMicroticks}.");
+        }
+
+        if (plan.Cells.IsDefault || plan.Inputs.IsDefault || plan.Expectations.IsDefault)
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.PanelScenarioInvalid,
+                "$.panelScenario",
+                "Panel cells, inputs, and expectations must be initialized arrays.");
+            return;
+        }
+
+        PanelDefinition panel;
+        try
+        {
+            panel = plan.CreatePanelDefinition();
+        }
+        catch (ArgumentException)
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.PanelScenarioInvalid,
+                "$.panelScenario.cells",
+                "Panel dimensions, cells, orientations, or cell parameters are invalid.");
+            return;
+        }
+
+        var inputPortIds = panel.Cells
+            .OfType<PanelCellDefinition>()
+            .Where(cell => cell.Kind == CellKind.InputPort)
+            .Select(cell => cell.PortId!.Value.Value)
+            .ToHashSet(StringComparer.Ordinal);
+        var inputChanges = new HashSet<(int Tick, string PortId)>();
+        for (var index = 0; index < plan.Inputs.Length; index++)
+        {
+            var input = plan.Inputs[index];
+            var path = $"$.panelScenario.inputs[{index}]";
+            if (input.Tick < 0 || input.Tick >= plan.Microticks ||
+                !inputPortIds.Contains(input.PortId) ||
+                !FixtureLogicValue.TryParse(input.Value, out _))
+            {
+                Add(
+                    diagnostics,
+                    FixtureDiagnosticCodes.PanelScenarioInvalid,
+                    path,
+                    "Input changes must use a defined panel input, an in-range tick, and a four-state value.");
+            }
+
+            if (!inputChanges.Add((input.Tick, input.PortId)))
+            {
+                Add(
+                    diagnostics,
+                    FixtureDiagnosticCodes.PanelScenarioInvalid,
+                    path,
+                    "A panel input can change only once at a microtick.");
+            }
+        }
+
+        var probeIds = panel.Cells
+            .OfType<PanelCellDefinition>()
+            .Where(cell => cell.Kind == CellKind.Probe)
+            .Select(cell => cell.Id.Value)
+            .ToHashSet(StringComparer.Ordinal);
+        if (probeIds.Count == 0)
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.PanelScenarioInvalid,
+                "$.panelScenario.cells",
+                "Panel scenarios require at least one probe.");
+        }
+
+        var expectedCount = (long)plan.Microticks * probeIds.Count;
+        if (expectedCount != plan.Expectations.Length)
+        {
+            Add(
+                diagnostics,
+                FixtureDiagnosticCodes.PanelScenarioInvalid,
+                "$.panelScenario.expectations",
+                "Each probe must have one expected value for every microtick.");
+        }
+
+        var expectedSamples = new HashSet<(int Tick, string ProbeId)>();
+        for (var index = 0; index < plan.Expectations.Length; index++)
+        {
+            var expectation = plan.Expectations[index];
+            var path = $"$.panelScenario.expectations[{index}]";
+            if (expectation.Tick < 0 || expectation.Tick >= plan.Microticks ||
+                !probeIds.Contains(expectation.ProbeId) ||
+                !FixtureLogicValue.TryParse(expectation.Value, out _))
+            {
+                Add(
+                    diagnostics,
+                    FixtureDiagnosticCodes.PanelScenarioInvalid,
+                    path,
+                    "Expectations must name a defined probe, an in-range tick, and a four-state value.");
+            }
+
+            if (!expectedSamples.Add((expectation.Tick, expectation.ProbeId)))
+            {
+                Add(
+                    diagnostics,
+                    FixtureDiagnosticCodes.PanelScenarioInvalid,
+                    path,
+                    "Probe expectations cannot duplicate a microtick and probe pair.");
+            }
+        }
     }
 
     private static void ValidateScheduledDrive(

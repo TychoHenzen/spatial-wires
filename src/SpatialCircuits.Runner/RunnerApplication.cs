@@ -43,6 +43,17 @@ public static class RunnerApplication
             return scheduledDriveRecords.All(record => record.Passed) ? Success : FailedExpectation;
         }
 
+        if (fixture.Action == FixtureAction.PanelScenario)
+        {
+            var panelRecords = PanelScenarioExecutor.Execute(fixture);
+            foreach (var record in panelRecords)
+            {
+                TraceOutput.WritePanelScenarioTrace(output, record);
+            }
+
+            return panelRecords.All(record => record.Passed) ? Success : FailedExpectation;
+        }
+
         var records = FixtureExecutor.Execute(fixture);
         foreach (var record in records)
         {

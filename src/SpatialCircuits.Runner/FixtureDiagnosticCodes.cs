@@ -15,6 +15,8 @@ public static class FixtureDiagnosticCodes
     public const string ExpectedInvalid = "FIXTURE_EXPECTED_INVALID";
     public const string ScheduledDriveRequired = "FIXTURE_SCHEDULED_DRIVE_REQUIRED";
     public const string ScheduledDriveInvalid = "FIXTURE_SCHEDULED_DRIVE_INVALID";
+    public const string PanelScenarioRequired = "FIXTURE_PANEL_SCENARIO_REQUIRED";
+    public const string PanelScenarioInvalid = "FIXTURE_PANEL_SCENARIO_INVALID";
     public const string PathRequired = "FIXTURE_PATH_REQUIRED";
     public const string FileNotFound = "FIXTURE_FILE_NOT_FOUND";
     public const string FileUnreadable = "FIXTURE_FILE_UNREADABLE";
