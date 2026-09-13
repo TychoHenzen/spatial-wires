@@ -1,0 +1,875 @@
+{
+  "fixtureSchema": {
+    "major": 1,
+    "minor": 0
+  },
+  "traceSchema": {
+    "major": 1,
+    "minor": 0
+  },
+  "fixtureId": "stage-04-xor-glitch",
+  "action": "panelScenario",
+  "panelScenario": {
+    "panelId": "stage-04/xor-glitch",
+    "width": 16,
+    "height": 11,
+    "microticks": 42,
+    "cells": [
+      {
+        "cellId": "nand-one",
+        "x": 2,
+        "y": 5,
+        "kind": "nand",
+        "orientation": "east",
+        "parameters": {
+          "delay": 1
+        }
+      },
+      {
+        "cellId": "nand-two",
+        "x": 7,
+        "y": 2,
+        "kind": "nand",
+        "orientation": "east",
+        "parameters": {
+          "delay": 3
+        }
+      },
+      {
+        "cellId": "nand-three",
+        "x": 7,
+        "y": 8,
+        "kind": "nand",
+        "orientation": "east",
+        "parameters": {
+          "delay": 1
+        }
+      },
+      {
+        "cellId": "nand-four",
+        "x": 13,
+        "y": 5,
+        "kind": "nand",
+        "orientation": "east",
+        "parameters": {
+          "delay": 1
+        }
+      },
+      {
+        "cellId": "input-a-one",
+        "x": 2,
+        "y": 4,
+        "kind": "input-port",
+        "orientation": "south",
+        "portId": "a"
+      },
+      {
+        "cellId": "input-a-two",
+        "x": 1,
+        "y": 0,
+        "kind": "input-port",
+        "orientation": "east",
+        "portId": "a"
+      },
+      {
+        "cellId": "input-b-one",
+        "x": 2,
+        "y": 6,
+        "kind": "input-port",
+        "orientation": "north",
+        "portId": "b"
+      },
+      {
+        "cellId": "input-b-three",
+        "x": 0,
+        "y": 10,
+        "kind": "input-port",
+        "orientation": "east",
+        "portId": "b"
+      },
+      {
+        "cellId": "n1-branch",
+        "x": 3,
+        "y": 5,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n2-wire-up",
+        "x": 3,
+        "y": 4,
+        "kind": "wire",
+        "orientation": "north"
+      },
+      {
+        "cellId": "n1-to-n2-turn",
+        "x": 3,
+        "y": 3,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n2-wire-one",
+        "x": 4,
+        "y": 3,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n2-wire-two",
+        "x": 5,
+        "y": 3,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n2-wire-three",
+        "x": 6,
+        "y": 3,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n2-gate-input",
+        "x": 7,
+        "y": 3,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n3-wire-down",
+        "x": 3,
+        "y": 6,
+        "kind": "wire",
+        "orientation": "north"
+      },
+      {
+        "cellId": "n1-to-n3-turn",
+        "x": 3,
+        "y": 7,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n3-wire-one",
+        "x": 4,
+        "y": 7,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n3-wire-two",
+        "x": 5,
+        "y": 7,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n3-wire-three",
+        "x": 6,
+        "y": 7,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n1-to-n3-gate-input",
+        "x": 7,
+        "y": 7,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n2-to-n4-wire-one",
+        "x": 8,
+        "y": 2,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n2-to-n4-turn-one",
+        "x": 9,
+        "y": 2,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n2-to-n4-wire-south",
+        "x": 9,
+        "y": 3,
+        "kind": "wire",
+        "orientation": "north"
+      },
+      {
+        "cellId": "n2-to-n4-turn-two",
+        "x": 9,
+        "y": 4,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n2-to-n4-wire-two",
+        "x": 10,
+        "y": 4,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n2-to-n4-wire-three",
+        "x": 11,
+        "y": 4,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n2-to-n4-wire-four",
+        "x": 12,
+        "y": 4,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n2-to-n4-gate-input",
+        "x": 13,
+        "y": 4,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n3-to-n4-wire-one",
+        "x": 8,
+        "y": 8,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n3-to-n4-turn-one",
+        "x": 9,
+        "y": 8,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n3-to-n4-wire-north",
+        "x": 9,
+        "y": 7,
+        "kind": "wire",
+        "orientation": "north"
+      },
+      {
+        "cellId": "n3-to-n4-turn-two",
+        "x": 9,
+        "y": 6,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n3-to-n4-wire-two",
+        "x": 10,
+        "y": 6,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n3-to-n4-wire-three",
+        "x": 11,
+        "y": 6,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n3-to-n4-wire-four",
+        "x": 12,
+        "y": 6,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "n3-to-n4-gate-input",
+        "x": 13,
+        "y": 6,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "xor-output-branch",
+        "x": 14,
+        "y": 5,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "xor-raw-probe",
+        "x": 15,
+        "y": 5,
+        "kind": "probe",
+        "orientation": "east"
+      },
+      {
+        "cellId": "xor-filter",
+        "x": 14,
+        "y": 4,
+        "kind": "stability-filter",
+        "orientation": "north",
+        "parameters": {
+          "consecutive-ticks": 2
+        }
+      },
+      {
+        "cellId": "xor-filtered-probe",
+        "x": 14,
+        "y": 3,
+        "kind": "probe",
+        "orientation": "north"
+      },
+      {
+        "cellId": "input-a-wire-one",
+        "x": 2,
+        "y": 0,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-a-wire-two",
+        "x": 3,
+        "y": 0,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-a-turn-one",
+        "x": 4,
+        "y": 0,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-a-wire-down",
+        "x": 4,
+        "y": 1,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-a-turn-two",
+        "x": 5,
+        "y": 1,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-a-wire-three",
+        "x": 6,
+        "y": 1,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-a-gate-input",
+        "x": 7,
+        "y": 1,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-b-wire-1",
+        "x": 1,
+        "y": 10,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-b-wire-2",
+        "x": 2,
+        "y": 10,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-b-wire-3",
+        "x": 3,
+        "y": 10,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-b-wire-4",
+        "x": 4,
+        "y": 10,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-b-wire-5",
+        "x": 5,
+        "y": 10,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-b-wire-6",
+        "x": 6,
+        "y": 10,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-b-turn",
+        "x": 7,
+        "y": 10,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "input-b-gate-wire",
+        "x": 7,
+        "y": 9,
+        "kind": "wire",
+        "orientation": "north"
+      }
+    ],
+    "inputs": [
+      {
+        "tick": 0,
+        "portId": "a",
+        "value": "Low"
+      },
+      {
+        "tick": 0,
+        "portId": "b",
+        "value": "Low"
+      },
+      {
+        "tick": 12,
+        "portId": "a",
+        "value": "High"
+      },
+      {
+        "tick": 12,
+        "portId": "b",
+        "value": "High"
+      }
+    ],
+    "expectations": [
+      {
+        "tick": 0,
+        "probeId": "xor-raw-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 0,
+        "probeId": "xor-filtered-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 1,
+        "probeId": "xor-raw-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 1,
+        "probeId": "xor-filtered-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 2,
+        "probeId": "xor-raw-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 2,
+        "probeId": "xor-filtered-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 3,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 3,
+        "probeId": "xor-filtered-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 4,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 4,
+        "probeId": "xor-filtered-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 5,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 5,
+        "probeId": "xor-filtered-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 6,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 6,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 7,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 7,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 8,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 8,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 9,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 9,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 10,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 10,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 11,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 11,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 12,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 12,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 13,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 13,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 14,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 14,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 15,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 15,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 16,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 16,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 17,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 17,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 18,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 18,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 19,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 19,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 20,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 20,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 21,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 21,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 22,
+        "probeId": "xor-raw-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 22,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 23,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 23,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 24,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 24,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 25,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 25,
+        "probeId": "xor-filtered-probe",
+        "value": "Unknown"
+      },
+      {
+        "tick": 26,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 26,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 27,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 27,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 28,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 28,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 29,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 29,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 30,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 30,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 31,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 31,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 32,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 32,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 33,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 33,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 34,
+        "probeId": "xor-raw-probe",
+        "value": "High"
+      },
+      {
+        "tick": 34,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 35,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 35,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 36,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 36,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 37,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 37,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 38,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 38,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 39,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 39,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 40,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 40,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 41,
+        "probeId": "xor-raw-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 41,
+        "probeId": "xor-filtered-probe",
+        "value": "Low"
+      }
+    ]
+  }
+}

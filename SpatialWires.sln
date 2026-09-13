@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -18,6 +18,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Runner", "src\SpatialCircuits.Runner\SpatialCircuits.Runner.csproj", "{8EA62451-1170-483C-98CB-C114AC2B8A16}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Runner.Tests", "tests\SpatialCircuits.Runner.Tests\SpatialCircuits.Runner.Tests.csproj", "{31D390FB-C733-40C9-88B4-C16513FA74E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9030C887-AD50-4AA0-BC23-FE9E5F49D4CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Cells.Tests", "tests\SpatialCircuits.Cells.Tests\SpatialCircuits.Cells.Tests.csproj", "{84CC35C8-2D32-435F-9408-C73E91AF7EBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,8 +61,15 @@ Global
 		{31D390FB-C733-40C9-88B4-C16513FA74E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D390FB-C733-40C9-88B4-C16513FA74E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31D390FB-C733-40C9-88B4-C16513FA74E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84CC35C8-2D32-435F-9408-C73E91AF7EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84CC35C8-2D32-435F-9408-C73E91AF7EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84CC35C8-2D32-435F-9408-C73E91AF7EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84CC35C8-2D32-435F-9408-C73E91AF7EBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{84CC35C8-2D32-435F-9408-C73E91AF7EBD} = {9030C887-AD50-4AA0-BC23-FE9E5F49D4CD}
 	EndGlobalSection
 EndGlobal

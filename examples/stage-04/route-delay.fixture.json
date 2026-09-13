@@ -1,0 +1,158 @@
+{
+  "fixtureSchema": {
+    "major": 1,
+    "minor": 0
+  },
+  "traceSchema": {
+    "major": 1,
+    "minor": 0
+  },
+  "fixtureId": "stage-04-route-delay",
+  "action": "panelScenario",
+  "panelScenario": {
+    "panelId": "stage-04/route-delay",
+    "width": 5,
+    "height": 3,
+    "microticks": 15,
+    "cells": [
+      {
+        "cellId": "source",
+        "x": 0,
+        "y": 1,
+        "kind": "input-port",
+        "orientation": "east",
+        "portId": "signal"
+      },
+      {
+        "cellId": "wire-one",
+        "x": 1,
+        "y": 1,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "junction",
+        "x": 2,
+        "y": 1,
+        "kind": "junction",
+        "orientation": "east"
+      },
+      {
+        "cellId": "wire-two",
+        "x": 3,
+        "y": 1,
+        "kind": "wire",
+        "orientation": "east"
+      },
+      {
+        "cellId": "sink",
+        "x": 4,
+        "y": 1,
+        "kind": "output-port",
+        "orientation": "east",
+        "portId": "result"
+      },
+      {
+        "cellId": "route-probe",
+        "x": 2,
+        "y": 2,
+        "kind": "probe",
+        "orientation": "south"
+      }
+    ],
+    "inputs": [
+      {
+        "tick": 0,
+        "portId": "signal",
+        "value": "Low"
+      },
+      {
+        "tick": 5,
+        "portId": "signal",
+        "value": "High"
+      },
+      {
+        "tick": 10,
+        "portId": "signal",
+        "value": "Low"
+      }
+    ],
+    "expectations": [
+      {
+        "tick": 0,
+        "probeId": "route-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 1,
+        "probeId": "route-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 2,
+        "probeId": "route-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 3,
+        "probeId": "route-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 4,
+        "probeId": "route-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 5,
+        "probeId": "route-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 6,
+        "probeId": "route-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 7,
+        "probeId": "route-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 8,
+        "probeId": "route-probe",
+        "value": "High"
+      },
+      {
+        "tick": 9,
+        "probeId": "route-probe",
+        "value": "High"
+      },
+      {
+        "tick": 10,
+        "probeId": "route-probe",
+        "value": "High"
+      },
+      {
+        "tick": 11,
+        "probeId": "route-probe",
+        "value": "High"
+      },
+      {
+        "tick": 12,
+        "probeId": "route-probe",
+        "value": "High"
+      },
+      {
+        "tick": 13,
+        "probeId": "route-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 14,
+        "probeId": "route-probe",
+        "value": "Low"
+      }
+    ]
+  }
+}

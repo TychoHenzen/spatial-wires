@@ -4,5 +4,6 @@ public enum FixtureAction
 {
     Unsupported,
     ResolveDrives,
-    ScheduledDrive
+    ScheduledDrive,
+    PanelScenario
 }

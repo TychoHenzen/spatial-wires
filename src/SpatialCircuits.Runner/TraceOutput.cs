@@ -78,6 +78,25 @@ public static class TraceOutput
         });
     }
 
+    public static void WritePanelScenarioTrace(TextWriter writer, PanelTraceRecord record)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(record);
+
+        WriteLine(writer, json =>
+        {
+            WriteVersion(json, record.TraceSchema);
+            json.WriteString("fixtureId", record.FixtureId);
+            json.WriteNumber("sequence", record.Sequence);
+            json.WriteNumber("microtick", record.Microtick);
+            json.WriteString("schedulerHash", record.SchedulerHash);
+            WriteValues(json, "probes", record.Probes);
+            WriteValues(json, "expectedProbes", record.ExpectedProbes);
+            WriteValues(json, "outputs", record.Outputs);
+            json.WriteBoolean("passed", record.Passed);
+        });
+    }
+
     public static void WriteDiagnostic(TextWriter writer, FixtureDiagnostic diagnostic)
     {
         ArgumentNullException.ThrowIfNull(writer);
@@ -99,6 +118,20 @@ public static class TraceOutput
         writer.WriteStartObject("traceSchema");
         writer.WriteNumber("major", version.Major);
         writer.WriteNumber("minor", version.Minor);
+        writer.WriteEndObject();
+    }
+
+    private static void WriteValues(
+        Utf8JsonWriter writer,
+        string propertyName,
+        IReadOnlyDictionary<string, string> values)
+    {
+        writer.WriteStartObject(propertyName);
+        foreach (var pair in values.OrderBy(pair => pair.Key, StringComparer.Ordinal))
+        {
+            writer.WriteString(pair.Key, pair.Value);
+        }
+
         writer.WriteEndObject();
     }
 

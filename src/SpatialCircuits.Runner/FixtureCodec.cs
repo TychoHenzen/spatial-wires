@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text.Json;
 
 namespace SpatialCircuits.Runner;
@@ -45,6 +46,19 @@ public static class FixtureCodec
                 scheduledDrive);
         }
 
+        if (actionText == "panelScenario")
+        {
+            var panelScenario = ReadPanelScenario(
+                RequireProperty(root, "panelScenario", "$.panelScenario"));
+            return new RunnerFixture(
+                fixtureSchema,
+                traceSchema,
+                fixtureId,
+                FixtureAction.PanelScenario,
+                [],
+                panelScenario: panelScenario);
+        }
+
         var casesElement = RequireProperty(root, "cases", "$.cases");
         RequireKind(casesElement, JsonValueKind.Array, "$.cases");
 
@@ -82,6 +96,110 @@ public static class FixtureCodec
                 RequireProperty(element, "drive", "$.scheduledDrive.drive"),
                 "$.scheduledDrive.drive"));
     }
+
+    private static PanelScenarioPlan ReadPanelScenario(JsonElement element)
+    {
+        RequireKind(element, JsonValueKind.Object, "$.panelScenario");
+        var panelId = ReadString(
+            RequireProperty(element, "panelId", "$.panelScenario.panelId"),
+            "$.panelScenario.panelId");
+        var width = ReadInt32(
+            RequireProperty(element, "width", "$.panelScenario.width"),
+            "$.panelScenario.width");
+        var height = ReadInt32(
+            RequireProperty(element, "height", "$.panelScenario.height"),
+            "$.panelScenario.height");
+        var microticks = ReadInt32(
+            RequireProperty(element, "microticks", "$.panelScenario.microticks"),
+            "$.panelScenario.microticks");
+
+        var cellsElement = RequireProperty(element, "cells", "$.panelScenario.cells");
+        RequireKind(cellsElement, JsonValueKind.Array, "$.panelScenario.cells");
+        var cells = cellsElement.EnumerateArray()
+            .Select((cell, index) => ReadPanelCell(cell, index))
+            .ToImmutableArray();
+
+        var inputsElement = RequireProperty(element, "inputs", "$.panelScenario.inputs");
+        RequireKind(inputsElement, JsonValueKind.Array, "$.panelScenario.inputs");
+        var inputs = inputsElement.EnumerateArray()
+            .Select((input, index) => ReadPanelInput(input, index))
+            .ToImmutableArray();
+
+        var expectationsElement = RequireProperty(element, "expectations", "$.panelScenario.expectations");
+        RequireKind(expectationsElement, JsonValueKind.Array, "$.panelScenario.expectations");
+        var expectations = expectationsElement.EnumerateArray()
+            .Select((expectation, index) => ReadPanelExpectation(expectation, index))
+            .ToImmutableArray();
+
+        return new PanelScenarioPlan(
+            panelId,
+            width,
+            height,
+            microticks,
+            cells,
+            inputs,
+            expectations);
+    }
+
+    private static PanelCellPlan ReadPanelCell(JsonElement element, int index)
+    {
+        var path = $"$.panelScenario.cells[{index}]";
+        RequireKind(element, JsonValueKind.Object, path);
+        string? portId = null;
+        if (element.TryGetProperty("portId", out var portElement))
+        {
+            portId = ReadString(portElement, $"{path}.portId");
+        }
+
+        var parameters = ImmutableArray<KeyValuePair<string, string>>.Empty;
+        if (element.TryGetProperty("parameters", out var parametersElement))
+        {
+            RequireKind(parametersElement, JsonValueKind.Object, $"{path}.parameters");
+            parameters = parametersElement.EnumerateObject()
+                .Select(parameter => new KeyValuePair<string, string>(
+                    parameter.Name,
+                    ReadParameterValue(parameter.Value, $"{path}.parameters.{parameter.Name}")))
+                .ToImmutableArray();
+        }
+
+        return new PanelCellPlan(
+            ReadString(RequireProperty(element, "cellId", $"{path}.cellId"), $"{path}.cellId"),
+            ReadInt32(RequireProperty(element, "x", $"{path}.x"), $"{path}.x"),
+            ReadInt32(RequireProperty(element, "y", $"{path}.y"), $"{path}.y"),
+            ReadString(RequireProperty(element, "kind", $"{path}.kind"), $"{path}.kind"),
+            ReadString(
+                RequireProperty(element, "orientation", $"{path}.orientation"),
+                $"{path}.orientation"),
+            portId,
+            parameters);
+    }
+
+    private static PanelInputChange ReadPanelInput(JsonElement element, int index)
+    {
+        var path = $"$.panelScenario.inputs[{index}]";
+        RequireKind(element, JsonValueKind.Object, path);
+        return new PanelInputChange(
+            ReadInt32(RequireProperty(element, "tick", $"{path}.tick"), $"{path}.tick"),
+            ReadString(RequireProperty(element, "portId", $"{path}.portId"), $"{path}.portId"),
+            ReadString(RequireProperty(element, "value", $"{path}.value"), $"{path}.value"));
+    }
+
+    private static PanelProbeExpectation ReadPanelExpectation(JsonElement element, int index)
+    {
+        var path = $"$.panelScenario.expectations[{index}]";
+        RequireKind(element, JsonValueKind.Object, path);
+        return new PanelProbeExpectation(
+            ReadInt32(RequireProperty(element, "tick", $"{path}.tick"), $"{path}.tick"),
+            ReadString(RequireProperty(element, "probeId", $"{path}.probeId"), $"{path}.probeId"),
+            ReadString(RequireProperty(element, "value", $"{path}.value"), $"{path}.value"));
+    }
+
+    private static string ReadParameterValue(JsonElement element, string path) => element.ValueKind switch
+    {
+        JsonValueKind.String => element.GetString() ?? string.Empty,
+        JsonValueKind.Number => element.GetRawText(),
+        _ => throw new FixtureStructureException(path)
+    };
 
     private static ResolutionCase ReadCase(JsonElement element, int index)
     {
