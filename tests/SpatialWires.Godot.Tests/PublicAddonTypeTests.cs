@@ -11,7 +11,7 @@ public sealed class PublicAddonTypeTests
 {
     [TestCase]
     [RequireGodotRuntime]
-    public void PublicNodeAndResourceAreConstructibleWithStableGlobalClassMetadataWithoutState()
+    public void PublicNodeAndResourceAreConstructibleWithStableGlobalClassMetadata()
     {
         var node = new SpatialCircuitNode();
         var resource = new SpatialCircuitResource();
@@ -20,7 +20,14 @@ public sealed class PublicAddonTypeTests
             AssertThat(node.GetType()).IsEqual(typeof(SpatialCircuitNode));
             AssertThat(resource.GetType()).IsEqual(typeof(SpatialCircuitResource));
             AssertPublicShellType<SpatialCircuitNode, Node>("SpatialCircuitNode");
-            AssertPublicShellType<SpatialCircuitResource, Resource>("SpatialCircuitResource");
+            AssertExportedResourceType<SpatialCircuitResource>("SpatialCircuitResource",
+                "BehaviorVersion", "DefinitionId", "Parameters", "Ports", "SchemaVersion", "SourcePanel", "Symbol");
+            AssertExportedResourceType<SpatialCircuitPanelResource>("SpatialCircuitPanelResource",
+                "Cells", "Height", "PanelId", "Width");
+            AssertExportedResourceType<SpatialCircuitCellResource>("SpatialCircuitCellResource",
+                "BehaviorId", "CellId", "Kind", "Orientation", "Parameters", "PortId", "X", "Y");
+            AssertExportedResourceType<SpatialCircuitChipPortResource>("SpatialCircuitChipPortResource",
+                "Direction", "Name", "PanelPortId");
         }
         finally
         {
@@ -43,5 +50,28 @@ public sealed class PublicAddonTypeTests
             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)).IsEmpty();
         AssertThat(publicType.GetProperties(
             BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)).IsEmpty();
+    }
+
+    private static void AssertExportedResourceType<TPublicType>(string expectedName, params string[] expectedPropertyNames)
+    {
+        var publicType = typeof(TPublicType);
+        var properties = publicType.GetProperties(
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+
+        AssertThat(publicType.IsPublic).IsTrue();
+        AssertThat(publicType.IsAbstract).IsFalse();
+        AssertThat(publicType.Name).IsEqual(expectedName);
+        AssertThat(publicType.BaseType).IsEqual(typeof(Resource));
+        AssertThat(publicType.IsDefined(typeof(GlobalClassAttribute), inherit: false)).IsTrue();
+        AssertThat(publicType.GetConstructor(Type.EmptyTypes)).IsNotNull();
+        var actualPropertyNames = properties.Select(property => property.Name)
+            .OrderBy(name => name, StringComparer.Ordinal)
+            .ToArray();
+        AssertThat(actualPropertyNames.SequenceEqual(expectedPropertyNames.OrderBy(name => name, StringComparer.Ordinal)))
+            .IsTrue();
+        foreach (var property in properties)
+        {
+            AssertThat(property.GetCustomAttribute<ExportAttribute>()).IsNotNull();
+        }
     }
 }
