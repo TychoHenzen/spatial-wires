@@ -33,6 +33,7 @@ jobs:
         run: |
           dotnet restore tests/SpatialCircuits.Core.Tests/SpatialCircuits.Core.Tests.csproj
           dotnet restore tests/SpatialCircuits.Cells.Tests/SpatialCircuits.Cells.Tests.csproj
+          dotnet restore tests/SpatialCircuits.Hierarchy.Tests/SpatialCircuits.Hierarchy.Tests.csproj
           dotnet restore tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj
 
       - name: Run core tests
@@ -40,6 +41,9 @@ jobs:
 
       - name: Run cells tests
         run: dotnet test tests/SpatialCircuits.Cells.Tests/SpatialCircuits.Cells.Tests.csproj --configuration Release --no-restore --nologo --verbosity minimal
+
+      - name: Run hierarchy tests
+        run: dotnet test tests/SpatialCircuits.Hierarchy.Tests/SpatialCircuits.Hierarchy.Tests.csproj --configuration Release --no-restore --nologo --verbosity minimal
 
       - name: Run runner tests
         run: dotnet test tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj --configuration Release --no-restore --nologo --verbosity minimal
@@ -91,6 +95,7 @@ jobs:
           $projects = @(
             'tests/SpatialCircuits.Core.Tests/SpatialCircuits.Core.Tests.csproj',
             'tests/SpatialCircuits.Cells.Tests/SpatialCircuits.Cells.Tests.csproj',
+            'tests/SpatialCircuits.Hierarchy.Tests/SpatialCircuits.Hierarchy.Tests.csproj',
             'tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj'
           )
           $findings = foreach ($project in $projects) {
