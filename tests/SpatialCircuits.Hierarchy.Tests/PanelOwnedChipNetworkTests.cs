@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using SpatialCircuits.Cells;
 using SpatialCircuits.Core;
 using SpatialCircuits.Hierarchy;
@@ -72,6 +73,141 @@ public sealed class PanelOwnedChipNetworkTests
             LogicValue.High,
             outer.Children.GetInstance(new ComponentId("inner")).GetOutput("out"));
         Assert.Equal(new ComponentId("inner"), Assert.Single(Assert.Single(result!.Chips).Children).InstanceId);
+    }
+
+    [Fact]
+    public void NestedChildNetworkConnectsItsOutputToTheOwningChipPanelInput()
+    {
+        var leaf = CreatePassThroughChip("chip/connected-leaf", "panel/connected-leaf", "buffer");
+        var parentPanel = PanelDefinition.Create(
+            new CircuitId("panel/connected-parent"),
+            3,
+            1,
+            [
+                PortCell("internal", 0, 0, CellKind.InputPort, CardinalDirection.East, "internal-signal"),
+                Cell("wire", 1, 0, CellKind.Wire),
+                PortCell("output", 2, 0, CellKind.OutputPort, CardinalDirection.East, "out")
+            ]);
+        var parent = ChipDefinition.Create(
+            new DefinitionId("chip/connected-parent"),
+            parentPanel,
+            [new ChipPortDefinition("out", new PortId("out"), ChipPortDirection.Output)],
+            1,
+            1,
+            "connected-parent",
+            childNetwork: PanelOwnedChipNetworkDefinition.Create(
+                parentPanel.Id,
+                [Pin("inner", leaf)],
+                [new ChipPortConnection(
+                    ChipPortEndpoint.ChildChip(new ComponentId("inner"), "out"),
+                    ChipPortEndpoint.ParentPanel(new PortId("internal-signal")))]));
+        var catalog = ChipDefinitionCatalog.Create([leaf, parent]);
+        var owner = EmptyPanel("panel/connected-owner");
+        var network = new PanelOwnedChipNetworkInstance(
+            owner,
+            PanelOwnedChipNetworkDefinition.Create(owner.Id, [Pin("outer", parent)]),
+            catalog);
+        var inner = network.GetInstance(new ComponentId("outer"))
+            .Children.GetInstance(new ComponentId("inner"));
+        inner.SetInput("signal", LogicValue.High);
+
+        Step(network, 20);
+
+        Assert.Equal(LogicValue.High, inner.GetOutput("out"));
+        Assert.Equal(LogicValue.High, network.GetInstance(new ComponentId("outer")).GetOutput("out"));
+    }
+
+    [Fact]
+    public void NestedChildNetworkCannotAdvanceItsOwnerRuntimeSeparately()
+    {
+        var leaf = CreatePassThroughChip("chip/step-leaf", "panel/step-leaf", "buffer");
+        var parentPanel = CreatePassThroughPanel("panel/step-parent");
+        var parent = ChipDefinition.Create(
+            new DefinitionId("chip/step-parent"),
+            parentPanel,
+            [
+                new ChipPortDefinition("signal", new PortId("signal"), ChipPortDirection.Input),
+                new ChipPortDefinition("out", new PortId("out"), ChipPortDirection.Output)
+            ],
+            1,
+            1,
+            "step-parent",
+            childNetwork: PanelOwnedChipNetworkDefinition.Create(parentPanel.Id, [Pin("inner", leaf)]));
+        var catalog = ChipDefinitionCatalog.Create([leaf, parent]);
+        var owner = EmptyPanel("panel/step-owner");
+        var network = new PanelOwnedChipNetworkInstance(
+            owner,
+            PanelOwnedChipNetworkDefinition.Create(owner.Id, [Pin("outer", parent)]),
+            catalog);
+
+        Assert.Throws<InvalidOperationException>(() =>
+            network.GetInstance(new ComponentId("outer")).Children.Step());
+    }
+
+    [Fact]
+    public void NestedChipInputsCannotChangeDuringAnAncestorStep()
+    {
+        var leaf = CreatePassThroughChip("chip/guard-leaf", "panel/guard-leaf", "buffer");
+        var parentPanel = CreatePassThroughPanel("panel/guard-parent");
+        var parent = ChipDefinition.Create(
+            new DefinitionId("chip/guard-parent"),
+            parentPanel,
+            [
+                new ChipPortDefinition("signal", new PortId("signal"), ChipPortDirection.Input),
+                new ChipPortDefinition("out", new PortId("out"), ChipPortDirection.Output)
+            ],
+            1,
+            1,
+            "guard-parent",
+            childNetwork: PanelOwnedChipNetworkDefinition.Create(parentPanel.Id, [Pin("inner", leaf)]));
+        var catalog = ChipDefinitionCatalog.Create([leaf, parent]);
+        var behaviorId = new BehaviorId("tests.hierarchy:mutation-guard/v1");
+        PanelOwnedChipNetworkInstance.ChipInstance? target = null;
+        var mutationWasRejected = false;
+        var rules = new CustomCellRuleRegistry(
+        [
+            new CustomCellRuleRegistration(
+                behaviorId,
+                [new CustomCellPort("out", CardinalDirection.East, false, true)],
+                static parameters =>
+                {
+                    if (parameters.Count != 0)
+                    {
+                        throw new ArgumentException("Mutation guard rule has no parameters.", nameof(parameters));
+                    }
+                },
+                () => new CallbackRule(() =>
+                {
+                    try
+                    {
+                        target!.SetInput("signal", LogicValue.High);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        mutationWasRejected = true;
+                    }
+                }))
+        ]);
+        var owner = PanelDefinition.Create(
+            new CircuitId("panel/guard-owner"),
+            1,
+            1,
+            [PanelCellDefinition.Create(
+                new ComponentId("callback"),
+                new GridCoordinate(0, 0),
+                CellKind.Custom,
+                behaviorId: behaviorId)]);
+        var network = new PanelOwnedChipNetworkInstance(
+            owner,
+            PanelOwnedChipNetworkDefinition.Create(owner.Id, [Pin("outer", parent)]),
+            catalog,
+            rules);
+        target = network.GetInstance(new ComponentId("outer"))
+            .Children.GetInstance(new ComponentId("inner"));
+
+        network.Step();
+
+        Assert.True(mutationWasRejected);
     }
 
     [Fact]
@@ -272,6 +408,39 @@ public sealed class PanelOwnedChipNetworkTests
             Assert.Equal(
                 expandedResult.Chips[index].Outputs.ToArray(),
                 collapsedResult.Chips[index].Outputs.ToArray());
+        }
+    }
+
+    private sealed class CallbackRule(Action onEvaluate) : ICustomCellRule
+    {
+        public ImmutableArray<byte> CreateInitialState(ImmutableSortedDictionary<string, string> parameters) => [0];
+
+        public void ValidateState(
+            ImmutableSortedDictionary<string, string> parameters,
+            ImmutableArray<byte> state)
+        {
+            if (state.IsDefault || state.Length != 1 || state[0] != 0)
+            {
+                throw new ArgumentException("Callback rule state is invalid.", nameof(state));
+            }
+        }
+
+        public CustomCellTransition Evaluate(CustomCellEvaluationContext context)
+        {
+            onEvaluate();
+            return new CustomCellTransition(
+                [new CustomCellProposal("out", LogicValue.Low)],
+                context.State,
+                context.RandomState);
+        }
+
+        public bool TryMigrateState(
+            BehaviorId sourceBehaviorId,
+            ImmutableArray<byte> sourceState,
+            out ImmutableArray<byte> migratedState)
+        {
+            migratedState = ImmutableArray<byte>.Empty;
+            return false;
         }
     }
 }

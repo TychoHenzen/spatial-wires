@@ -13,6 +13,7 @@ Files under `Reference/` are planning input. OpenSpec artifacts are deprecated a
 - Keep the simulation core in pure C# projects with no `GodotSharp` reference.
 - Put Godot Nodes, Resources, editor tools, and Variant conversion behind adapter projects.
 - Use explicit integer microticks for causal time. Never use `_Process(delta)` as circuit time.
+- Advance hierarchical simulation only through the root panel-owned network. Nested networks share its step and cannot be stepped or have inputs changed mid-step.
 - Keep circuit definitions and runtime APIs authoritative. Treat Godot Resources as editor-facing DTOs.
 - Store runtime state in independent instances. Never store live runtime state in shared Resources.
 - Use flat simulation data and batched rendering. Do not create one Godot Node per ordinary cell.

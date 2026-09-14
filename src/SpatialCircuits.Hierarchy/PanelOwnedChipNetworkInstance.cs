@@ -101,8 +101,13 @@ public sealed class PanelOwnedChipNetworkInstance
     /// <summary>Propagates named connections from the prior tick, then steps every hidden source grid once.</summary>
     public ChipNetworkTickResult Step()
     {
+        if (!IsRoot)
+        {
+            throw new InvalidOperationException("Only the root chip network can advance simulation time.");
+        }
+
         EnsureNotStepping();
-        _isStepping = true;
+        SetTreeStepping(true);
         try
         {
             ApplyConnectionsToTree();
@@ -119,7 +124,7 @@ public sealed class PanelOwnedChipNetworkInstance
         }
         finally
         {
-            _isStepping = false;
+            SetTreeStepping(false);
         }
     }
 
@@ -222,6 +227,15 @@ public sealed class PanelOwnedChipNetworkInstance
     private IEnumerable<ChipInstance> OrderedInstances() =>
         _instances.Values.OrderBy(instance => instance.InstanceId.Value, StringComparer.Ordinal);
 
+    private void SetTreeStepping(bool isStepping)
+    {
+        _isStepping = isStepping;
+        foreach (var instance in _instances.Values)
+        {
+            instance.Children.SetTreeStepping(isStepping);
+        }
+    }
+
     private void EnsureNotStepping()
     {
         if (_isStepping)
@@ -278,6 +292,7 @@ public sealed class PanelOwnedChipNetworkInstance
 
         public void SetInput(string portName, LogicValue value)
         {
+            _parentNetwork.EnsureNotStepping();
             if (_parentNetwork.HasIncomingConnection(ChipPortEndpoint.ChildChip(InstanceId, portName)))
             {
                 throw new InvalidOperationException($"Chip input '{portName}' is driven by a child-network connection.");
@@ -317,6 +332,15 @@ public sealed class PanelOwnedChipNetworkInstance
                     ChipDiagnosticCodes.UpgradeCandidateInvalid,
                     $"network.instances/{InstanceId.Value}",
                     "Upgrade a nested chip by upgrading its owning chip definition.");
+                return false;
+            }
+
+            if (_parentNetwork.IsStepping)
+            {
+                diagnostic = ChipData.Error(
+                    ChipDiagnosticCodes.UpgradeCandidateInvalid,
+                    $"network.instances/{InstanceId.Value}",
+                    "A chip cannot be upgraded while its parent network is stepping.");
                 return false;
             }
 
