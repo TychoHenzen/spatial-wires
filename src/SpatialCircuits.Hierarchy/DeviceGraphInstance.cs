@@ -72,17 +72,18 @@ public sealed class DeviceGraphInstance
     private const string NodeBackendTargetPrefix = NodeDeviceBackendDefinition.TargetStableIdPrefix;
 
     private DeviceGraphDefinition _definition;
-    private DeterministicScheduler _scheduler = new();
+    private DeterministicScheduler _scheduler;
     private Dictionary<string, DeviceRuntime> _devices = new(StringComparer.Ordinal);
     private Dictionary<string, LaneRuntime> _lanes = new(StringComparer.Ordinal);
     private ImmutableArray<AcceptedSchedulerCommand> _replayCommands;
     private int _nextReplayCommandIndex;
     private bool _isStepping;
 
-    public DeviceGraphInstance(DeviceGraphDefinition definition)
+    public DeviceGraphInstance(DeviceGraphDefinition definition, long initialTick = 0)
     {
         ArgumentNullException.ThrowIfNull(definition);
         _definition = definition;
+        _scheduler = new DeterministicScheduler(initialTick);
 
         foreach (var device in definition.Devices)
         {
@@ -114,6 +115,70 @@ public sealed class DeviceGraphInstance
     public DeviceGraphDefinition Definition => _definition;
 
     public long CurrentTick => _scheduler.CurrentTick;
+
+    public void ExtendDefinition(DeviceGraphDefinition definition)
+    {
+        EnsureNotStepping();
+        ArgumentNullException.ThrowIfNull(definition);
+        if (definition.Id != _definition.Id)
+        {
+            throw new ArgumentException("Device graph updates must keep the graph identifier.", nameof(definition));
+        }
+
+        var nextDevices = definition.Devices.ToDictionary(device => device.Id);
+        var nextLanes = definition.Lanes.ToDictionary(lane => lane.Id);
+        var nextBundles = definition.Bundles.ToDictionary(bundle => bundle.Id);
+        if (_definition.Devices.Any(device =>
+                !nextDevices.TryGetValue(device.Id, out var next) || !ReferenceEquals(device.Backend, next.Backend)) ||
+            _definition.Lanes.Any(lane => !nextLanes.TryGetValue(lane.Id, out var next) || next != lane) ||
+            _definition.Bundles.Any(bundle =>
+                !nextBundles.TryGetValue(bundle.Id, out var next) ||
+                !bundle.LaneIds.SequenceEqual(next.LaneIds)))
+        {
+            throw new ArgumentException(
+                "Device graph updates can only append devices, lanes, or bundles.",
+                nameof(definition));
+        }
+
+        var existingDeviceIds = _devices.Keys.ToHashSet(StringComparer.Ordinal);
+        var addedDevices = definition.Devices
+            .Where(device => !existingDeviceIds.Contains(device.Id.Value))
+            .ToArray();
+        var existingLaneIds = _lanes.Keys.ToHashSet(StringComparer.Ordinal);
+        var addedLanes = definition.Lanes
+            .Where(lane => !existingLaneIds.Contains(lane.Id.Value))
+            .ToArray();
+
+        foreach (var lane in addedLanes)
+        {
+            _ = checked(CurrentTick + lane.Latency);
+        }
+
+        var runtimes = addedDevices.Select(device => (device, runtime: CreateRuntime(device, CurrentTick)))
+            .ToArray();
+        foreach (var (device, runtime) in runtimes)
+        {
+            _scheduler.RegisterTarget(device.Id.Value);
+            _devices.Add(device.Id.Value, runtime);
+            if (device.Backend is NodeDeviceBackendDefinition)
+            {
+                _scheduler.RegisterTarget(NodeBackendTargetId(device.Id));
+            }
+        }
+
+        _definition = definition;
+        var lanes = addedLanes.Select(lane =>
+        {
+            var target = _scheduler.RegisterTarget(lane.Id.Value);
+            var runtime = new LaneRuntime(lane, target.Incarnation, InitialSignal(lane.Target, definition));
+            _lanes.Add(lane.Id.Value, runtime);
+            return runtime;
+        }).OrderBy(lane => lane.Definition.Id.Value, StringComparer.Ordinal);
+        foreach (var lane in lanes)
+        {
+            ScheduleLaneTransition(lane, ReadOutput(lane.Definition.Source), CurrentTick, isRelease: false);
+        }
+    }
 
     public ImmutableArray<AcceptedSchedulerCommand> AcceptedCommands =>
         _scheduler.AcceptedCommands.ToImmutableArray();
@@ -1520,7 +1585,7 @@ public sealed class DeviceGraphInstance
     private static DeviceRuntime CreateRuntime(DeviceDefinition definition, long fromTick)
     {
         var panel = definition.Backend is PanelDeviceBackendDefinition panelBackend
-            ? new PanelRuntimeInstance(panelBackend.Panel)
+            ? new PanelRuntimeInstance(panelBackend.Panel, initialTick: fromTick)
             : null;
         var inputs = panel is null
             ? definition.Ports.Where(port => port.Direction == DevicePortDirection.Input)

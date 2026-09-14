@@ -509,5 +509,299 @@
     "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
     "author": "Codex independent review",
     "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "1382d35ac55ccab6ddcb174915255db8868b52a9ca894aa744fd4f32fd5de468",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "1bb3403d92170be6f1cde2203fbb2d40d224fbafb3b8515f371abce5fd73ac6a",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a batched waveform control that accepts exact-tick samples from the dock and test surface. The fresh independent completion review verified the raw glitch display.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "1e24b45c84d67e30456f635049024df6a8fdb43451538551ec2f45243030a657",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "1ebd92808e4605a78b3815401ca6f6ce8196f5adb462593a4120814772fc7261",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "1f9ecb9f2db6ae248e030d926dc9a9987774be0d00058c29c14240e744869f39",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "23ba0b304b491e18290cb38153a29589b10c8cba2dfc202fd4491256dbcf49ed",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires Godot editor controls for the public workbench lifecycle. The fresh independent completion review verified Run, Pause, Step, practice waveform, and teardown behavior.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "244ace01569177c0b8a7b89a6509d3096afbbcb2910d875da3885b049e244bc0",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires Godot editor controls for the public workbench lifecycle. The fresh independent completion review verified Run, Pause, Step, practice waveform, and teardown behavior.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "2ea11e75f04127f19d2d6edb23f6ecb1a724a5fdf199b85f3ea709a025b79fda",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 acceptance criterion 8 requires a callable public XOR-to-delayed-device practice and its exact trace result. The fresh independent completion review and Godot tests verified the public practice.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "32c001fde291ca8e283d99d31d8feeef733a20bb983ffc5df226f1f977c98161",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public immutable workbench definition for validated editing, staging, and display. The fresh independent completion review verified this state boundary against the acceptance criteria.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "423bccbd2530263871c093f173ad350305094f3e8888b9715ff813a85f0add2d",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "47e6958c2a675881d72b08b9c2a35668e4ed21c5180d63415eec83f8ea5e0a5d",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires one batched Godot canvas and an input callback for public panel editing. The fresh independent completion review verified the one-control rendering and cell mapping.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "51ed4565c15271d07e8fd4bc574d7e84f072274e66a0006f56525826a727321f",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "53dc9010ca33cea094b235f5ac0d05d45753dc68391d8d5688b3721bb651eab4",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires one batched Godot canvas and an input callback for public panel editing. The fresh independent completion review verified the one-control rendering and cell mapping.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "5fd2c8f238d72d77c50aaf3501b1e2f5c61972132ba95869c76c576c51d04b32",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a batched waveform control that accepts exact-tick samples from the dock and test surface. The fresh independent completion review verified the raw glitch display.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "68cceb42bb4ef40c5b4146ca1070b17b97038ed1071345cac3472c89bc24921b",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "6bc4e7ff02b381db6aa33463fa92fa41b3d3ab8dd4d34432995ca82ce27427b6",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires placed chips to run and topology additions to preserve their current tick and runtime state. The fresh independent completion review checked the append path and direct tests. Retain this PBI-scoped runtime API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "7003b02f95e457f990374cd8bba95f0781b70cc14db23e078e762844b8cd0558",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "7cdb3a57b06506eb1e3ec00d055fb6dd9f3ad3b97da0285e4ea2f6c0ff8d6b09",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "837e69536da003250eaec78e59d028e92e4073479004c777331a1270f9bb6b21",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "8439ded8cb610a3cab422b43f4f5aec4fec4a4d01f8910b3891ed0a066c64deb",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public immutable workbench definition for validated editing, staging, and display. The fresh independent completion review verified this state boundary against the acceptance criteria.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "85b3b68396fc37a1c1b169d0dedc5c9cfdd59addcf41c1c126670883a781ed50",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a batched waveform control that accepts exact-tick samples from the dock and test surface. The fresh independent completion review verified the raw glitch display.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "8baf1df982fd954be6a6e599f387e6ccd4d9b52ae9472941f437ce9a206a6f17",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "8d517910d5901fd3612210dcfe178405929214e7fa742d36954f7d4c82c0e316",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "9981219bf1306e2f02bf0c18a2ef25f84d849dd42fbae6a7686182149f4c9ac6",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires placed chips to run and topology additions to preserve their current tick and runtime state. The fresh independent completion review checked the append path and direct tests. Retain this PBI-scoped runtime API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "9aa3c00e74c87c071fcf2397fefa318908796b8fd5f9748f8a642a6c086f4126",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires placed chips to run and topology additions to preserve their current tick and runtime state. The fresh independent completion review checked the append path and direct tests. Retain this PBI-scoped runtime API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "9b857f227a48adbef33ee1327a11dc089608c48e819af1a64a4cc315a7c4b023",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "9d18a83e25fe3b4e0c60f2cf6ff62feac3d6f9d298a63dd1d3cf5d6e5f1bbcd9",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "9f286ede2b8358d3500a8b7c8aa41929da9ad3b53d33c0b5c5f3ccfbf6d91962",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "b2a13185b11f9740dfadc487debe0481a7fe2fc5303d0ee0f8efcb74eafad208",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires one batched Godot canvas and an input callback for public panel editing. The fresh independent completion review verified the one-control rendering and cell mapping.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "b3156e6aed17f333e5c97fb16d29b71b8d2d4998d696f783bc71d2c490897ac3",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "c58341ca0e439fc46c65a88d1857e63b423df88197ce83c706d5357ac63d3e0e",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires Godot editor controls for the public workbench lifecycle. The fresh independent completion review verified Run, Pause, Step, practice waveform, and teardown behavior.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "c8254efd773e8fc812c5fa8b9132631ed084f4d9545c5d36e9a2c1a061cd0590",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires one batched Godot canvas and an input callback for public panel editing. The fresh independent completion review verified the one-control rendering and cell mapping.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "cf656acc4710867b7fcaa47c8eb5834a454bdce30ae26ef498c0b72faa3b60e9",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "cfec80917c9feb4e0fe8d8b427c90e62e0c0de5e610f1fcd4714d0db7f273558",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 acceptance criterion 8 requires a callable public XOR-to-delayed-device practice and its exact trace result. The fresh independent completion review and Godot tests verified the public practice.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "d78528dabee20a0a63cbed2fcbb244ede087b67d09897df384a89be72307d78b",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "d96dc35733c184e9578ea6a5aff27dfe9231e328ac6d5a6a09dee95269457bfa",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires one batched Godot canvas and an input callback for public panel editing. The fresh independent completion review verified the one-control rendering and cell mapping.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "dac1870d5ebd1006c0e59d06766e91309827d4081792cebdd5fe69db3206919d",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "dd5b198a73f67a5eec886957f1cfe9211aa02b38830462142905570d452f6392",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "df2dd280b78d1f0952220d74a361257a41e395c18b733b366a02dfaeff493081",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires placed chips to run and topology additions to preserve their current tick and runtime state. The fresh independent completion review checked the append path and direct tests. Retain this PBI-scoped runtime API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "e00106fc3fede26468eddbb6fb06100c5f5ce092a0a2da730d0bd0eb7a9f6642",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires a public pure workbench session for validated edits, staging, exact microticks, chip and device inputs, and observable outputs. The fresh independent completion review checked all eight criteria and found no unresolved gap. Retain this PBI-scoped API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "fbe6c81d5395b95a04deb55fdb3ac6489d0742252bec636c6a0f84b849383da1",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires one batched Godot canvas and an input callback for public panel editing. The fresh independent completion review verified the one-control rendering and cell mapping.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "ffbf85d7393916825ab5a3861ad2e7c2277f2a8d31d5a96823611d0da1a9de8f",
+    "fingerprint": "b4109319b2205d8d6b0b62d46e7853fe9e7c787b06aea0330a4f43b34b06735c",
+    "reason": "PBI #11 requires device and cable runtimes to advance with the workbench and preserve state when graph definitions append at commit boundaries. The fresh independent completion review checked the exact-tick tests. Retain this PBI-scoped runtime API.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T22:20:18.337Z"
   }
 ]

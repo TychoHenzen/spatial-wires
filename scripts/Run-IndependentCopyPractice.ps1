@@ -103,14 +103,25 @@ function Write-PracticeProject {
     $testsPath = Join-Path $ProjectRoot "tests"
     New-Item -ItemType Directory -Path $testsPath -Force | Out-Null
 
+    $stagedSourceRoot = Join-Path $ProjectRoot "src"
+    $portableProjects = @(
+        "SpatialCircuits.Core\SpatialCircuits.Core.csproj",
+        "SpatialCircuits.Cells\SpatialCircuits.Cells.csproj",
+        "SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj",
+        "SpatialCircuits.Workbench\SpatialCircuits.Workbench.csproj",
+        "SpatialCircuits.Runner\SpatialCircuits.Runner.csproj"
+    ) | ForEach-Object {
+        $projectPath = [System.Security.SecurityElement]::Escape((Join-Path $stagedSourceRoot $_))
+        "    <ProjectReference Include=`"$projectPath`" />"
+    }
+    $projectItemGroup = "  <ItemGroup>`n" + ($portableProjects -join "`n") + "`n  </ItemGroup>`n"
+
     [System.IO.File]::WriteAllText(
         (Join-Path $ProjectRoot "global.json"),
         "{`n  `"sdk`": {`n    `"version`": `"8.0.410`",`n    `"rollForward`": `"disable`"`n  }`n}`n",
         [System.Text.UTF8Encoding]::new($false))
 
-    [System.IO.File]::WriteAllText(
-        (Join-Path $ProjectRoot "SpatialWires.IndependentConsumer.csproj"),
-        @'
+    $projectText = @'
 <Project Sdk="Godot.NET.Sdk/4.7.1">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -121,12 +132,20 @@ function Write-PracticeProject {
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="src\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="gdUnit4.api" Version="5.0.0" />
     <PackageReference Include="gdUnit4.test.adapter" Version="3.0.0" />
   </ItemGroup>
 </Project>
-'@ + "`n",
+'@ + "`n"
+    $projectText = $projectText.Replace("</Project>", $projectItemGroup + "</Project>")
+    [System.IO.File]::WriteAllText(
+        (Join-Path $ProjectRoot "SpatialWires.IndependentConsumer.csproj"),
+        $projectText,
         [System.Text.UTF8Encoding]::new($false))
 
     [System.IO.File]::WriteAllText(
@@ -183,20 +202,14 @@ function Enable-HostAdapterPractice {
 
     $projectPath = Join-Path $ProjectRoot "SpatialWires.IndependentConsumer.csproj"
     $projectText = [System.IO.File]::ReadAllText($projectPath)
-    if ($projectText.IndexOf("SpatialCircuits.Hierarchy.csproj", [System.StringComparison]::Ordinal) -ge 0) {
+    if ($projectText.IndexOf("SpatialCircuitResourceAdapter.cs", [System.StringComparison]::Ordinal) -ge 0) {
         throw "Resource adapter practice references are already present."
     }
 
-    $coreProject = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "src\SpatialCircuits.Core\SpatialCircuits.Core.csproj"))
-    $cellsProject = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "src\SpatialCircuits.Cells\SpatialCircuits.Cells.csproj"))
-    $hierarchyProject = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "src\SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj"))
     $adapterSource = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "SpatialCircuitResourceAdapter.cs"))
     $nodeBindingSource = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "SpatialCircuitNodeBinding.cs"))
     $projectItems = @"
   <ItemGroup>
-    <ProjectReference Include="$coreProject" />
-    <ProjectReference Include="$cellsProject" />
-    <ProjectReference Include="$hierarchyProject" />
     <Compile Include="$adapterSource" Link="SpatialCircuitResourceAdapter.cs" />
     <Compile Include="$nodeBindingSource" Link="SpatialCircuitNodeBinding.cs" />
   </ItemGroup>
@@ -284,7 +297,7 @@ try {
         -WorkingDirectory $resolvedRunRoot `
         -Environment @{ GODOT_BIN = $resolvedGodot } | Out-Null
 
-    Write-Output "Independent-copy gdUnit4 practice passed."
+    Write-Output "Staged-addon integration practice passed (staged source dependencies available)."
     Write-Output "Practice root: $resolvedRunRoot"
     Write-Output "Manifest SHA-256: $manifestSha256"
 }

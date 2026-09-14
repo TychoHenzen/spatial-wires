@@ -40,7 +40,8 @@ public sealed class PanelRuntimeInstance
 
     public PanelRuntimeInstance(
         PanelDefinition definition,
-        CustomCellRuleRegistry? customCellRules = null)
+        CustomCellRuleRegistry? customCellRules = null,
+        long initialTick = 0)
     {
         ArgumentNullException.ThrowIfNull(definition);
         Id = definition.Id;
@@ -53,7 +54,7 @@ public sealed class PanelRuntimeInstance
             .Select((cell, index) => CreateRuntimeCellState(cell, _customRules[index]))
             .ToArray();
         _targetHandles = new SchedulerTargetHandle?[_cells.Length];
-        _scheduler = new DeterministicScheduler(Evaluate);
+        _scheduler = new DeterministicScheduler(initialTick, Evaluate);
         for (var index = 0; index < _cells.Length; index++)
         {
             if (IsActive(_cells[index]))
