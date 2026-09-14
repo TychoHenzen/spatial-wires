@@ -12,6 +12,14 @@ Set-StrictMode -Version Latest
 
 $repositoryPath = (Resolve-Path -LiteralPath $RepositoryRoot).Path
 $sourceAddonPath = Join-Path $repositoryPath "addons\spatial_circuits"
+$sourceRootPath = Join-Path $repositoryPath "src"
+$portableProjectNames = @(
+    "SpatialCircuits.Core",
+    "SpatialCircuits.Cells",
+    "SpatialCircuits.Hierarchy",
+    "SpatialCircuits.Workbench",
+    "SpatialCircuits.Runner"
+)
 
 if (-not (Test-Path -LiteralPath $sourceAddonPath -PathType Container)) {
     throw "Spatial Circuits addon source does not exist: '$sourceAddonPath'."
@@ -19,6 +27,7 @@ if (-not (Test-Path -LiteralPath $sourceAddonPath -PathType Container)) {
 
 $outputPath = [System.IO.Path]::GetFullPath($OutputRoot)
 $stagedAddonPath = Join-Path $outputPath "addons\spatial_circuits"
+$stagedSourceRoot = Join-Path $outputPath "src"
 $manifestName = "spatial-circuits.manifest.json"
 $binaryExtensions = @(".dll", ".exe", ".pdb", ".so", ".dylib", ".a", ".lib")
 $metadataExtensions = @(".csproj", ".fsproj", ".vbproj", ".props", ".targets", ".cfg")
@@ -132,9 +141,51 @@ $manifestPath = Join-Path $stagedAddonPath $manifestName
 $manifestJson = $manifest | ConvertTo-Json -Depth 4
 [System.IO.File]::WriteAllText($manifestPath, "$manifestJson`n", [System.Text.UTF8Encoding]::new($false))
 
+$dependencyFileCount = 0
+if (Test-Path -LiteralPath $sourceRootPath -PathType Container) {
+    if (Test-Path -LiteralPath $stagedSourceRoot) {
+        throw "Output root already contains staged source dependencies: '$stagedSourceRoot'."
+    }
+
+    $normalizedSourceRootPath = [System.IO.Path]::GetFullPath($sourceRootPath).TrimEnd("\")
+    $normalizedStagedSourceRoot = [System.IO.Path]::GetFullPath($stagedSourceRoot).TrimEnd("\")
+    if ($normalizedStagedSourceRoot.Equals($normalizedSourceRootPath, [System.StringComparison]::OrdinalIgnoreCase) -or
+        $normalizedStagedSourceRoot.StartsWith("$normalizedSourceRootPath\", [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Output root would overwrite source projects: '$normalizedStagedSourceRoot'."
+    }
+
+    foreach ($projectName in $portableProjectNames) {
+        $sourceProjectPath = Join-Path $sourceRootPath $projectName
+        $projectFilePath = Join-Path $sourceProjectPath "$projectName.csproj"
+        if (-not (Test-Path -LiteralPath $projectFilePath -PathType Leaf)) {
+            throw "Portable source project does not exist: '$projectFilePath'."
+        }
+
+        $projectFiles = Get-ChildItem -LiteralPath $sourceProjectPath -File -Recurse |
+            Where-Object {
+                $_.Extension -in @(".cs", ".csproj") -and
+                $_.FullName -notmatch "[\\/](bin|obj)[\\/]"
+            } |
+            Sort-Object { Get-PortableRelativePath -BasePath $sourceRootPath -Path $_.FullName }
+
+        foreach ($sourceFile in $projectFiles) {
+            if (($sourceFile.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+                throw "Portable source file '$($sourceFile.FullName)' is a linked filesystem entry."
+            }
+
+            $relativePath = Get-PortableRelativePath -BasePath $sourceRootPath -Path $sourceFile.FullName
+            $destinationPath = Join-Path $stagedSourceRoot $relativePath.Replace("/", [System.IO.Path]::DirectorySeparatorChar)
+            New-Item -ItemType Directory -Path (Split-Path -Parent $destinationPath) -Force | Out-Null
+            Copy-Item -LiteralPath $sourceFile.FullName -Destination $destinationPath
+            $dependencyFileCount++
+        }
+    }
+}
+
 [PSCustomObject]@{
     AddonPath = $stagedAddonPath
     ManifestPath = $manifestPath
     FileCount = $manifestFiles.Count
+    DependencyFileCount = $dependencyFileCount
     ManifestSha256 = Get-Sha256 -Path $manifestPath
 }

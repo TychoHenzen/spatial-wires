@@ -66,6 +66,16 @@ try {
     Assert-True (Test-Path -LiteralPath (Join-Path $first.AddonPath "plugin.cfg") -PathType Leaf) "The staged addon is missing plugin.cfg."
     Assert-True (-not (Test-Path -LiteralPath (Join-Path $firstOutput "addons\gdUnit4"))) "The staged product includes gdUnit4."
     Assert-True ($first.ManifestSha256 -eq $second.ManifestSha256) "Repeated staging produced different manifests."
+    foreach ($projectName in @(
+        "SpatialCircuits.Core",
+        "SpatialCircuits.Cells",
+        "SpatialCircuits.Hierarchy",
+        "SpatialCircuits.Workbench",
+        "SpatialCircuits.Runner"
+    )) {
+        $projectFile = Join-Path $firstOutput "src\$projectName\$projectName.csproj"
+        Assert-True (Test-Path -LiteralPath $projectFile -PathType Leaf) "Staged source dependency is missing: '$projectName'."
+    }
 
     $manifest = Get-Content -LiteralPath $first.ManifestPath -Raw | ConvertFrom-Json
     $paths = @($manifest.files.path)

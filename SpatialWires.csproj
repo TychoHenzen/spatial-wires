@@ -14,5 +14,7 @@
     <ProjectReference Include="src\SpatialCircuits.Core\SpatialCircuits.Core.csproj" />
     <ProjectReference Include="src\SpatialCircuits.Cells\SpatialCircuits.Cells.csproj" />
     <ProjectReference Include="src\SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj" />
+    <ProjectReference Include="src\SpatialCircuits.Workbench\SpatialCircuits.Workbench.csproj" />
+    <ProjectReference Include="src\SpatialCircuits.Runner\SpatialCircuits.Runner.csproj" />
   </ItemGroup>
 </Project>

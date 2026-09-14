@@ -25,7 +25,20 @@ public sealed class DeterministicScheduler
 
     public DeterministicScheduler(
         Func<SchedulerEvaluationContext, IEnumerable<SchedulerProposal>?>? evaluator = null)
+        : this(0, evaluator)
     {
+    }
+
+    public DeterministicScheduler(
+        long initialTick,
+        Func<SchedulerEvaluationContext, IEnumerable<SchedulerProposal>?>? evaluator = null)
+    {
+        if (initialTick < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(initialTick), "Initial tick cannot be negative.");
+        }
+
+        CurrentTick = initialTick;
         _evaluator = evaluator;
     }
 

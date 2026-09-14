@@ -21,18 +21,22 @@ public sealed record ChipNetworkTickResult(
 /// <summary>Runs one panel and its panel-owned child chips on independent hidden source grids.</summary>
 public sealed class PanelOwnedChipNetworkInstance
 {
-    private readonly PanelDefinition _ownerPanel;
+    private PanelDefinition _ownerPanel;
     private readonly PanelRuntimeInstance _ownerRuntime;
     private readonly Dictionary<string, ChipInstance> _instances;
     private PanelOwnedChipNetworkDefinition _definition;
+    private ChipDefinitionCatalog _catalog;
+    private readonly CustomCellRuleRegistry? _customCellRules;
     private bool _isStepping;
 
     public PanelOwnedChipNetworkInstance(
         PanelDefinition ownerPanel,
         PanelOwnedChipNetworkDefinition definition,
         ChipDefinitionCatalog catalog,
-        CustomCellRuleRegistry? customCellRules = null)
-        : this(ownerPanel, new PanelRuntimeInstance(ownerPanel, customCellRules), definition, catalog, customCellRules, isRoot: true)
+        CustomCellRuleRegistry? customCellRules = null,
+        long initialTick = 0)
+        : this(ownerPanel, new PanelRuntimeInstance(ownerPanel, customCellRules, initialTick), definition, catalog,
+            customCellRules, isRoot: true)
     {
     }
 
@@ -51,6 +55,8 @@ public sealed class PanelOwnedChipNetworkInstance
         _ownerPanel = ownerPanel;
         _ownerRuntime = ownerRuntime;
         _definition = definition;
+        _catalog = catalog;
+        _customCellRules = customCellRules;
         IsRoot = isRoot;
         var diagnostics = definition.Validate(ownerPanel, catalog);
         if (diagnostics.Length > 0)
@@ -64,13 +70,18 @@ public sealed class PanelOwnedChipNetworkInstance
             var chipDefinition = catalog.Resolve(child.DefinitionId, child.ContentHash);
             _instances.Add(
                 child.InstanceId.Value,
-                new ChipInstance(child.InstanceId, chipDefinition, this, catalog, customCellRules));
+                new ChipInstance(child.InstanceId, chipDefinition, this, catalog, customCellRules,
+                    ownerRuntime.CurrentTick));
         }
     }
 
     public PanelOwnedChipNetworkDefinition Definition => _definition;
 
     public CircuitId OwnerPanelId => _ownerPanel.Id;
+
+    public long CurrentTick => _ownerRuntime.CurrentTick;
+
+    public ImmutableArray<ProbeSample> ProbeHistory => _ownerRuntime.ProbeHistory;
 
     internal bool IsRoot { get; }
 
@@ -85,6 +96,8 @@ public sealed class PanelOwnedChipNetworkInstance
             ? instance
             : throw new KeyNotFoundException($"Chip instance '{instanceId}' is not defined in this panel network.");
 
+    public LogicValue GetOutput(PortId portId) => _ownerRuntime.GetOutput(portId);
+
     public void SetInput(PortId portId, LogicValue value)
     {
         EnsureNotStepping();
@@ -96,6 +109,90 @@ public sealed class PanelOwnedChipNetworkInstance
         }
 
         _ownerRuntime.SetInput(portId, value);
+    }
+
+    public void UpdateOwnerPanel(PanelDefinition panel, GridCoordinate location)
+    {
+        EnsureNotStepping();
+        ArgumentNullException.ThrowIfNull(panel);
+        if (!IsRoot || panel.Id != OwnerPanelId || panel.Width != _ownerPanel.Width ||
+            panel.Height != _ownerPanel.Height)
+        {
+            throw new ArgumentException("Updated panel does not match the root chip network.", nameof(panel));
+        }
+
+        var diagnostics = _definition.Validate(panel, _catalog);
+        if (diagnostics.Length > 0)
+        {
+            throw new ChipDefinitionException(diagnostics);
+        }
+
+        var before = _ownerPanel.GetCell(location);
+        var after = panel.GetCell(location);
+        if (!ReferenceEquals(before, after))
+        {
+            if (after is null)
+            {
+                if (before is not null)
+                {
+                    _ownerRuntime.RemoveCell(before.Id);
+                }
+            }
+            else
+            {
+                _ownerRuntime.ReplaceCell(after);
+            }
+        }
+
+        _ownerPanel = panel;
+    }
+
+    public void ExtendDefinition(PanelOwnedChipNetworkDefinition definition, ChipDefinitionCatalog catalog)
+    {
+        EnsureNotStepping();
+        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(catalog);
+        if (!IsRoot || definition.OwnerPanelId != OwnerPanelId ||
+            !_definition.Connections.SequenceEqual(definition.Connections))
+        {
+            throw new ArgumentException(
+                "Chip network updates can only append instances to the same root and connections.",
+                nameof(definition));
+        }
+
+        var nextInstances = definition.Instances.ToDictionary(instance => instance.InstanceId.Value,
+            StringComparer.Ordinal);
+        if (_definition.Instances.Any(instance =>
+                !nextInstances.TryGetValue(instance.InstanceId.Value, out var next) ||
+                next.DefinitionId != instance.DefinitionId || next.ContentHash != instance.ContentHash))
+        {
+            throw new ArgumentException("Chip network updates must preserve existing instance pins.", nameof(definition));
+        }
+
+        var diagnostics = definition.Validate(_ownerPanel, catalog);
+        if (diagnostics.Length > 0)
+        {
+            throw new ChipDefinitionException(diagnostics);
+        }
+
+        var existingIds = _instances.Keys.ToHashSet(StringComparer.Ordinal);
+        var additions = definition.Instances
+            .Where(instance => !existingIds.Contains(instance.InstanceId.Value))
+            .Select(instance =>
+            {
+                var chipDefinition = catalog.Resolve(instance.DefinitionId, instance.ContentHash);
+                return (instance.InstanceId, runtime: new ChipInstance(
+                    instance.InstanceId, chipDefinition, this, catalog, _customCellRules, CurrentTick));
+            })
+            .ToArray();
+
+        foreach (var (instanceId, runtime) in additions)
+        {
+            _instances.Add(instanceId.Value, runtime);
+        }
+
+        _definition = definition;
+        _catalog = catalog;
     }
 
     /// <summary>Propagates named connections from the prior tick, then steps every hidden source grid once.</summary>
@@ -160,6 +257,7 @@ public sealed class PanelOwnedChipNetworkInstance
         }
 
         _definition = updated;
+        _catalog = catalog;
     }
 
     internal bool TryRestoreChildrenFrom(
@@ -258,13 +356,14 @@ public sealed class PanelOwnedChipNetworkInstance
             ChipDefinition definition,
             PanelOwnedChipNetworkInstance parentNetwork,
             ChipDefinitionCatalog catalog,
-            CustomCellRuleRegistry? customCellRules)
+            CustomCellRuleRegistry? customCellRules,
+            long initialTick)
         {
             InstanceId = instanceId;
             _definition = definition;
             _parentNetwork = parentNetwork;
             _customCellRules = customCellRules;
-            _runtime = new PanelRuntimeInstance(definition.SourcePanel, customCellRules);
+            _runtime = new PanelRuntimeInstance(definition.SourcePanel, customCellRules, initialTick);
             _children = new PanelOwnedChipNetworkInstance(
                 definition.SourcePanel,
                 _runtime,
@@ -363,7 +462,8 @@ public sealed class PanelOwnedChipNetworkInstance
                     admitted,
                     _parentNetwork,
                     catalog,
-                    _customCellRules);
+                    _customCellRules,
+                    _runtime.CurrentTick);
             }
             catch (Exception exception) when (exception is ArgumentException or InvalidOperationException)
             {

@@ -35,6 +35,7 @@ jobs:
           dotnet restore tests/SpatialCircuits.Cells.Tests/SpatialCircuits.Cells.Tests.csproj
           dotnet restore tests/SpatialCircuits.Hierarchy.Tests/SpatialCircuits.Hierarchy.Tests.csproj
           dotnet restore tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj
+          dotnet restore tests/SpatialCircuits.Workbench.Tests/SpatialCircuits.Workbench.Tests.csproj
 
       - name: Run core tests
         run: dotnet test tests/SpatialCircuits.Core.Tests/SpatialCircuits.Core.Tests.csproj --configuration Release --no-restore --nologo --verbosity minimal
@@ -47,6 +48,9 @@ jobs:
 
       - name: Run runner tests
         run: dotnet test tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj --configuration Release --no-restore --nologo --verbosity minimal
+
+      - name: Run workbench tests
+        run: dotnet test tests/SpatialCircuits.Workbench.Tests/SpatialCircuits.Workbench.Tests.csproj --configuration Release --no-restore --nologo --verbosity minimal
 
       - name: Run portable boundary tests
         run: >-
@@ -96,7 +100,8 @@ jobs:
             'tests/SpatialCircuits.Core.Tests/SpatialCircuits.Core.Tests.csproj',
             'tests/SpatialCircuits.Cells.Tests/SpatialCircuits.Cells.Tests.csproj',
             'tests/SpatialCircuits.Hierarchy.Tests/SpatialCircuits.Hierarchy.Tests.csproj',
-            'tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj'
+            'tests/SpatialCircuits.Runner.Tests/SpatialCircuits.Runner.Tests.csproj',
+            'tests/SpatialCircuits.Workbench.Tests/SpatialCircuits.Workbench.Tests.csproj'
           )
           $findings = foreach ($project in $projects) {
             $reportJson = dotnet list $project package --vulnerable --include-transitive --format json | Out-String

@@ -25,5 +25,8 @@
     <None Include="..\..\examples\stage-06\xor-chip.fixture.json"
           Link="Fixtures\xor-chip.fixture.json"
           CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\examples\stage-04\xor-glitch.fixture.json"
+          Link="Fixtures\xor-glitch.fixture.json"
+          CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

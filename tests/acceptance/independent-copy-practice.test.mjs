@@ -9,7 +9,7 @@ const repositoryRoot = path.resolve(testDirectory, "..", "..");
 const practiceRunner = path.join(repositoryRoot, "scripts", "Run-IndependentCopyPractice.ps1");
 
 // covers: spatial-circuits/package-baseline :: Portable second-consumer practice check :: Addon is moved to an independent consumer
-test("gdUnit4 accepts the staged addon in an independent consumer", () => {
+test("gdUnit4 accepts the staged addon with its explicit source dependencies", () => {
   const result = spawnSync(
     "powershell",
     ["-NoProfile", "-File", practiceRunner, "-GodotExecutable", process.env.GODOT_BIN ?? ""],

@@ -6,7 +6,7 @@
     <TreatNoTestsAsError>true</TreatNoTestsAsError>
   </RunConfiguration>
   <GdUnit4>
-    <Parameters>--headless --quit-after 300</Parameters>
+    <Parameters>--headless --quit-after 3000</Parameters>
     <DisplayName>FullyQualifiedName</DisplayName>
     <CaptureStdOut>true</CaptureStdOut>
     <CompileProcessTimeout>120000</CompileProcessTimeout>
