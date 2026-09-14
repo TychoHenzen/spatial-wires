@@ -406,10 +406,12 @@ public sealed class PanelRuntimeInstance
         var candidateOutputs = new Dictionary<string, LogicValue>(StringComparer.Ordinal);
         foreach (var proposal in transition.Proposals)
         {
-            if (!portByName.TryGetValue(proposal.OutputPort, out var port) ||
+            var outputPort = proposal.OutputPort;
+            if (outputPort is null ||
+                !portByName.TryGetValue(outputPort, out var port) ||
                 !port.CanDrive ||
                 !Enum.IsDefined(proposal.Value) ||
-                !candidateOutputs.TryAdd(proposal.OutputPort, proposal.Value))
+                !candidateOutputs.TryAdd(outputPort, proposal.Value))
             {
                 throw InvalidCustomTransition(cell);
             }

@@ -36,11 +36,13 @@ public sealed class CustomCellRuntimeTests
     }
 
     [Theory]
-    [InlineData(true, false)]
-    [InlineData(false, true)]
+    [InlineData(true, false, false)]
+    [InlineData(false, true, false)]
+    [InlineData(false, false, true)]
     public void InvalidProposalsLeaveTickRuleStateAndRandomStateUnchanged(
         bool duplicateProposals,
-        bool invalidOutputPort)
+        bool invalidOutputPort,
+        bool nullOutputPort)
     {
         var definition = CreatePanel(VersionOne);
         var runtime = new PanelRuntimeInstance(
@@ -49,7 +51,8 @@ public sealed class CustomCellRuntimeTests
                 [CounterRegistration(
                     VersionOne,
                     duplicateProposals: duplicateProposals,
-                    invalidOutputPort: invalidOutputPort)]));
+                    invalidOutputPort: invalidOutputPort,
+                    nullOutputPort: nullOutputPort)]));
         runtime.SetInput(new PortId("signal"), LogicValue.High);
         var before = runtime.CaptureSnapshot();
 
@@ -193,6 +196,7 @@ public sealed class CustomCellRuntimeTests
         bool duplicateProposals = false,
         bool migrateFromVersionOne = false,
         bool invalidOutputPort = false,
+        bool nullOutputPort = false,
         bool failMigration = false,
         Action? onCreate = null) =>
         new(
@@ -207,6 +211,7 @@ public sealed class CustomCellRuntimeTests
                     duplicateProposals,
                     migrateFromVersionOne,
                     invalidOutputPort,
+                    nullOutputPort,
                     failMigration);
             });
 
@@ -274,6 +279,7 @@ public sealed class CustomCellRuntimeTests
         bool duplicateProposals = false,
         bool migrateFromVersionOne = false,
         bool invalidOutputPort = false,
+        bool nullOutputPort = false,
         bool failMigration = false) : ICustomCellRule
     {
         private bool IsVersionTwo { get; } = isVersionTwo;
@@ -312,7 +318,9 @@ public sealed class CustomCellRuntimeTests
                 : LogicValue.High;
             var count = checked((byte)(context.State[^1] + 1));
             var nextState = IsVersionTwo ? ImmutableArray.Create((byte)2, count) : ImmutableArray.Create(count);
-            var proposal = new CustomCellProposal(invalidOutputPort ? "unknown" : "out", output);
+            var proposal = nullOutputPort
+                ? default
+                : new CustomCellProposal(invalidOutputPort ? "unknown" : "out", output);
             var proposals = duplicateProposals
                 ? ImmutableArray.Create(proposal, proposal)
                 : ImmutableArray.Create(proposal);

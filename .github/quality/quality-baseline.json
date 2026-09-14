@@ -1,8 +1,8 @@
 {
   "version": 2,
   "profile": "default",
-  "createdAt": "2026-09-13T23:56:30.423Z",
-  "total": 1238,
+  "createdAt": "2026-09-14T00:37:06.545Z",
+  "total": 1239,
   "files": [
     "addons/gdUnit4/src/dotnet/GdUnit4CSharpApi.cs",
     "addons/spatial_circuits/SpatialCircuitNode.cs",
@@ -104,7 +104,7 @@
     "src/SpatialCircuits.Cells/PanelRuntimeInstance.cs::complexity": 14,
     "src/SpatialCircuits.Core/DeterministicScheduler.cs::complexity": 9,
     "src/SpatialCircuits.Runner/FixtureValidator.cs::complexity": 4,
-    "tests/SpatialCircuits.Cells.Tests/CustomCellRuntimeTests.cs::complexity": 3,
+    "tests/SpatialCircuits.Cells.Tests/CustomCellRuntimeTests.cs::complexity": 4,
     "src/SpatialCircuits.Cells/CustomCells/CustomCellRules.cs::function-length": 2,
     "src/SpatialCircuits.Cells/PanelDefinition.cs::function-length": 5,
     "src/SpatialCircuits.Cells/PanelRuntimeInstance.cs::function-length": 11,
