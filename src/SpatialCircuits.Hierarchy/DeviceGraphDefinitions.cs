@@ -266,7 +266,7 @@ public sealed class TimedDeviceBackendDefinition : DeviceBackendDefinition
 
 public sealed class NodeDeviceBackendDefinition : DeviceBackendDefinition
 {
-    internal const string TargetStableIdPrefix = "node-backend:";
+    internal const string TargetStableIdPrefix = "node-backend/";
 
     private NodeDeviceBackendDefinition(ImmutableArray<DevicePortDefinition> ports) : base(ports)
     {

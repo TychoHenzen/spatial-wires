@@ -181,4 +181,59 @@ public sealed class SpatialCircuitNodeBindingTests
             }
         }
     }
+
+    [TestCase]
+    [RequireGodotRuntime]
+    public void WrongThreadDisposeCanBeRetriedOnTheBoundThread()
+    {
+        var sceneTree = Engine.GetMainLoop() as SceneTree;
+        AssertThat(sceneTree).IsNotNull();
+        var parent = new Node();
+        sceneTree!.Root.AddChild(parent);
+        var node = new SpatialCircuitNode();
+        parent.AddChild(node);
+        SpatialCircuitNodeBinding? binding = null;
+
+        try
+        {
+            var deviceId = new ComponentId("node");
+            var graph = new DeviceGraphInstance(DeviceGraphDefinition.Create(
+                new DefinitionId("graph/node-dispose-thread"),
+                [DeviceDefinition.Create(deviceId, NodeDeviceBackendDefinition.Create(
+                    [DevicePortDefinition.Create("output", DevicePortDirection.Output)]))],
+                []));
+            var calls = 0;
+            node.DeviceStep += _ => calls++;
+            var activeBinding = new SpatialCircuitNodeBinding(graph, deviceId, node);
+            binding = activeBinding;
+
+            var failedOffThread = System.Threading.Tasks.Task.Run(() =>
+            {
+                try
+                {
+                    activeBinding.Dispose();
+                    return false;
+                }
+                catch (InvalidOperationException)
+                {
+                    return true;
+                }
+            }).GetAwaiter().GetResult();
+
+            AssertThat(failedOffThread).IsTrue();
+            AssertThat(graph.Step().Tick).IsEqual(0L);
+            AssertThat(calls).IsEqual(1);
+            activeBinding.Dispose();
+            AssertThat(graph.Step().Tick).IsEqual(1L);
+            AssertThat(calls).IsEqual(1);
+        }
+        finally
+        {
+            binding?.Dispose();
+            if (GodotObject.IsInstanceValid(parent))
+            {
+                parent.Free();
+            }
+        }
+    }
 }

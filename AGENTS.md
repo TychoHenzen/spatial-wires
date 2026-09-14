@@ -69,6 +69,6 @@ Do not create the full layout before its first PBI requires it.
 - Enable nullable reference types in new projects.
 - Prefer immutable definitions and explicit mutable runtime instances.
 - Use stable domain identifiers for circuit definitions and runtime references. Do not persist CLR type names.
-- Reserve the `node-backend:` prefix for synthetic Node scheduler targets. Device and lane identifiers must not use a generated target ID.
+- Reserve the `node-backend/` prefix for synthetic Node scheduler targets. Device and lane identifiers must not use a generated target ID.
 - Keep deterministic ordering explicit for commands, events, and fixture output.
 - Reject invalid zero-delay causal operations at the boundary.

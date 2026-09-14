@@ -40,13 +40,18 @@ public sealed class SpatialCircuitNodeBinding : IDisposable
 
     public void Dispose()
     {
+        if (Volatile.Read(ref _disposed) != 0)
+        {
+            return;
+        }
+
+        EnsureMainThread();
         if (Interlocked.Exchange(ref _disposed, 1) != 0)
         {
             return;
         }
 
         _backend.Invalidate();
-        EnsureMainThread();
         if (GodotObject.IsInstanceValid(_node))
         {
             _node.TreeExiting -= OnTreeExiting;

@@ -55,7 +55,7 @@ public sealed class DeviceGraphInstanceTests
     [Fact]
     public void DefinitionsRejectDeviceAndLaneIdsThatCollideWithNodeBackendTargets()
     {
-        const string targetId = "node-backend:responder";
+        const string targetId = "node-backend/responder";
 
         var responderId = new ComponentId("responder");
         var responder = DeviceDefinition.Create(responderId,
@@ -78,6 +78,12 @@ public sealed class DeviceGraphInstanceTests
 
         Assert.Throws<ArgumentException>(() => DeviceGraphDefinition.Create(
             new DefinitionId("graph/node-lane-target-collision"), [responder, sink], [lane]));
+
+        var namespacedNode = DeviceDefinition.Create(new ComponentId("responder:script"),
+            NodeBackend(DevicePortDefinition.Create("output", DevicePortDirection.Output)));
+        var namespacedGraph = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-namespaced-id"), [namespacedNode], []);
+        Assert.Equal(0L, new DeviceGraphInstance(namespacedGraph).Step().Tick);
     }
 
     [Fact]
@@ -599,7 +605,7 @@ public sealed class DeviceGraphInstanceTests
                 DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
             []);
         var snapshot = new DeviceGraphInstance(definition).CaptureSnapshot();
-        var targetStableId = "node-backend:" + deviceId.Value;
+        var targetStableId = "node-backend/" + deviceId.Value;
         var target = snapshot.Scheduler.Targets.Single(item => item.StableId == targetStableId);
         var malformedEvent = new ScheduledEvent(
             new ScheduledEventKey(
@@ -631,6 +637,47 @@ public sealed class DeviceGraphInstanceTests
     }
 
     [Fact]
+    public void RestoreRejectsPendingNodeEventsWithoutRecordedCommands()
+    {
+        var deviceId = new ComponentId("node");
+        var definition = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-unrecorded-event"),
+            [DeviceDefinition.Create(deviceId, NodeBackend(
+                DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
+            []);
+        var snapshot = new DeviceGraphInstance(definition).CaptureSnapshot();
+        var targetStableId = "node-backend/" + deviceId.Value;
+        var target = snapshot.Scheduler.Targets.Single(item => item.StableId == targetStableId);
+        var unrecordedEvent = new ScheduledEvent(
+            new ScheduledEventKey(
+                1,
+                SchedulerPhase.Deliver,
+                targetStableId,
+                target.Incarnation,
+                "output",
+                targetStableId,
+                "output",
+                "device-node-output",
+                1),
+            LogicValue.High,
+            "1",
+            SourceIncarnation: target.Incarnation);
+        var malformedSnapshot = snapshot with
+        {
+            Scheduler = snapshot.Scheduler with
+            {
+                NextCausalOrdinal = 2,
+                PendingEvents = [unrecordedEvent]
+            }
+        };
+
+        var exception = Assert.Throws<ArgumentException>(() =>
+            new DeviceGraphInstance(definition).RestoreSnapshot(malformedSnapshot));
+
+        Assert.Contains("no applied accepted command", exception.Message);
+    }
+
+    [Fact]
     public void RestoreRejectsUnmatchedNodeDetachAndMalformedPendingNodeCommands()
     {
         var deviceId = new ComponentId("node");
@@ -640,7 +687,7 @@ public sealed class DeviceGraphInstanceTests
                 DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
             []);
         var snapshot = new DeviceGraphInstance(definition).CaptureSnapshot();
-        var targetStableId = "node-backend:" + deviceId.Value;
+        var targetStableId = "node-backend/" + deviceId.Value;
         var target = snapshot.Scheduler.Targets.Single(item => item.StableId == targetStableId);
         var pendingRemoval = SchedulerCommand.RemoveTarget(targetStableId, snapshot.Scheduler.CurrentTick);
         var unmatchedDetach = snapshot with
@@ -734,10 +781,13 @@ public sealed class DeviceGraphInstanceTests
         var restored = new DeviceGraphInstance(definition);
         restored.RestoreSnapshot(snapshot);
         Assert.Equal(1L, restored.Step().Tick);
-        Assert.Equal(2L, restored.Step().Tick);
-        Assert.Equal(3L, restored.Step().Tick);
+        var pendingEventSnapshot = restored.CaptureSnapshot();
+        var resumed = new DeviceGraphInstance(definition);
+        resumed.RestoreSnapshot(pendingEventSnapshot);
+        Assert.Equal(2L, resumed.Step().Tick);
+        Assert.Equal(3L, resumed.Step().Tick);
 
-        Assert.Equal(LogicValue.High, restored.GetOutput(deviceId, "output").Bits[0]);
+        Assert.Equal(LogicValue.High, resumed.GetOutput(deviceId, "output").Bits[0]);
     }
 
     [Fact]
@@ -762,7 +812,7 @@ public sealed class DeviceGraphInstanceTests
 
         var restoredSnapshot = restored.CaptureSnapshot();
         var target = restoredSnapshot.Scheduler.Targets
-            .Single(item => item.StableId == "node-backend:" + deviceId.Value);
+            .Single(item => item.StableId == "node-backend/" + deviceId.Value);
         Assert.Equal(2L, target.Incarnation);
         Assert.True(target.Active);
         Assert.Null(restoredSnapshot.Devices.Single().NodeDetachApplyAtTick);
