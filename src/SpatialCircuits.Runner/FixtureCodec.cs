@@ -146,9 +146,15 @@ public static class FixtureCodec
         var path = $"$.panelScenario.cells[{index}]";
         RequireKind(element, JsonValueKind.Object, path);
         string? portId = null;
+        string? behaviorId = null;
         if (element.TryGetProperty("portId", out var portElement))
         {
             portId = ReadString(portElement, $"{path}.portId");
+        }
+
+        if (element.TryGetProperty("behaviorId", out var behaviorElement))
+        {
+            behaviorId = ReadString(behaviorElement, $"{path}.behaviorId");
         }
 
         var parameters = ImmutableArray<KeyValuePair<string, string>>.Empty;
@@ -171,7 +177,8 @@ public static class FixtureCodec
                 RequireProperty(element, "orientation", $"{path}.orientation"),
                 $"{path}.orientation"),
             portId,
-            parameters);
+            parameters,
+            behaviorId);
     }
 
     private static PanelInputChange ReadPanelInput(JsonElement element, int index)

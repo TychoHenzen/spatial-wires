@@ -1,0 +1,85 @@
+{
+  "fixtureSchema": {
+    "major": 1,
+    "minor": 0
+  },
+  "traceSchema": {
+    "major": 1,
+    "minor": 0
+  },
+  "fixtureId": "stage-05-pattern-detector",
+  "action": "panelScenario",
+  "panelScenario": {
+    "panelId": "stage-05/pattern-detector",
+    "width": 3,
+    "height": 1,
+    "microticks": 5,
+    "cells": [
+      {
+        "cellId": "signal-source",
+        "x": 0,
+        "y": 0,
+        "kind": "input-port",
+        "orientation": "east",
+        "portId": "signal"
+      },
+      {
+        "cellId": "pattern-detector",
+        "x": 1,
+        "y": 0,
+        "kind": "custom",
+        "orientation": "east",
+        "behaviorId": "spatial-wires.examples:pattern-detector/v2",
+        "parameters": {
+          "pattern": "10"
+        }
+      },
+      {
+        "cellId": "pattern-probe",
+        "x": 2,
+        "y": 0,
+        "kind": "probe",
+        "orientation": "east"
+      }
+    ],
+    "inputs": [
+      {
+        "tick": 0,
+        "portId": "signal",
+        "value": "High"
+      },
+      {
+        "tick": 1,
+        "portId": "signal",
+        "value": "Low"
+      }
+    ],
+    "expectations": [
+      {
+        "tick": 0,
+        "probeId": "pattern-probe",
+        "value": "HighImpedance"
+      },
+      {
+        "tick": 1,
+        "probeId": "pattern-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 2,
+        "probeId": "pattern-probe",
+        "value": "Low"
+      },
+      {
+        "tick": 3,
+        "probeId": "pattern-probe",
+        "value": "High"
+      },
+      {
+        "tick": 4,
+        "probeId": "pattern-probe",
+        "value": "Low"
+      }
+    ]
+  }
+}

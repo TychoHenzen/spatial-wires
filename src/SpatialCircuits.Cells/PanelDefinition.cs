@@ -18,7 +18,8 @@ public enum CellKind
     Nand,
     Clock,
     DFlipFlop,
-    StabilityFilter
+    StabilityFilter,
+    Custom
 }
 
 public enum CardinalDirection
@@ -37,6 +38,7 @@ public sealed class PanelCellDefinition
         CellKind kind,
         CardinalDirection orientation,
         PortId? portId,
+        BehaviorId? behaviorId,
         ImmutableSortedDictionary<string, string> parameters,
         CellRuntimeParameters runtimeParameters)
     {
@@ -45,6 +47,7 @@ public sealed class PanelCellDefinition
         Kind = kind;
         Orientation = orientation;
         PortId = portId;
+        BehaviorId = behaviorId;
         Parameters = parameters;
         RuntimeParameters = runtimeParameters;
     }
@@ -59,6 +62,8 @@ public sealed class PanelCellDefinition
 
     public PortId? PortId { get; }
 
+    public BehaviorId? BehaviorId { get; }
+
     public ImmutableSortedDictionary<string, string> Parameters { get; }
 
     internal CellRuntimeParameters RuntimeParameters { get; }
@@ -69,7 +74,8 @@ public sealed class PanelCellDefinition
         CellKind kind,
         CardinalDirection orientation = CardinalDirection.East,
         PortId? portId = null,
-        IEnumerable<KeyValuePair<string, string>>? parameters = null)
+        IEnumerable<KeyValuePair<string, string>>? parameters = null,
+        BehaviorId? behaviorId = null)
     {
         if (!StableData.IsStableId(id.Value))
         {
@@ -89,6 +95,23 @@ public sealed class PanelCellDefinition
                 "Cell orientation must be cardinal.");
         }
 
+        if (kind == CellKind.Custom)
+        {
+            if (behaviorId is not { } behaviorIdValue ||
+                !CircuitValidator.IsSupportedBehaviorId(behaviorIdValue))
+            {
+                throw new ArgumentException(
+                    "Custom cells require a namespaced, versioned behavior identifier.",
+                    nameof(behaviorId));
+            }
+        }
+        else if (behaviorId.HasValue)
+        {
+            throw new ArgumentException(
+                "Only custom cells may have a behavior identifier.",
+                nameof(behaviorId));
+        }
+
         var copiedParameters = (parameters ?? [])
             .ToImmutableSortedDictionary(
                 pair => pair.Key,
@@ -106,6 +129,7 @@ public sealed class PanelCellDefinition
             kind,
             orientation,
             portId,
+            behaviorId,
             copiedParameters,
             runtimeParameters);
     }
@@ -237,7 +261,9 @@ internal readonly record struct CellPortSpec(
 
 internal static class PanelCellPorts
 {
-    internal static ImmutableArray<CellPortSpec> For(PanelCellDefinition cell)
+    internal static ImmutableArray<CellPortSpec> For(
+        PanelCellDefinition cell,
+        ImmutableArray<CustomCellPort> customPorts = default)
     {
         var facing = cell.Orientation;
         var opposite = Opposite(facing);
@@ -268,8 +294,37 @@ internal static class PanelCellPorts
                 new CellPortSpec("in", opposite, true, false, "in"),
                 new CellPortSpec("out", facing, false, true, "out")
             ],
+            CellKind.Custom => CustomPorts(cell, customPorts),
             _ => throw new ArgumentOutOfRangeException(nameof(cell), cell.Kind, "Cell kind is not supported.")
         };
+    }
+
+    private static ImmutableArray<CellPortSpec> CustomPorts(
+        PanelCellDefinition cell,
+        ImmutableArray<CustomCellPort> ports)
+    {
+        if (ports.IsDefault)
+        {
+            throw new InvalidOperationException("Custom cell ports are not registered.");
+        }
+
+        var orientation = cell.Orientation;
+        var facing = CardinalDirection.East;
+        var result = ImmutableArray.CreateBuilder<CellPortSpec>(ports.Length);
+        foreach (var port in ports)
+        {
+            facing = CardinalDirection.East;
+            var direction = port.Direction;
+            while (facing != orientation)
+            {
+                direction = Clockwise(direction);
+                facing = Clockwise(facing);
+            }
+
+            result.Add(new CellPortSpec(port.Name, direction, port.CanReceive, port.CanDrive, port.Name));
+        }
+
+        return result.ToImmutable();
     }
 
     internal static CardinalDirection Opposite(CardinalDirection direction) =>
@@ -364,12 +419,22 @@ internal readonly record struct CellRuntimeParameters(
                 throw new ArgumentException($"Parameter name '{parameter.Key}' is invalid.", nameof(parameters));
             }
 
-            if (!allowed.Contains(parameter.Key, StringComparer.Ordinal))
+            if (parameter.Value is null)
+            {
+                throw new ArgumentException($"Parameter '{parameter.Key}' has no value.", nameof(parameters));
+            }
+
+            if (kind != CellKind.Custom && !allowed.Contains(parameter.Key, StringComparer.Ordinal))
             {
                 throw new ArgumentException(
                     $"Parameter '{parameter.Key}' is not valid for cell kind '{kind}'.",
                     nameof(parameters));
             }
+        }
+
+        if (kind == CellKind.Custom)
+        {
+            return default;
         }
 
         var constantValue = LogicValue.Unknown;

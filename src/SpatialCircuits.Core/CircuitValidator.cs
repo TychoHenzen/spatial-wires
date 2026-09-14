@@ -16,6 +16,11 @@ public static partial class CircuitValidator
         return diagnostics.AsReadOnly();
     }
 
+    public static bool IsSupportedBehaviorId(BehaviorId behaviorId) =>
+        !string.IsNullOrWhiteSpace(behaviorId.Value) &&
+        !ClrTypeNamePattern().IsMatch(behaviorId.Value) &&
+        BehaviorIdPattern().IsMatch(behaviorId.Value);
+
     private static void ValidateCircuitId(Circuit circuit, ICollection<Diagnostic> diagnostics)
     {
         if (!IsStableId(circuit.Id.Value))
@@ -56,7 +61,7 @@ public static partial class CircuitValidator
             return;
         }
 
-        if (!BehaviorIdPattern().IsMatch(behaviorId.Value))
+        if (!IsSupportedBehaviorId(behaviorId))
         {
             Add(diagnostics, DiagnosticCodes.InvalidBehaviorId, path, "Behavior identity must be namespaced and versioned.");
         }

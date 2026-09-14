@@ -1,25 +1,35 @@
+using System.Buffers.Binary;
 using System.Collections.Immutable;
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 using SpatialCircuits.Core;
 
 namespace SpatialCircuits.Cells;
 
-public sealed record ProbeSample(ComponentId ProbeId, long Tick, LogicValue Value);
+public sealed record ProbeSample(ComponentId ProbeId, long Tick, LogicValue Value)
+{
+}
 
 public sealed record PanelTickResult(
     long Tick,
     string Hash,
     ImmutableArray<ProbeSample> ProbeSamples,
     ImmutableSortedDictionary<string, string> Outputs,
-    ImmutableArray<SchedulerDiagnostic> Diagnostics);
+    ImmutableArray<SchedulerDiagnostic> Diagnostics)
+{
+}
 
 public sealed class PanelRuntimeInstance
 {
     private const string NandCommitEvent = "nand-commit";
     private const string FlipFlopCommitEvent = "dff-commit";
     private readonly DeterministicScheduler _scheduler;
+    private readonly CustomCellRuleRegistry _customCellRuleRegistry;
     private readonly List<ProbeSample> _probeHistory = [];
     private PanelCellDefinition?[] _cells;
     private RuntimeCellState[] _states;
+    private CustomCellRuleBinding?[] _customRules;
     private SchedulerTargetHandle?[] _targetHandles;
     private ImmutableArray<CellPortSpec>[] _portSpecs;
     private ImmutableArray<RuntimeConnection>[] _outgoing;
@@ -28,14 +38,20 @@ public sealed class PanelRuntimeInstance
     private RuntimeCellState[]? _workingStates;
     private bool _isStepping;
 
-    public PanelRuntimeInstance(PanelDefinition definition)
+    public PanelRuntimeInstance(
+        PanelDefinition definition,
+        CustomCellRuleRegistry? customCellRules = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         Id = definition.Id;
         Width = definition.Width;
         Height = definition.Height;
         _cells = definition.Cells.ToArray();
-        _states = _cells.Select(cell => new RuntimeCellState(cell)).ToArray();
+        _customCellRuleRegistry = customCellRules ?? CustomCellRuleRegistry.Empty;
+        _customRules = ResolveCustomRules(_cells);
+        _states = _cells
+            .Select((cell, index) => CreateRuntimeCellState(cell, _customRules[index]))
+            .ToArray();
         _targetHandles = new SchedulerTargetHandle?[_cells.Length];
         _scheduler = new DeterministicScheduler(Evaluate);
         for (var index = 0; index < _cells.Length; index++)
@@ -46,7 +62,7 @@ public sealed class PanelRuntimeInstance
             }
         }
 
-        (_portSpecs, _outgoing) = BuildTopology(_cells);
+        (_portSpecs, _outgoing) = BuildTopology(_cells, _customRules);
         RebuildPanelPorts();
     }
 
@@ -122,7 +138,7 @@ public sealed class PanelRuntimeInstance
             _probeHistory.AddRange(samples);
             return new PanelTickResult(
                 result.Tick,
-                result.Hash,
+                ComputeRuntimeHash(result.Hash),
                 samples,
                 CaptureOutputs(),
                 result.Diagnostics);
@@ -132,6 +148,58 @@ public sealed class PanelRuntimeInstance
             _workingStates = null;
             _isStepping = false;
         }
+    }
+
+    public PanelRuntimeSnapshot CaptureSnapshot()
+    {
+        EnsureNotStepping();
+        var cells = ImmutableArray.CreateBuilder<PanelRuntimeCellSnapshot?>(_cells.Length);
+        for (var index = 0; index < _cells.Length; index++)
+        {
+            var cell = _cells[index];
+            cells.Add(cell is null ? null : CaptureCellSnapshot(cell, _states[index]));
+        }
+
+        return new PanelRuntimeSnapshot(
+            Id,
+            Width,
+            Height,
+            cells.ToImmutable(),
+            _scheduler.CaptureSnapshot(),
+            _probeHistory.ToImmutableArray());
+    }
+
+    public void RestoreSnapshot(PanelRuntimeSnapshot snapshot)
+    {
+        ArgumentNullException.ThrowIfNull(snapshot);
+        EnsureNotStepping();
+        ArgumentNullException.ThrowIfNull(snapshot.Scheduler);
+        if (snapshot.PanelId != Id || snapshot.Width != Width || snapshot.Height != Height ||
+            snapshot.Cells.IsDefault || snapshot.Cells.Length != _cells.Length ||
+            snapshot.ProbeHistory.IsDefault)
+        {
+            throw new ArgumentException("Panel runtime snapshot does not match this panel.", nameof(snapshot));
+        }
+
+        var restoredStates = new RuntimeCellState[_cells.Length];
+        for (var index = 0; index < _cells.Length; index++)
+        {
+            var cell = _cells[index];
+            var saved = snapshot.Cells[index];
+            if (!MatchesDefinition(cell, saved))
+            {
+                throw new ArgumentException("Panel runtime snapshot does not match this panel.", nameof(snapshot));
+            }
+
+            restoredStates[index] = saved is null
+                ? new RuntimeCellState(null)
+                : RestoreCellState(cell!, saved, _customRules[index]);
+        }
+
+        _scheduler.RestoreSnapshot(snapshot.Scheduler);
+        _states = restoredStates;
+        _probeHistory.Clear();
+        _probeHistory.AddRange(snapshot.ProbeHistory);
     }
 
     public bool RemoveCell(ComponentId cellId)
@@ -151,13 +219,16 @@ public sealed class PanelRuntimeInstance
             Width,
             Height,
             candidateCells.OfType<PanelCellDefinition>());
+        var validatedCells = validated.Cells.ToArray();
+        var validatedRules = ResolveCustomRules(validatedCells);
 
         if (IsActive(removed))
         {
             _scheduler.RemoveTarget(removed.Id.Value);
         }
 
-        _cells = validated.Cells.ToArray();
+        _cells = validatedCells;
+        _customRules = validatedRules;
         _states[index] = new RuntimeCellState(null);
         _targetHandles[index] = null;
         RefreshTopology(index);
@@ -177,14 +248,17 @@ public sealed class PanelRuntimeInstance
             Width,
             Height,
             candidateCells.OfType<PanelCellDefinition>());
+        var validatedCells = validated.Cells.ToArray();
+        var validatedRules = ResolveCustomRules(validatedCells);
 
         if (IsActive(previous))
         {
             _scheduler.RemoveTarget(previous!.Id.Value);
         }
 
-        _cells = validated.Cells.ToArray();
-        _states[index] = new RuntimeCellState(replacement);
+        _cells = validatedCells;
+        _customRules = validatedRules;
+        _states[index] = CreateRuntimeCellState(replacement, _customRules[index]);
         _targetHandles[index] = IsActive(replacement)
             ? _scheduler.RegisterTarget(replacement.Id.Value)
             : null;
@@ -277,12 +351,84 @@ public sealed class PanelRuntimeInstance
             case CellKind.StabilityFilter:
                 outputs["out"] = EvaluateStabilityFilter(context, index, cell, state);
                 break;
+            case CellKind.Custom:
+                EvaluateCustomCell(context, index, cell, state, outputs);
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(cell), cell.Kind, "Cell kind is not supported.");
         }
 
         return outputs;
     }
+
+    private void EvaluateCustomCell(
+        SchedulerEvaluationContext context,
+        int index,
+        PanelCellDefinition cell,
+        RuntimeCellState state,
+        IDictionary<string, LogicValue> outputs)
+    {
+        var binding = _customRules[index]
+            ?? throw new CustomCellRuleException(
+                CustomCellDiagnosticCodes.RegistrationMissing,
+                $"Custom cell rule '{cell.BehaviorId}' is not registered.");
+        var inputs = ImmutableSortedDictionary.CreateBuilder<string, LogicValue>(StringComparer.Ordinal);
+        foreach (var port in binding.Ports.Where(port => port.CanReceive))
+        {
+            inputs.Add(port.Name, ReadInput(context, index, port.Name));
+        }
+
+        var evaluation = new CustomCellEvaluationContext(
+            context.Tick,
+            inputs.ToImmutable(),
+            cell.Parameters,
+            CopyBytes(state.CustomState),
+            state.CustomRandomState);
+        CustomCellTransition transition;
+        try
+        {
+            transition = binding.Rule.Evaluate(evaluation);
+        }
+        catch (Exception exception) when (exception is not OutOfMemoryException)
+        {
+            throw new CustomCellRuleException(
+                CustomCellDiagnosticCodes.TransitionInvalid,
+                $"Custom cell rule '{cell.BehaviorId}' failed to evaluate.",
+                exception);
+        }
+
+        if (transition is null || transition.Proposals.IsDefault || transition.NextState.IsDefault)
+        {
+            throw InvalidCustomTransition(cell);
+        }
+
+        var portByName = binding.Ports.ToDictionary(port => port.Name, StringComparer.Ordinal);
+        var candidateOutputs = new Dictionary<string, LogicValue>(StringComparer.Ordinal);
+        foreach (var proposal in transition.Proposals)
+        {
+            if (!portByName.TryGetValue(proposal.OutputPort, out var port) ||
+                !port.CanDrive ||
+                !Enum.IsDefined(proposal.Value) ||
+                !candidateOutputs.TryAdd(proposal.OutputPort, proposal.Value))
+            {
+                throw InvalidCustomTransition(cell);
+            }
+        }
+
+        var candidateState = CopyBytes(transition.NextState);
+        ValidateCustomState(binding.Rule, candidateState, cell);
+        state.CustomState = candidateState;
+        state.CustomRandomState = transition.NextRandomState;
+        foreach (var output in candidateOutputs)
+        {
+            outputs.Add(output.Key, output.Value);
+        }
+    }
+
+    private static CustomCellRuleException InvalidCustomTransition(PanelCellDefinition cell) =>
+        new(
+            CustomCellDiagnosticCodes.TransitionInvalid,
+            $"Custom cell '{cell.Id}' returned an invalid transition.");
 
     private void EvaluateConnectedCell(
         SchedulerEvaluationContext context,
@@ -487,7 +633,7 @@ public sealed class PanelRuntimeInstance
 
     private void RefreshTopology(int changedIndex)
     {
-        (_portSpecs, _outgoing) = BuildTopology(_cells);
+        (_portSpecs, _outgoing) = BuildTopology(_cells, _customRules);
         RebuildPanelPorts();
         ResetAdjacentOutputCaches(changedIndex);
     }
@@ -526,12 +672,316 @@ public sealed class PanelRuntimeInstance
             .ToDictionary(item => item.cell!.PortId!.Value, item => item.index);
     }
 
-    private (ImmutableArray<CellPortSpec>[] Ports, ImmutableArray<RuntimeConnection>[] Outgoing)
-        BuildTopology(PanelCellDefinition?[] cells)
+    private CustomCellRuleBinding?[] ResolveCustomRules(PanelCellDefinition?[] cells)
     {
-        var ports = cells.Select(cell => cell is null || cell.Kind == CellKind.Empty
+        var registrations = new CustomCellRuleRegistration?[cells.Length];
+        for (var index = 0; index < cells.Length; index++)
+        {
+            var cell = cells[index];
+            if (cell?.Kind != CellKind.Custom)
+            {
+                continue;
+            }
+
+            if (cell.BehaviorId is not { } behaviorId)
+            {
+                throw new CustomCellRuleException(
+                    CustomCellDiagnosticCodes.RegistrationMissing,
+                    $"Custom cell '{cell.Id}' has no behavior identifier.");
+            }
+
+            var registration = _customCellRuleRegistry.Resolve(behaviorId);
+            try
+            {
+                registration.ParameterValidator(cell.Parameters);
+            }
+            catch (Exception exception) when (exception is not OutOfMemoryException)
+            {
+                throw new CustomCellRuleException(
+                    CustomCellDiagnosticCodes.ParametersInvalid,
+                    $"Parameters are invalid for custom cell '{cell.Id}'.",
+                    exception);
+            }
+
+            registrations[index] = registration;
+        }
+
+        var rules = new CustomCellRuleBinding?[cells.Length];
+        for (var index = 0; index < cells.Length; index++)
+        {
+            var cell = cells[index];
+            if (cell?.Kind != CellKind.Custom)
+            {
+                continue;
+            }
+
+            var registration = registrations[index]!;
+            var rule = _customCellRuleRegistry.CreateRule(registration);
+            ImmutableArray<byte> initialState;
+            try
+            {
+                initialState = rule.CreateInitialState(cell.Parameters);
+                ValidateCustomState(rule, initialState, cell);
+            }
+            catch (CustomCellRuleException)
+            {
+                throw;
+            }
+            catch (Exception exception) when (exception is not OutOfMemoryException)
+            {
+                throw new CustomCellRuleException(
+                    CustomCellDiagnosticCodes.StateInvalid,
+                    $"Initial state is invalid for custom cell '{cell.Id}'.",
+                    exception);
+            }
+
+            rules[index] = new CustomCellRuleBinding(
+                rule,
+                registration.Ports,
+                CopyBytes(initialState));
+        }
+
+        return rules;
+    }
+
+    private RuntimeCellState CreateRuntimeCellState(
+        PanelCellDefinition? cell,
+        CustomCellRuleBinding? binding)
+    {
+        var state = new RuntimeCellState(cell);
+        if (cell?.Kind == CellKind.Custom)
+        {
+            var behaviorId = cell.BehaviorId!.Value;
+            state.CustomState = CopyBytes(binding!.InitialState);
+            state.CustomRandomState = CreateCustomRandomSeed(Id, cell.Id, behaviorId);
+        }
+
+        return state;
+    }
+
+    private static ulong CreateCustomRandomSeed(CircuitId panelId, ComponentId cellId, BehaviorId behaviorId)
+    {
+        var seedMaterial = string.Concat(panelId.Value, "\0", cellId.Value, "\0", behaviorId.Value);
+        var digest = SHA256.HashData(Encoding.UTF8.GetBytes(seedMaterial));
+        return BinaryPrimitives.ReadUInt64LittleEndian(digest);
+    }
+
+    private static ImmutableArray<byte> CopyBytes(ImmutableArray<byte> bytes) =>
+        bytes.ToArray().ToImmutableArray();
+
+    private static void ValidateCustomState(
+        ICustomCellRule rule,
+        ImmutableArray<byte> state,
+        PanelCellDefinition cell)
+    {
+        if (state.IsDefault)
+        {
+            throw new CustomCellRuleException(
+                CustomCellDiagnosticCodes.StateInvalid,
+                $"Custom cell rule '{cell.BehaviorId}' returned invalid state.");
+        }
+
+        try
+        {
+            rule.ValidateState(cell.Parameters, state);
+        }
+        catch (CustomCellRuleException)
+        {
+            throw;
+        }
+        catch (Exception exception) when (exception is not OutOfMemoryException)
+        {
+            throw new CustomCellRuleException(
+                CustomCellDiagnosticCodes.StateInvalid,
+                $"Custom cell rule '{cell.BehaviorId}' returned invalid state.",
+                exception);
+        }
+    }
+
+    private static PanelRuntimeCellSnapshot CaptureCellSnapshot(
+        PanelCellDefinition cell,
+        RuntimeCellState state) =>
+        new(
+            cell.Id,
+            cell.Kind,
+            cell.Location,
+            cell.Orientation,
+            cell.PortId,
+            cell.Parameters,
+            cell.BehaviorId,
+            state.ExternalInput,
+            state.CommittedOutput,
+            state.PendingValue,
+            state.PendingTick,
+            state.FilterCandidate,
+            state.FilterCandidateSinceTick,
+            state.PreviousData,
+            state.PreviousClock,
+            state.DataChangedTick,
+            state.NextClockTransitionTick,
+            state.ObservedValue,
+            state.LastForwarded
+                .OrderBy(pair => pair.Key, StringComparer.Ordinal)
+                .ToImmutableArray(),
+            CopyBytes(state.CustomState),
+            state.CustomRandomState);
+
+    private static bool MatchesDefinition(
+        PanelCellDefinition? cell,
+        PanelRuntimeCellSnapshot? snapshot)
+    {
+        if (cell is null)
+        {
+            return snapshot is null;
+        }
+
+        return snapshot is not null &&
+               snapshot.CellId == cell.Id &&
+               snapshot.Kind == cell.Kind &&
+               snapshot.Location == cell.Location &&
+               snapshot.Orientation == cell.Orientation &&
+               snapshot.PortId == cell.PortId &&
+               snapshot.Parameters is not null &&
+               snapshot.Parameters.SequenceEqual(cell.Parameters) &&
+               (cell.Kind == CellKind.Custom || snapshot.BehaviorId == cell.BehaviorId);
+    }
+
+    private RuntimeCellState RestoreCellState(
+        PanelCellDefinition cell,
+        PanelRuntimeCellSnapshot snapshot,
+        CustomCellRuleBinding? binding)
+    {
+        if (snapshot.LastForwarded.IsDefault ||
+            snapshot.LastForwarded.Any(pair =>
+                string.IsNullOrEmpty(pair.Key) ||
+                !StableData.IsParameterName(pair.Key) ||
+                !Enum.IsDefined(pair.Value)) ||
+            snapshot.LastForwarded.Select(pair => pair.Key)
+                .Distinct(StringComparer.Ordinal)
+                .Count() != snapshot.LastForwarded.Length ||
+            !Enum.IsDefined(snapshot.ExternalInput) ||
+            !Enum.IsDefined(snapshot.CommittedOutput) ||
+            !Enum.IsDefined(snapshot.PendingValue) ||
+            !Enum.IsDefined(snapshot.FilterCandidate) ||
+            !Enum.IsDefined(snapshot.PreviousData) ||
+            !Enum.IsDefined(snapshot.PreviousClock) ||
+            !Enum.IsDefined(snapshot.ObservedValue))
+        {
+            throw new ArgumentException("Panel runtime snapshot contains invalid cell state.", nameof(snapshot));
+        }
+
+        var state = new RuntimeCellState(cell)
+        {
+            ExternalInput = snapshot.ExternalInput,
+            CommittedOutput = snapshot.CommittedOutput,
+            PendingValue = snapshot.PendingValue,
+            PendingTick = snapshot.PendingTick,
+            FilterCandidate = snapshot.FilterCandidate,
+            FilterCandidateSinceTick = snapshot.FilterCandidateSinceTick,
+            PreviousData = snapshot.PreviousData,
+            PreviousClock = snapshot.PreviousClock,
+            DataChangedTick = snapshot.DataChangedTick,
+            NextClockTransitionTick = snapshot.NextClockTransitionTick,
+            ObservedValue = snapshot.ObservedValue,
+            LastForwarded = snapshot.LastForwarded.ToDictionary(
+                pair => pair.Key,
+                pair => pair.Value,
+                StringComparer.Ordinal)
+        };
+
+        if (cell.Kind != CellKind.Custom)
+        {
+            if (snapshot.BehaviorId.HasValue)
+            {
+                throw new ArgumentException("Panel runtime snapshot contains an unexpected behavior identifier.", nameof(snapshot));
+            }
+
+            return state;
+        }
+
+        if (binding is null ||
+            snapshot.BehaviorId is not { } sourceBehaviorId ||
+            !CircuitValidator.IsSupportedBehaviorId(sourceBehaviorId) ||
+            snapshot.CustomState.IsDefault)
+        {
+            throw new ArgumentException("Panel runtime snapshot contains invalid custom cell state.", nameof(snapshot));
+        }
+
+        var candidateState = CopyBytes(snapshot.CustomState);
+        var migrated = sourceBehaviorId != cell.BehaviorId;
+        if (migrated)
+        {
+            try
+            {
+                if (!binding.Rule.TryMigrateState(sourceBehaviorId, CopyBytes(candidateState), out var migratedState))
+                {
+                    throw new CustomCellRuleException(
+                        CustomCellDiagnosticCodes.MigrationUnavailable,
+                        $"Custom cell rule '{cell.BehaviorId}' cannot migrate state from '{sourceBehaviorId}'.");
+                }
+
+                if (migratedState.IsDefault)
+                {
+                    throw new InvalidOperationException("Migration returned invalid state.");
+                }
+
+                candidateState = CopyBytes(migratedState);
+                ValidateCustomState(binding.Rule, candidateState, cell);
+            }
+            catch (CustomCellRuleException exception)
+                when (exception.Code == CustomCellDiagnosticCodes.MigrationUnavailable)
+            {
+                throw;
+            }
+            catch (Exception exception) when (exception is not OutOfMemoryException)
+            {
+                throw new CustomCellRuleException(
+                    CustomCellDiagnosticCodes.MigrationFailed,
+                    $"Custom cell rule '{cell.BehaviorId}' could not migrate state from '{sourceBehaviorId}'.",
+                    exception);
+            }
+        }
+        else
+        {
+            ValidateCustomState(binding.Rule, candidateState, cell);
+        }
+
+        state.CustomState = candidateState;
+        state.CustomRandomState = snapshot.CustomRandomState;
+        return state;
+    }
+
+    private string ComputeRuntimeHash(string schedulerHash)
+    {
+        var customIndexes = _cells
+            .Select((cell, index) => (cell, index))
+            .Where(item => item.cell?.Kind == CellKind.Custom)
+            .ToArray();
+        if (customIndexes.Length == 0)
+        {
+            return schedulerHash;
+        }
+
+        var builder = new StringBuilder(schedulerHash);
+        foreach (var (cell, index) in customIndexes)
+        {
+            var state = _states[index];
+            builder.Append('\0').Append(cell!.Id.Value)
+                .Append('\0').Append(cell.BehaviorId!.Value.Value)
+                .Append('\0').Append(Convert.ToBase64String(state.CustomState.ToArray()))
+                .Append('\0').Append(state.CustomRandomState.ToString(CultureInfo.InvariantCulture));
+        }
+
+        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString())))
+            .ToLowerInvariant();
+    }
+
+    private (ImmutableArray<CellPortSpec>[] Ports, ImmutableArray<RuntimeConnection>[] Outgoing)
+        BuildTopology(PanelCellDefinition?[] cells, CustomCellRuleBinding?[] customRules)
+    {
+        var ports = cells.Select((cell, index) => cell is null || cell.Kind == CellKind.Empty
             ? ImmutableArray<CellPortSpec>.Empty
-            : PanelCellPorts.For(cell)).ToArray();
+            : PanelCellPorts.For(cell, customRules[index]?.Ports ?? default)).ToArray();
         var outgoing = Enumerable.Range(0, cells.Length)
             .Select(_ => ImmutableArray.CreateBuilder<RuntimeConnection>())
             .ToArray();
@@ -660,7 +1110,11 @@ public sealed class PanelRuntimeInstance
 
         internal LogicValue ObservedValue { get; set; } = LogicValue.HighImpedance;
 
-        internal Dictionary<string, LogicValue> LastForwarded { get; private set; }
+        internal ImmutableArray<byte> CustomState { get; set; } = ImmutableArray<byte>.Empty;
+
+        internal ulong CustomRandomState { get; set; }
+
+        internal Dictionary<string, LogicValue> LastForwarded { get; set; }
 
         internal RuntimeCellState Clone()
         {
