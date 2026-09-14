@@ -79,6 +79,19 @@ public static class FixtureCodec
                 chipNetworkScenario: chipScenario);
         }
 
+        if (actionText == "deviceExchangeScenario")
+        {
+            var exchangeScenario = ReadDeviceExchangeScenario(
+                RequireProperty(root, "deviceExchangeScenario", "$.deviceExchangeScenario"));
+            return new RunnerFixture(
+                fixtureSchema,
+                traceSchema,
+                fixtureId,
+                FixtureAction.DeviceExchangeScenario,
+                [],
+                deviceExchangeScenario: exchangeScenario);
+        }
+
         var casesElement = RequireProperty(root, "cases", "$.cases");
         RequireKind(casesElement, JsonValueKind.Array, "$.cases");
 
@@ -210,6 +223,43 @@ public static class FixtureCodec
             connections,
             inputs,
             expectations);
+    }
+
+    private static DeviceExchangeScenarioPlan ReadDeviceExchangeScenario(JsonElement element)
+    {
+        const string path = "$.deviceExchangeScenario";
+        RequireKind(element, JsonValueKind.Object, path);
+        var expectationsElement = RequireProperty(element, "expectations", $"{path}.expectations");
+        RequireKind(expectationsElement, JsonValueKind.Array, $"{path}.expectations");
+        var expectations = expectationsElement.EnumerateArray()
+            .Select((item, index) =>
+            {
+                var itemPath = $"{path}.expectations[{index}]";
+                RequireKind(item, JsonValueKind.Object, itemPath);
+                return new DeviceExchangeExpectation(
+                    ReadInt32(RequireProperty(item, "tick", $"{itemPath}.tick"), $"{itemPath}.tick"),
+                    ReadString(RequireProperty(item, "challenge", $"{itemPath}.challenge"), $"{itemPath}.challenge"),
+                    ReadString(RequireProperty(item, "response", $"{itemPath}.response"), $"{itemPath}.response"));
+            })
+            .ToImmutableArray();
+        var deliveriesElement = RequireProperty(element, "deliveryExpectations", $"{path}.deliveryExpectations");
+        RequireKind(deliveriesElement, JsonValueKind.Array, $"{path}.deliveryExpectations");
+        var deliveryExpectations = deliveriesElement.EnumerateArray()
+            .Select((item, index) =>
+            {
+                var itemPath = $"{path}.deliveryExpectations[{index}]";
+                RequireKind(item, JsonValueKind.Object, itemPath);
+                return new DeviceExchangeDeliveryExpectation(
+                    ReadInt32(RequireProperty(item, "tick", $"{itemPath}.tick"), $"{itemPath}.tick"),
+                    ReadString(RequireProperty(item, "laneId", $"{itemPath}.laneId"), $"{itemPath}.laneId"),
+                    ReadString(RequireProperty(item, "signal", $"{itemPath}.signal"), $"{itemPath}.signal"));
+            })
+            .ToImmutableArray();
+        return new DeviceExchangeScenarioPlan(
+            ReadInt32(RequireProperty(element, "microticks", $"{path}.microticks"), $"{path}.microticks"),
+            ReadInt32(RequireProperty(element, "linkLatency", $"{path}.linkLatency"), $"{path}.linkLatency"),
+            expectations,
+            deliveryExpectations);
     }
 
     private static ChipDefinitionPlan ReadChipDefinition(JsonElement element, int index)

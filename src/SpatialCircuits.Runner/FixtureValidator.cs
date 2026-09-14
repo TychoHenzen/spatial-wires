@@ -34,7 +34,8 @@ public static partial class FixtureValidator
                 FixtureAction.ResolveDrives or
                 FixtureAction.ScheduledDrive or
                 FixtureAction.PanelScenario or
-                FixtureAction.ChipNetworkScenario))
+                FixtureAction.ChipNetworkScenario or
+                FixtureAction.DeviceExchangeScenario))
         {
             Add(diagnostics, FixtureDiagnosticCodes.ActionUnsupported, "$.action", "Fixture action is not supported.");
         }
@@ -51,6 +52,10 @@ public static partial class FixtureValidator
         {
             ValidateChipNetworkScenario(fixture.ChipNetworkScenario, diagnostics);
         }
+        else if (fixture.Action == FixtureAction.DeviceExchangeScenario)
+        {
+            ValidateDeviceExchangeScenario(fixture.DeviceExchangeScenario, diagnostics);
+        }
         else if (fixture.Cases.Length == 0)
         {
             Add(diagnostics, FixtureDiagnosticCodes.CasesRequired, "$.cases", "Fixture must contain at least one case.");
@@ -60,6 +65,71 @@ public static partial class FixtureValidator
             ValidateCases(fixture, diagnostics);
         }
         return diagnostics.AsReadOnly();
+    }
+
+    private static void ValidateDeviceExchangeScenario(
+        DeviceExchangeScenarioPlan? plan,
+        ICollection<FixtureDiagnostic> diagnostics)
+    {
+        const string root = "$.deviceExchangeScenario";
+        if (plan is null)
+        {
+            Add(diagnostics, FixtureDiagnosticCodes.DeviceExchangeScenarioRequired, root,
+                "Device-exchange scenarios require a deviceExchangeScenario object.");
+            return;
+        }
+
+        if (plan.Microticks < 1 || plan.Microticks > MaxScheduledDriveMicroticks || plan.LinkLatency <= 0)
+        {
+            Add(diagnostics, FixtureDiagnosticCodes.DeviceExchangeScenarioInvalid, root,
+                $"Microticks must be between 1 and {MaxScheduledDriveMicroticks}, and linkLatency must be positive.");
+        }
+
+        if (plan.Expectations.IsDefault || plan.DeliveryExpectations.IsDefault ||
+            plan.Expectations.Length != plan.Microticks)
+        {
+            Add(diagnostics, FixtureDiagnosticCodes.DeviceExchangeScenarioInvalid, root,
+                "The scenario requires one output expectation per microtick and an initialized deliveryExpectations array.");
+            return;
+        }
+
+        var expectedTicks = new HashSet<int>();
+        for (var index = 0; index < plan.Expectations.Length; index++)
+        {
+            var expectation = plan.Expectations[index];
+            if (expectation.Tick < 0 || expectation.Tick >= plan.Microticks ||
+                !FixtureLogicValue.TryParse(expectation.Challenge, out _) ||
+                !FixtureLogicValue.TryParse(expectation.Response, out _))
+            {
+                Add(diagnostics, FixtureDiagnosticCodes.DeviceExchangeScenarioInvalid,
+                    $"{root}.expectations[{index}]", "Output expectations need an in-range tick and valid four-state values.");
+            }
+
+            if (!expectedTicks.Add(expectation.Tick))
+            {
+                Add(diagnostics, FixtureDiagnosticCodes.DeviceExchangeScenarioInvalid,
+                    $"{root}.expectations[{index}]", "Output expectations cannot duplicate a tick.");
+            }
+        }
+
+        var expectedDeliveries = new HashSet<(int Tick, string LaneId)>();
+        for (var index = 0; index < plan.DeliveryExpectations.Length; index++)
+        {
+            var expectation = plan.DeliveryExpectations[index];
+            if (expectation.Tick < 0 || expectation.Tick >= plan.Microticks ||
+                expectation.LaneId is not ("lane/challenge" or "lane/response") ||
+                !FixtureLogicValue.TryParse(expectation.Signal, out _))
+            {
+                Add(diagnostics, FixtureDiagnosticCodes.DeviceExchangeScenarioInvalid,
+                    $"{root}.deliveryExpectations[{index}]", "Delivery expectations need an in-range tick, known lane, and valid signal.");
+            }
+
+            if (!expectedDeliveries.Add((expectation.Tick, expectation.LaneId)))
+            {
+                Add(diagnostics, FixtureDiagnosticCodes.DeviceExchangeScenarioInvalid,
+                    $"{root}.deliveryExpectations[{index}]", "A lane cannot have duplicate delivery expectations at one tick.");
+            }
+        }
     }
 
     private static void ValidateChipNetworkScenario(

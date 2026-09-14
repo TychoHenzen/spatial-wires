@@ -100,6 +100,17 @@ public static class RunnerApplication
             return chipRecords.All(record => record.Passed) ? Success : FailedExpectation;
         }
 
+        if (fixture.Action == FixtureAction.DeviceExchangeScenario)
+        {
+            var exchangeRecords = DeviceExchangeScenarioExecutor.Execute(fixture);
+            foreach (var record in exchangeRecords)
+            {
+                TraceOutput.WriteDeviceExchangeTrace(output, record);
+            }
+
+            return exchangeRecords.All(record => record.Passed) ? Success : FailedExpectation;
+        }
+
         var records = FixtureExecutor.Execute(fixture);
         foreach (var record in records)
         {
