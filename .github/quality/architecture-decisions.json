@@ -82,5 +82,432 @@
     "reason": "External rules need a stable diagnostic when immutable input parameters are rejected.",
     "author": "Codex",
     "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "03df9000e108a860dfcc0c4e1db76f89b766ed66f54ea7f41c2116a03b380474",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:16:40.579Z"
+  },
+  {
+    "findingId": "05cf6b2a4c14156e4331c3d174eb54e16692bf31cf0825f6879bb2ebe76d8efe",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "time": "2026-09-14T07:17:32.485Z"
+  },
+  {
+    "findingId": "0d66897b7147b5534535946eb164cd680224807b85dda4b11812270a52b6c613",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "0dc5899a96885c13e2ab3a79f29b71f6885f9c9d3581518936d5aeb27b694607",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "0e9b19b0997fe508600a06da28796a85abbe2fdc09a8f20be1cced3492856724",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "0ef7a549823593adc41a5cf8df6735a80f3eb384e1c504a1f62dd080c944b22f",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "1269b5318d72c008214cd7783227154e44245a1396db526ee4ffdac53316ba5d",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "1925fe3bec164d0bfb54a8741ee7a8e172e152761632a0d3ae6935e136bc6270",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "1c387c311eea94dfb3688f5b4ff6e1ee5f4ef80b441574d7fdea6ed3348d3e09",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "1d207a3b2d113936442d5ebd41ffc4f13843e403e2d4786a22e7ff6843418418",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "1f0a452d8314406975eb6d26ceabd449d17cea1389b70051b80e41d1d8942964",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "29679d2eb272218bc88d2069a722aba4ae6a9262e9185cc16d0ad9bf33d6a31d",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "2b50eabd533dffe0751dee2889c09cb1056622f4723dc8c7c4fd02990d486175",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "2bc3cb2651b726825f987d2ffe45da39a84293bff5195d577dc0ffcfc25575a2",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "3aacf6ef36e61af92efaae4b4cdc32f69bc2980c9caefd6c84ef170502c828ec",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "3c26b80a2f453b58c936fb7960440ddfc742f7e00f43ce1f8a080d8cad5db946",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "40709e844435ca45905bdef07c7627ef5025b987ad36afd3aab1cf3c3106582e",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "410169301f7d8b5a45caad25943e76fb0134bda50260d0f1b9fd1230caa904bf",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "43733b8ab83d4582fcb5c47f5a2dbcc8d004b73aa1b387172225b9bb4e4d501d",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "465f329cc61f9d77c6155c52cd766b7c01f787ffea7e52997a6270ddb40f8558",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "48d3c904f1450467c1175e34d0ec57fbd66a52faa293cb9ddca51e234c536d0a",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "4920fb777aa912dc76f613996968e57f25377bbfd532c50ac79a13cd9d494c9c",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "4b4bd5e62fe25cfa419895ab14e7ef8266affa5047d11f8859a643d780c944a3",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "50eba8987c9ef501418fcc0a056a3fa16b864de9f4291bb1710b07c8dc28b3be",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "5bc4454c40f82b4cafdc66ec2f860e667f73d3720bb8251cbbf0ef5ed2e2f736",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "5bfb8c930d08c45ef5cb41c9e93335f21554ba626c09b4e5f5bc8e06b90b3fab",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "60a6de8ed89a5bf965b6dfc60087953f077a12f911b0adbc55f16e8f3dfde17a",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "65ea200237003ed6ae85a2ad31ba12785012af79092aee8b8e9d25d18d4194e0",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "68a668d0b6b2a4a2638ebb66ff0ce2be37f91961d027fcd49bf547dc725dee79",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "6ad0bb852934242d34800e225ab0cbc5090652f97357e9ed1cccc556857e160c",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "6d619522f2dc1ebbd482a760fd942037e902fd4edb6743e20445ae6023c38e1e",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "6d95e241d74fdf528c08920e9fe2937e062e471d52b73e563ab01a7f40e216bc",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "7031cee771462d2fe1a8116a0e4a132ba8b20064552dc260d7fa4209bde5bb8f",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "72cf22044142ea4f04e917319fa2cad6b25cbe5c772466df2670f1fa9bd53257",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "7426412f95f53d379587786af9266806e76bc5b07bc39b65390ea3674ef2fc54",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "7669606ac07e366b78e75154e14736ac69887034eba327eb22ee69d02f3df60c",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "7ecc0c5a28268ec224c923af8bfabd9b88039509540fc1d0a854872ffee68bd8",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "81066f5473db10671fae4b1a9ce98486d9d59ef07affe996092aaa2a2687dd1b",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "91024a26dc457354434d234f614f2e0e4bf4614d7190625f844f3c17ba6f33d6",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "942d6586d573657101311633e21b0301988546a0b021c06bdef150b45a1a39bb",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "9bd802ae81bf7941e48ce054497531dae4b87eb80ca845e2f4e96c1e53341ae5",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "ac0f9f89fd14a38174dbcbb979f2b3d2f559b83fd2f7dfe59228555e14660db4",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "b1aab35c567066a4848ca7cb297f607c90c91f3400d142661232f652fa2a3418",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "b5711455eb963f13fc1af98a84783e88b2faa45ad4c42833b18e5a032eae30d2",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "bdeb88d8b449f0f5998c0875a4624328184ac6a9cd13344b075a0e2edb781b3b",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "c168ee70ddbbe2b6f370713efa0c3fb8762861102bf9990cd250b9a07694035c",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "c6941cdd2b5247c3d04b872400d110a7b4ab3a3c857d4582d7fb4338479ffb61",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "c6de0a9d7c49b8f858bdd303ae19bae23d853ed8a395480b3f88b958920e8f2c",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "ca9f9feaf24c4af0a29fa4937a7d13b0bd89345e7fa966cb388bb527704e5358",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "e170ba95eecf908852a760a1a1b81d1e7d3bb01cf2df337dcd4cfc4ca7cf7c95",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "e1f651d20dd6abf7102e949937873e1c10713f9ad7369bd53d226afe44fea999",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "e33ad1e0e05c067a37d8ad45377a041960e0e25f8ab6716e5c185cbf5279a39f",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "e4823e4164f25ebf29c81ff55f869a3374175e1e773eb8d12bd1b678a4018b0e",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "e631ba8b432179e4d1e94efbee3f671d465baba22ce29c4602ca725833c08b5e",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "e80a46ba087eeef9b5f877400b9585209192c30dbd9c77c54f10674bb752d2ac",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "ea27a6e9ce56f1708ea30f18c7380b1a7fa73a81809f0bf5b2c1016372341d33",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "eedc0bb85f56d5d0d173e25a8d8300d7e458232bfb3b2132f6acd197447dec4a",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "f225ce1ceb33bd2b39fbf3f9066ab061050a280d9d6657fa3e142e176047ab2b",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "fa3babdf37d4639d6f83fea2fd3e2e017b7ccf7a4d3d24c9d4579618465e9ead",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "fcb999e1da37307598baf3626804bde7cc7ec3a2486527ba348754b4fd18129e",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
+  },
+  {
+    "findingId": "fd4a3df01eb883b64d9aa08b583661dfe7cca6bd76a20228385af8165a5378d6",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
+    "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
+    "author": "Codex independent review",
+    "time": "2026-09-14T07:19:01.986Z"
   }
 ]

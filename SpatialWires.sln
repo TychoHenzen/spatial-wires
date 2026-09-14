@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9030C887
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Cells.Tests", "tests\SpatialCircuits.Cells.Tests\SpatialCircuits.Cells.Tests.csproj", "{84CC35C8-2D32-435F-9408-C73E91AF7EBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Hierarchy.Tests", "tests\SpatialCircuits.Hierarchy.Tests\SpatialCircuits.Hierarchy.Tests.csproj", "{DD9BF411-1877-40D0-9FFF-F0675F49F084}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,11 +67,16 @@ Global
 		{84CC35C8-2D32-435F-9408-C73E91AF7EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84CC35C8-2D32-435F-9408-C73E91AF7EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84CC35C8-2D32-435F-9408-C73E91AF7EBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD9BF411-1877-40D0-9FFF-F0675F49F084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD9BF411-1877-40D0-9FFF-F0675F49F084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD9BF411-1877-40D0-9FFF-F0675F49F084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD9BF411-1877-40D0-9FFF-F0675F49F084}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{84CC35C8-2D32-435F-9408-C73E91AF7EBD} = {9030C887-AD50-4AA0-BC23-FE9E5F49D4CD}
+		{DD9BF411-1877-40D0-9FFF-F0675F49F084} = {9030C887-AD50-4AA0-BC23-FE9E5F49D4CD}
 	EndGlobalSection
 EndGlobal

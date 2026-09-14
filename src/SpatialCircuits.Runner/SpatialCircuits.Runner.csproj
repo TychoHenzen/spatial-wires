@@ -9,5 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SpatialCircuits.Cells\SpatialCircuits.Cells.csproj" />
     <ProjectReference Include="..\SpatialCircuits.Core\SpatialCircuits.Core.csproj" />
+    <ProjectReference Include="..\SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj" />
   </ItemGroup>
 </Project>

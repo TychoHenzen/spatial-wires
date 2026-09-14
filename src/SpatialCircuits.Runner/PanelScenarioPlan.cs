@@ -13,6 +13,16 @@ public sealed record PanelScenarioPlan(
     ImmutableArray<PanelInputChange> Inputs,
     ImmutableArray<PanelProbeExpectation> Expectations)
 {
+    public PanelDefinition CreatePanelDefinition() =>
+        new PanelDefinitionPlan(PanelId, Width, Height, Cells).CreatePanelDefinition();
+}
+
+public sealed record PanelDefinitionPlan(
+    string PanelId,
+    int Width,
+    int Height,
+    ImmutableArray<PanelCellPlan> Cells)
+{
     public PanelDefinition CreatePanelDefinition()
     {
         var cells = Cells.Select(cell => PanelCellDefinition.Create(

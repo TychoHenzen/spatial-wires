@@ -1,4 +1,5 @@
 using SpatialCircuits.Cells;
+using SpatialCircuits.Hierarchy;
 
 namespace SpatialCircuits.Runner;
 
@@ -66,6 +67,37 @@ public static class RunnerApplication
             }
 
             return panelRecords.All(record => record.Passed) ? Success : FailedExpectation;
+        }
+
+        if (fixture.Action == FixtureAction.ChipNetworkScenario)
+        {
+            IReadOnlyList<ChipScenarioTraceRecord> chipRecords;
+            try
+            {
+                chipRecords = ChipNetworkScenarioExecutor.Execute(fixture);
+            }
+            catch (CustomCellRuleException exception)
+            {
+                return Fail(output, new FixtureDiagnostic(
+                    exception.Code,
+                    "$.chipNetworkScenario.definitions",
+                    exception.Message));
+            }
+            catch (ChipDefinitionException exception)
+            {
+                var diagnostic = exception.Diagnostics[0];
+                return Fail(output, new FixtureDiagnostic(
+                    FixtureDiagnosticCodes.ChipScenarioInvalid,
+                    $"$.chipNetworkScenario.{diagnostic.Path}",
+                    diagnostic.Message));
+            }
+
+            foreach (var record in chipRecords)
+            {
+                TraceOutput.WriteChipScenarioTrace(output, record);
+            }
+
+            return chipRecords.All(record => record.Passed) ? Success : FailedExpectation;
         }
 
         var records = FixtureExecutor.Execute(fixture);

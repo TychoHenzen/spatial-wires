@@ -97,6 +97,36 @@ public static class TraceOutput
         });
     }
 
+    public static void WriteChipScenarioTrace(TextWriter writer, ChipScenarioTraceRecord record)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(record);
+
+        WriteLine(writer, json =>
+        {
+            WriteVersion(json, record.TraceSchema);
+            json.WriteString("fixtureId", record.FixtureId);
+            json.WriteNumber("sequence", record.Sequence);
+            json.WriteNumber("microtick", record.Microtick);
+            json.WriteString("chipInstanceId", record.ChipInstanceId);
+            json.WriteString("definitionId", record.DefinitionId);
+            json.WriteString("contentHash", record.ContentHash);
+            json.WriteString("hash", record.Hash);
+            WriteValues(json, "outputs", record.Outputs);
+            WriteValues(json, "expectedOutputs", record.ExpectedOutputs);
+            if (record.ExpectedHash is null)
+            {
+                json.WriteNull("expectedHash");
+            }
+            else
+            {
+                json.WriteString("expectedHash", record.ExpectedHash);
+            }
+
+            json.WriteBoolean("passed", record.Passed);
+        });
+    }
+
     public static void WriteDiagnostic(TextWriter writer, FixtureDiagnostic diagnostic)
     {
         ArgumentNullException.ThrowIfNull(writer);

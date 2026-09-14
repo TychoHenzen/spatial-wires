@@ -1,0 +1,1198 @@
+{
+    "fixtureSchema":  {
+                          "major":  1,
+                          "minor":  0
+                      },
+    "traceSchema":  {
+                        "major":  1,
+                        "minor":  0
+                    },
+    "fixtureId":  "stage-06-packaged-xor-two-instances",
+    "action":  "chipNetworkScenario",
+    "chipNetworkScenario":  {
+                                "parentPanel":  {
+                                                    "panelId":  "stage-06/xor-parent",
+                                                    "width":  1,
+                                                    "height":  1,
+                                                    "cells":  [
+
+                                                              ]
+                                                },
+                                "microticks":  42,
+                                "definitions":  [
+                                                    {
+                                                        "definitionId":  "stage-06/xor-chip",
+                                                        "schemaVersion":  1,
+                                                        "behaviorVersion":  1,
+                                                        "symbol":  "xor",
+                                                        "panel":  {
+                                                                      "panelId":  "stage-06/xor-chip-panel",
+                                                                      "width":  16,
+                                                                      "height":  11,
+                                                                      "cells":  [
+                                                                                    {
+                                                                                        "cellId":  "nand-one",
+                                                                                        "x":  2,
+                                                                                        "y":  5,
+                                                                                        "kind":  "nand",
+                                                                                        "orientation":  "east",
+                                                                                        "parameters":  {
+                                                                                                           "delay":  1
+                                                                                                       }
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "nand-two",
+                                                                                        "x":  7,
+                                                                                        "y":  2,
+                                                                                        "kind":  "nand",
+                                                                                        "orientation":  "east",
+                                                                                        "parameters":  {
+                                                                                                           "delay":  3
+                                                                                                       }
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "nand-three",
+                                                                                        "x":  7,
+                                                                                        "y":  8,
+                                                                                        "kind":  "nand",
+                                                                                        "orientation":  "east",
+                                                                                        "parameters":  {
+                                                                                                           "delay":  1
+                                                                                                       }
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "nand-four",
+                                                                                        "x":  13,
+                                                                                        "y":  5,
+                                                                                        "kind":  "nand",
+                                                                                        "orientation":  "east",
+                                                                                        "parameters":  {
+                                                                                                           "delay":  1
+                                                                                                       }
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-a-one",
+                                                                                        "x":  2,
+                                                                                        "y":  4,
+                                                                                        "kind":  "input-port",
+                                                                                        "orientation":  "south",
+                                                                                        "portId":  "a"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-a-two",
+                                                                                        "x":  1,
+                                                                                        "y":  0,
+                                                                                        "kind":  "input-port",
+                                                                                        "orientation":  "east",
+                                                                                        "portId":  "a"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-one",
+                                                                                        "x":  2,
+                                                                                        "y":  6,
+                                                                                        "kind":  "input-port",
+                                                                                        "orientation":  "north",
+                                                                                        "portId":  "b"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-three",
+                                                                                        "x":  0,
+                                                                                        "y":  10,
+                                                                                        "kind":  "input-port",
+                                                                                        "orientation":  "east",
+                                                                                        "portId":  "b"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-branch",
+                                                                                        "x":  3,
+                                                                                        "y":  5,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n2-wire-up",
+                                                                                        "x":  3,
+                                                                                        "y":  4,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "north"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n2-turn",
+                                                                                        "x":  3,
+                                                                                        "y":  3,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n2-wire-one",
+                                                                                        "x":  4,
+                                                                                        "y":  3,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n2-wire-two",
+                                                                                        "x":  5,
+                                                                                        "y":  3,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n2-wire-three",
+                                                                                        "x":  6,
+                                                                                        "y":  3,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n2-gate-input",
+                                                                                        "x":  7,
+                                                                                        "y":  3,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n3-wire-down",
+                                                                                        "x":  3,
+                                                                                        "y":  6,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "north"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n3-turn",
+                                                                                        "x":  3,
+                                                                                        "y":  7,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n3-wire-one",
+                                                                                        "x":  4,
+                                                                                        "y":  7,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n3-wire-two",
+                                                                                        "x":  5,
+                                                                                        "y":  7,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n3-wire-three",
+                                                                                        "x":  6,
+                                                                                        "y":  7,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n1-to-n3-gate-input",
+                                                                                        "x":  7,
+                                                                                        "y":  7,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n2-to-n4-wire-one",
+                                                                                        "x":  8,
+                                                                                        "y":  2,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n2-to-n4-turn-one",
+                                                                                        "x":  9,
+                                                                                        "y":  2,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n2-to-n4-wire-south",
+                                                                                        "x":  9,
+                                                                                        "y":  3,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "north"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n2-to-n4-turn-two",
+                                                                                        "x":  9,
+                                                                                        "y":  4,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n2-to-n4-wire-two",
+                                                                                        "x":  10,
+                                                                                        "y":  4,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n2-to-n4-wire-three",
+                                                                                        "x":  11,
+                                                                                        "y":  4,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n2-to-n4-wire-four",
+                                                                                        "x":  12,
+                                                                                        "y":  4,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n2-to-n4-gate-input",
+                                                                                        "x":  13,
+                                                                                        "y":  4,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n3-to-n4-wire-one",
+                                                                                        "x":  8,
+                                                                                        "y":  8,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n3-to-n4-turn-one",
+                                                                                        "x":  9,
+                                                                                        "y":  8,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n3-to-n4-wire-north",
+                                                                                        "x":  9,
+                                                                                        "y":  7,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "north"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n3-to-n4-turn-two",
+                                                                                        "x":  9,
+                                                                                        "y":  6,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n3-to-n4-wire-two",
+                                                                                        "x":  10,
+                                                                                        "y":  6,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n3-to-n4-wire-three",
+                                                                                        "x":  11,
+                                                                                        "y":  6,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n3-to-n4-wire-four",
+                                                                                        "x":  12,
+                                                                                        "y":  6,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "n3-to-n4-gate-input",
+                                                                                        "x":  13,
+                                                                                        "y":  6,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "xor-output-branch",
+                                                                                        "x":  14,
+                                                                                        "y":  5,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "xor-raw-probe",
+                                                                                        "x":  15,
+                                                                                        "y":  5,
+                                                                                        "kind":  "output-port",
+                                                                                        "orientation":  "east",
+                                                                                        "portId":  "y"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "xor-filter",
+                                                                                        "x":  14,
+                                                                                        "y":  4,
+                                                                                        "kind":  "stability-filter",
+                                                                                        "orientation":  "north",
+                                                                                        "parameters":  {
+                                                                                                           "consecutive-ticks":  2
+                                                                                                       }
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "xor-filtered-probe",
+                                                                                        "x":  14,
+                                                                                        "y":  3,
+                                                                                        "kind":  "probe",
+                                                                                        "orientation":  "north"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-a-wire-one",
+                                                                                        "x":  2,
+                                                                                        "y":  0,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-a-wire-two",
+                                                                                        "x":  3,
+                                                                                        "y":  0,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-a-turn-one",
+                                                                                        "x":  4,
+                                                                                        "y":  0,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-a-wire-down",
+                                                                                        "x":  4,
+                                                                                        "y":  1,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-a-turn-two",
+                                                                                        "x":  5,
+                                                                                        "y":  1,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-a-wire-three",
+                                                                                        "x":  6,
+                                                                                        "y":  1,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-a-gate-input",
+                                                                                        "x":  7,
+                                                                                        "y":  1,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-wire-1",
+                                                                                        "x":  1,
+                                                                                        "y":  10,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-wire-2",
+                                                                                        "x":  2,
+                                                                                        "y":  10,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-wire-3",
+                                                                                        "x":  3,
+                                                                                        "y":  10,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-wire-4",
+                                                                                        "x":  4,
+                                                                                        "y":  10,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-wire-5",
+                                                                                        "x":  5,
+                                                                                        "y":  10,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-wire-6",
+                                                                                        "x":  6,
+                                                                                        "y":  10,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-turn",
+                                                                                        "x":  7,
+                                                                                        "y":  10,
+                                                                                        "kind":  "junction",
+                                                                                        "orientation":  "east"
+                                                                                    },
+                                                                                    {
+                                                                                        "cellId":  "input-b-gate-wire",
+                                                                                        "x":  7,
+                                                                                        "y":  9,
+                                                                                        "kind":  "wire",
+                                                                                        "orientation":  "north"
+                                                                                    }
+                                                                                ]
+                                                                  },
+                                                        "ports":  [
+                                                                      {
+                                                                          "name":  "a",
+                                                                          "panelPortId":  "a",
+                                                                          "direction":  "input"
+                                                                      },
+                                                                      {
+                                                                          "name":  "b",
+                                                                          "panelPortId":  "b",
+                                                                          "direction":  "input"
+                                                                      },
+                                                                      {
+                                                                          "name":  "y",
+                                                                          "panelPortId":  "y",
+                                                                          "direction":  "output"
+                                                                      }
+                                                                  ],
+                                                        "parameters":  {
+                                                                           "family":  "xor",
+                                                                           "gates":  "nand"
+                                                                       }
+                                                    }
+                                                ],
+                                "instances":  [
+                                                  {
+                                                      "instanceId":  "left",
+                                                      "definitionId":  "stage-06/xor-chip",
+                                                      "contentHash":  "aa37541038ae4e787d354d88d9d2df605521852e6edf322251efbd46856b827a"
+                                                  },
+                                                  {
+                                                      "instanceId":  "right",
+                                                      "definitionId":  "stage-06/xor-chip",
+                                                      "contentHash":  "aa37541038ae4e787d354d88d9d2df605521852e6edf322251efbd46856b827a"
+                                                  }
+                                              ],
+                                "connections":  [
+
+                                                ],
+                                "inputs":  [
+                                               {
+                                                   "tick":  0,
+                                                   "instanceId":  "left",
+                                                   "portName":  "a",
+                                                   "value":  "Low"
+                                               },
+                                               {
+                                                   "tick":  0,
+                                                   "instanceId":  "left",
+                                                   "portName":  "b",
+                                                   "value":  "Low"
+                                               },
+                                               {
+                                                   "tick":  0,
+                                                   "instanceId":  "right",
+                                                   "portName":  "a",
+                                                   "value":  "Low"
+                                               },
+                                               {
+                                                   "tick":  0,
+                                                   "instanceId":  "right",
+                                                   "portName":  "b",
+                                                   "value":  "High"
+                                               },
+                                               {
+                                                   "tick":  12,
+                                                   "instanceId":  "left",
+                                                   "portName":  "b",
+                                                   "value":  "High"
+                                               },
+                                               {
+                                                   "tick":  12,
+                                                   "instanceId":  "right",
+                                                   "portName":  "a",
+                                                   "value":  "High"
+                                               }
+                                           ],
+                                "expectations":  [
+                                                     {
+                                                         "tick":  0,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "HighImpedance"
+                                                                     },
+                                                         "hash":  "8675c4e7920f320c13e4c7cca977d176168c683f90103b0e186c1177c4950bb0"
+                                                     },
+                                                     {
+                                                         "tick":  0,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "HighImpedance"
+                                                                     },
+                                                         "hash":  "f3b4451f03c2c8ad59f811d80b9514d18f2a374b7de4bba5597430163dc843c5"
+                                                     },
+                                                     {
+                                                         "tick":  1,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "HighImpedance"
+                                                                     },
+                                                         "hash":  "5ca75e283aedb6619f0dc3f034e29eca24531c182f664e2303921773276301ea"
+                                                     },
+                                                     {
+                                                         "tick":  1,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "HighImpedance"
+                                                                     },
+                                                         "hash":  "15de012b91011c9861262246b0a7f484eca53ce2b107de8056b2d665a0b92ab2"
+                                                     },
+                                                     {
+                                                         "tick":  2,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "HighImpedance"
+                                                                     },
+                                                         "hash":  "34f8dd7db93c9b6e003e27212b85a57b46fee38ac155017cb37ec119e7ba6cb2"
+                                                     },
+                                                     {
+                                                         "tick":  2,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "HighImpedance"
+                                                                     },
+                                                         "hash":  "26084586d64590f90e4a7dbc720968e7dca30cf3db92d09dfdc6a89d30c77d87"
+                                                     },
+                                                     {
+                                                         "tick":  3,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "94555dc67e5a9ade3a569002d5e83901a3c3274ac96bbb008df212215cc710d6"
+                                                     },
+                                                     {
+                                                         "tick":  3,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "39fe8529174a34ccaadcec83029c4a9c354ed2789035558596d4fae5965ead33"
+                                                     },
+                                                     {
+                                                         "tick":  4,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "85c4c47e83117325f42e748898231d22cc43f9f23a03158fe1c4bafa61a10402"
+                                                     },
+                                                     {
+                                                         "tick":  4,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "db9d1344097776a9343ff64bb8146b62417c38b162caa619617f93fd3d3e2087"
+                                                     },
+                                                     {
+                                                         "tick":  5,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "e1f50870e414cc2e1f8af61b1e10e209d51c2cd24cdc0a7902e42d196d02a68f"
+                                                     },
+                                                     {
+                                                         "tick":  5,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "bf82fc8efa3364d3a663961a6c2765d7e32806ff173c8337f804c78b9f1dc757"
+                                                     },
+                                                     {
+                                                         "tick":  6,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "96f74dd9e4c6f56863824c8eaea5c52f2d7311ce9eda49642f37da9e2e9847b1"
+                                                     },
+                                                     {
+                                                         "tick":  6,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "7547e7bc5b11d2f901ca2be3ed9713b7d63fa24abb11a7ca525d075d4c062278"
+                                                     },
+                                                     {
+                                                         "tick":  7,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "b555ce238bf4f252d87bf629dbc720373735d42e95758ca0486f3843e854c216"
+                                                     },
+                                                     {
+                                                         "tick":  7,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "b318c242b8a81bd7a8cf8f64647e4ef8332e2abb6c660c0b76f8e989cdf0b82b"
+                                                     },
+                                                     {
+                                                         "tick":  8,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "0293668ce93f73ef092f551e6ecc5791c4438aa73d7c57f5e8b8613006dc2eb3"
+                                                     },
+                                                     {
+                                                         "tick":  8,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "c32797492aab7a985619340bb495bc72985b72afe8e8a2ef48b43294dbeb4d53"
+                                                     },
+                                                     {
+                                                         "tick":  9,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "997fcbe2227d9b78d2bebe827db70695c7003f1f439a73b80dc0c08e9baedaa9"
+                                                     },
+                                                     {
+                                                         "tick":  9,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "aba0425cf31f343fdf4583a4a813bf639affa0fb02b4447458f2c839311c0713"
+                                                     },
+                                                     {
+                                                         "tick":  10,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "35252bd6b4b782bf91c55ccfaf78db295d1878435e6edf32310f85a3b7967e7b"
+                                                     },
+                                                     {
+                                                         "tick":  10,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "f5e4656b86f6138dec1302ceeaaed5388a46ac06090a4595ade0f4777429c143"
+                                                     },
+                                                     {
+                                                         "tick":  11,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "51e9b90090d5417285beac5ae8e9ca3b2337229ea4d5340016eed43d2989b715"
+                                                     },
+                                                     {
+                                                         "tick":  11,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "87bd5eff769ed8d166e8340d62b0a63f979bcf4ad6be22b9117e0158366354af"
+                                                     },
+                                                     {
+                                                         "tick":  12,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "d281dab448f5887d1dde3b8b8b1648c6e4e2ed38d186cf4806325aab32420b44"
+                                                     },
+                                                     {
+                                                         "tick":  12,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "f376112edf0b052f565f5fff333be8c04dcd6d2bbd2d40974ea28ed97f60d37b"
+                                                     },
+                                                     {
+                                                         "tick":  13,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "e25c644461c6fa913eb67c0ce95a148962ee6584c590bd80d2e08b7128dbc6a3"
+                                                     },
+                                                     {
+                                                         "tick":  13,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "5ce7d091bc3a2a9cbe44b4ef8c4497ed208f9fe257f7dd23c9b9407f8bfd7aa9"
+                                                     },
+                                                     {
+                                                         "tick":  14,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "67cb105522ccdfb98877c4762f9e1e86ee563c8bed0f8438ae1c78fcf4a787af"
+                                                     },
+                                                     {
+                                                         "tick":  14,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "40eed838b63555d06e8759af849331e298ab7bc4080b30cff26cb8520c395b11"
+                                                     },
+                                                     {
+                                                         "tick":  15,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "3ebd5818e333bd6197cfa990e08defa92e037224ae2c3825f9d9f5a9a7ba4fb3"
+                                                     },
+                                                     {
+                                                         "tick":  15,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "9bc6015fa87937d83786f1c51a9456625a28bcb411c0c99dfbaa9f90a7fd88cd"
+                                                     },
+                                                     {
+                                                         "tick":  16,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "f21e4ef32a315198929fc6b10a9aef6cd2a4ab47ad16a3750e5f0ebe60f90690"
+                                                     },
+                                                     {
+                                                         "tick":  16,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "674f38d6a2a9caea12f844821f054bde08122f4ccc2a9fc1c0523b7c27af922b"
+                                                     },
+                                                     {
+                                                         "tick":  17,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "950fed52face0c6f44d3d1be7c27910b53f1cf49486b67a94744f8c8e5e6773e"
+                                                     },
+                                                     {
+                                                         "tick":  17,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "34520be66223645ab486c47431263ba37142067df17c6079d623266c86f86c3a"
+                                                     },
+                                                     {
+                                                         "tick":  18,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "f7460fdcf47350f43a741392c855a3621645048001ece92d49ef9fe3f75d31a9"
+                                                     },
+                                                     {
+                                                         "tick":  18,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "d54a00d2b2d07c74450c93403154daec8841578071998618aadc75f6d35c4941"
+                                                     },
+                                                     {
+                                                         "tick":  19,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "7b225b3d51570603447ccf7205a49d483d3f5aa96d5d9a9d7a12e839f9541d56"
+                                                     },
+                                                     {
+                                                         "tick":  19,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "9c49ef679903348b41e94386028a29ef60b48f1fbe166d3174a2cf2ddd34357b"
+                                                     },
+                                                     {
+                                                         "tick":  20,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "35dbbca172d07d51ad4ca59cc2fbadcc0fc14b97f4d743c90e7ceabcb6d6f6b8"
+                                                     },
+                                                     {
+                                                         "tick":  20,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "57eb2f36f6df389105050993b7468419a21425ddf43e951370c91e41f96151d1"
+                                                     },
+                                                     {
+                                                         "tick":  21,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "64363c5cd960cd8fd7f423fda90945e58ce9314b06ea0949f6b424b07017e9f1"
+                                                     },
+                                                     {
+                                                         "tick":  21,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "50958c139034ec75ddfdf5e174442fc7ebd913ad9f705cf79466b3120e06c20e"
+                                                     },
+                                                     {
+                                                         "tick":  22,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "4437cfcfcaf9cf1dd56669aa21a2b1c60c30971e2988d92b271b40e190807ca8"
+                                                     },
+                                                     {
+                                                         "tick":  22,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Unknown"
+                                                                     },
+                                                         "hash":  "aeba19ddd12ddd7c7728628eecaebd05805d18792efbe2d9b956937ae1294db1"
+                                                     },
+                                                     {
+                                                         "tick":  23,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "19afb17ce44360bd8caa3974009ea1f79a0773c8d3ba96cc7dc91d581d9488a2"
+                                                     },
+                                                     {
+                                                         "tick":  23,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "8b6678ad69cb720fec47cf4b337235d8f6bdd81364eab4263516408b62b06d83"
+                                                     },
+                                                     {
+                                                         "tick":  24,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "325b637bf88028d9fae3a053513f7647535ebfd1935aedbf57fd02c2ea716789"
+                                                     },
+                                                     {
+                                                         "tick":  24,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "02af3d39044f607b27d786337a210859e8c3893f515a6fba69880dd70c33d0b9"
+                                                     },
+                                                     {
+                                                         "tick":  25,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "18123f28f364a5bc718f682ddbbd9260eefc6535c36e8dc24cfa9267479c9906"
+                                                     },
+                                                     {
+                                                         "tick":  25,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "d22c24ec31a9a6e9832e64d00fa921dd4a7de0424407ada42a5815264e50af5f"
+                                                     },
+                                                     {
+                                                         "tick":  26,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "c1f636717a6a149127aae768e0cc7e36d025753c3d929d96cefb89244eca75a6"
+                                                     },
+                                                     {
+                                                         "tick":  26,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "7aa956a2f1d5b5fb9109a17b447b559a9ea9fa5e9c61b976437c5dcdb087b58e"
+                                                     },
+                                                     {
+                                                         "tick":  27,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "960305cafd290814809845d0ff62fd60436becd8b3b162cd2dc34334f632ae00"
+                                                     },
+                                                     {
+                                                         "tick":  27,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "2a8f40ed7bef0bf05f6266029377e5c1bc5a65dc63e0227f7b04cf8e869155f4"
+                                                     },
+                                                     {
+                                                         "tick":  28,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "a77a272079926b76d143534490a4b8096c729a23958dc53ec3c1b5a723fbabf6"
+                                                     },
+                                                     {
+                                                         "tick":  28,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "69a4d8077e58f12141753a7ce3815d645504eadc9db8640e5f66f1b4062be4db"
+                                                     },
+                                                     {
+                                                         "tick":  29,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "4e3825c36d68c428c0169af3505754a395b8756b0d65f7dd50fd4cd182e24ce1"
+                                                     },
+                                                     {
+                                                         "tick":  29,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "08ffc82f3f0bfb6fa620e688676d432dec0c475c863be3dc4cee04741b25ca14"
+                                                     },
+                                                     {
+                                                         "tick":  30,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "9e098d324ef15a2c842060d9673e79839a75143f1b3313e3104b87ff493de521"
+                                                     },
+                                                     {
+                                                         "tick":  30,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "eec6fd8f48b36b506b7233db17e2fd713d5f0153aab3844bb6fe7257d97c50aa"
+                                                     },
+                                                     {
+                                                         "tick":  31,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "62aae93c7692a25f68c2fe361e376c01580cb2d4af49afeee4d1b5209c825dc0"
+                                                     },
+                                                     {
+                                                         "tick":  31,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "9c45ed8a1ba716bfcae2e7a2339d8d81442a124a8de688ec14f93c94d9bece39"
+                                                     },
+                                                     {
+                                                         "tick":  32,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "158329b527fa8d58fe2f84a44054ddc86d3a85a8bcf0b4a82d34af4069d2ab09"
+                                                     },
+                                                     {
+                                                         "tick":  32,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "50383f77c47811df479f34f0d0fd41d70444f21adfab0953551bb703688bc709"
+                                                     },
+                                                     {
+                                                         "tick":  33,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "36df3a2126b61cba147bb3424287603603a44e0f28ac2e3672a2a63557cbfc02"
+                                                     },
+                                                     {
+                                                         "tick":  33,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "cc5fb9d90d0a51f78ce60c5739fea2b3a289ede1c01c1d349585e239e4a2ed35"
+                                                     },
+                                                     {
+                                                         "tick":  34,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "89b5c4c2097c297616bc782825c1fe5dcb882726e72e3e0bbadf833a0f62cb2c"
+                                                     },
+                                                     {
+                                                         "tick":  34,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "e21b197ce05830b1e89aa07551135c0ba0258f9c9a84ca69a5d4253588dc6793"
+                                                     },
+                                                     {
+                                                         "tick":  35,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "a6ba12cd6d4dbcba48ccb95ce65776ccf4e43685b5e7555c38644628c4295eed"
+                                                     },
+                                                     {
+                                                         "tick":  35,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "52c9f4f3728a59f6b87bf3eab8a2afea03d4049aa20435df20ab533256cb145e"
+                                                     },
+                                                     {
+                                                         "tick":  36,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "f2bb3dafebf05d6081c4965dd35e5843c7a378645d6cf7b5cfc77ad798006f65"
+                                                     },
+                                                     {
+                                                         "tick":  36,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "93082c417122def71850743f99e1883d0214592c3bd462f6e158c44d8cf46b91"
+                                                     },
+                                                     {
+                                                         "tick":  37,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "a9d04a3f52bb83d2bdcdfe8a1396486663f0094c6314a33bf9f6b407cffaa2c7"
+                                                     },
+                                                     {
+                                                         "tick":  37,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "2406dece3d06683e3f576267b85ca222c95cb6e269c444f6e57e904ec9f2f3f6"
+                                                     },
+                                                     {
+                                                         "tick":  38,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "5859bdf284dd67dc8b7d16d730e7234c66f524d9da85ad60fc2f98a4a21f6dfb"
+                                                     },
+                                                     {
+                                                         "tick":  38,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "7b6f5a726a556464bdd1c98d5d0c06f5bbec5a76f4746a09de19d23201b0b2fb"
+                                                     },
+                                                     {
+                                                         "tick":  39,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "7a8891a024c2c56f602d79b112b1e3ce7af144869d9319c04634a0ac5619cbb7"
+                                                     },
+                                                     {
+                                                         "tick":  39,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "41d7ce92238394ad225f3432bf992310f8bfc5cde6933eace2eac6ddd0b7b662"
+                                                     },
+                                                     {
+                                                         "tick":  40,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "1194fce58ddf6c6f56be47b119926469b18fa4f7320a0050c0c32f975596b5ef"
+                                                     },
+                                                     {
+                                                         "tick":  40,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "1291bf4d24f6d033e1c23bfdcdbaa5d1e129d6ff0e870f2dfa702aaeeda4b6a2"
+                                                     },
+                                                     {
+                                                         "tick":  41,
+                                                         "instanceId":  "left",
+                                                         "outputs":  {
+                                                                         "y":  "High"
+                                                                     },
+                                                         "hash":  "b358bb55598f349d7c30ed55a357b28bca7200c20494f7f725b9b75c364eac0b"
+                                                     },
+                                                     {
+                                                         "tick":  41,
+                                                         "instanceId":  "right",
+                                                         "outputs":  {
+                                                                         "y":  "Low"
+                                                                     },
+                                                         "hash":  "7924a783f6e996684a71df6a33f1f034b04535f35121b1e73f219723b496847f"
+                                                     }
+                                                 ]
+                            }
+}

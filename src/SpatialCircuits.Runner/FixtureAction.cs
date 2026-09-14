@@ -5,5 +5,6 @@ public enum FixtureAction
     Unsupported,
     ResolveDrives,
     ScheduledDrive,
-    PanelScenario
+    PanelScenario,
+    ChipNetworkScenario
 }
