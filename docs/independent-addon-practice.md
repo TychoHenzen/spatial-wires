@@ -7,7 +7,7 @@ $env:GODOT_BIN = 'C:\Development\Godot_v4.7.1-stable_mono_win64\Godot_v4.7.1-sta
 powershell -NoProfile -File .\scripts\Run-IndependentCopyPractice.ps1 -GodotExecutable $env:GODOT_BIN
 ```
 
-The command creates a blank Godot .NET consumer outside the repository. It stages only `addons/spatial_circuits` as product code. It copies gdUnit4 separately as test infrastructure. The gdUnit4 C# test imports, builds, and instantiates the addon's public `Node` and `Resource` types.
+The command creates a blank Godot .NET consumer outside the repository. Its first managed build uses only the staged addon and no pure-project references. The later GdUnit phase compiles the host-side converter against the pure projects, then verifies Resource save/load, cached Resource identity, and isolation between two panel runtimes.
 
 Successful output includes these fields:
 
@@ -17,7 +17,7 @@ Successful output includes these fields:
 [independent-consumer managed build] process code 0, timedOut=False, durationMs=<milliseconds>
 [Godot import] process code 0, timedOut=False, durationMs=<milliseconds>
 [Godot managed-solution build] process code 0, timedOut=False, durationMs=<milliseconds>
-[gdUnit4 public Node and Resource tests] process code 0, timedOut=False, durationMs=<milliseconds>
+[gdUnit4 Resource adapter practice] process code 0, timedOut=False, durationMs=<milliseconds>
 Independent-copy gdUnit4 practice passed.
 Practice root: <system-temp>\spatial-wires-independent-consumer-<32 lowercase hexadecimal characters>
 Manifest SHA-256: <64 lowercase hexadecimal characters>

@@ -9,4 +9,10 @@
     <Compile Remove="src\**\*.cs" />
     <Compile Remove="tests\**\*.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="src\SpatialCircuits.Core\SpatialCircuits.Core.csproj" />
+    <ProjectReference Include="src\SpatialCircuits.Cells\SpatialCircuits.Cells.csproj" />
+    <ProjectReference Include="src\SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj" />
+  </ItemGroup>
 </Project>

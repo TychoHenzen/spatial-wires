@@ -176,7 +176,39 @@ renderer/rendering_method="gl_compatibility"
 '@ + "`n",
         [System.Text.UTF8Encoding]::new($false))
 
-    Copy-Item -LiteralPath $practiceTestSource -Destination (Join-Path $testsPath "IndependentConsumerAddonTests.cs")
+}
+
+function Enable-ResourceAdapterPractice {
+    param([Parameter(Mandatory)][string] $ProjectRoot)
+
+    $projectPath = Join-Path $ProjectRoot "SpatialWires.IndependentConsumer.csproj"
+    $projectText = [System.IO.File]::ReadAllText($projectPath)
+    if ($projectText.IndexOf("SpatialCircuits.Hierarchy.csproj", [System.StringComparison]::Ordinal) -ge 0) {
+        throw "Resource adapter practice references are already present."
+    }
+
+    $coreProject = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "src\SpatialCircuits.Core\SpatialCircuits.Core.csproj"))
+    $cellsProject = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "src\SpatialCircuits.Cells\SpatialCircuits.Cells.csproj"))
+    $hierarchyProject = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "src\SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj"))
+    $adapterSource = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "SpatialCircuitResourceAdapter.cs"))
+    $projectItems = @"
+  <ItemGroup>
+    <ProjectReference Include="$coreProject" />
+    <ProjectReference Include="$cellsProject" />
+    <ProjectReference Include="$hierarchyProject" />
+    <Compile Include="$adapterSource" Link="SpatialCircuitResourceAdapter.cs" />
+  </ItemGroup>
+"@
+
+    $closingTag = "</Project>"
+    $closingIndex = $projectText.LastIndexOf($closingTag, [System.StringComparison]::Ordinal)
+    if ($closingIndex -lt 0) {
+        throw "Generated independent-consumer project has no closing Project element."
+    }
+
+    $projectText = $projectText.Insert($closingIndex, $projectItems)
+    [System.IO.File]::WriteAllText($projectPath, $projectText, [System.Text.UTF8Encoding]::new($false))
+    Copy-Item -LiteralPath $practiceTestSource -Destination (Join-Path $ProjectRoot "tests\IndependentConsumerAddonTests.cs")
 }
 
 try {
@@ -240,8 +272,10 @@ try {
         -TimeoutMilliseconds 120000 `
         -WorkingDirectory $resolvedRunRoot | Out-Null
 
+    Enable-ResourceAdapterPractice -ProjectRoot $resolvedRunRoot
+
     Invoke-RequiredProcess `
-        -Name "gdUnit4 public Node and Resource tests" `
+        -Name "gdUnit4 Resource adapter practice" `
         -FilePath $dotnetExecutable `
         -ArgumentList @("test", $consumerProject, "--settings", $runSettings, "--nologo", "--verbosity", "normal") `
         -TimeoutMilliseconds 240000 `
