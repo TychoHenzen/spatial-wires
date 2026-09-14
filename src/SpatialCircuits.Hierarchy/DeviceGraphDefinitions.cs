@@ -110,7 +110,7 @@ public readonly struct DeviceSignal : IEquatable<DeviceSignal>
         _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Logic value is unsupported.")
     }));
 
-    internal static bool TryParse(string? value, int width, out DeviceSignal signal)
+    public static bool TryParse(string? value, int width, out DeviceSignal signal)
     {
         if (width <= 0)
         {
@@ -261,6 +261,34 @@ public sealed class TimedDeviceBackendDefinition : DeviceBackendDefinition
         }
 
         return new TimedDeviceBackendDefinition(orderedPorts, orderedChanges);
+    }
+}
+
+public sealed class NodeDeviceBackendDefinition : DeviceBackendDefinition
+{
+    internal const string TargetStableIdPrefix = "node-backend/";
+
+    private NodeDeviceBackendDefinition(ImmutableArray<DevicePortDefinition> ports) : base(ports)
+    {
+    }
+
+    internal static string TargetStableId(ComponentId deviceId) => TargetStableIdPrefix + deviceId.Value;
+
+    public static NodeDeviceBackendDefinition Create(IEnumerable<DevicePortDefinition> ports)
+    {
+        ArgumentNullException.ThrowIfNull(ports);
+        var portList = ports.ToArray();
+        if (portList.Length == 0 || portList.Any(port => port is null) ||
+            portList.Select(port => port.Name).Distinct(StringComparer.Ordinal).Count() != portList.Length ||
+            !portList.Any(port => port.Direction == DevicePortDirection.Output))
+        {
+            throw new ArgumentException(
+                "Node backend ports must be non-empty, uniquely named, and include an output port.",
+                nameof(ports));
+        }
+
+        return new NodeDeviceBackendDefinition(
+            portList.OrderBy(port => port.Name, StringComparer.Ordinal).ToImmutableArray());
     }
 }
 
@@ -428,6 +456,16 @@ public sealed class DeviceGraphDefinition
         {
             throw new ArgumentException(
                 "Device graph definitions must have unique identifiers, valid lanes, and one lane per input.");
+        }
+
+        var graphTargetIds = copiedDevices.Select(device => device.Id.Value)
+            .Concat(copiedLanes.Select(lane => lane.Id.Value))
+            .ToHashSet(StringComparer.Ordinal);
+        if (copiedDevices.Where(device => device.Backend is NodeDeviceBackendDefinition)
+            .Select(device => NodeDeviceBackendDefinition.TargetStableId(device.Id))
+            .Any(graphTargetIds.Contains))
+        {
+            throw new ArgumentException("Device or lane identifiers cannot collide with Node backend targets.");
         }
 
         var deviceById = copiedDevices.ToDictionary(device => device.Id);

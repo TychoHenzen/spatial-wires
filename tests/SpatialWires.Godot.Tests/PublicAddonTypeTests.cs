@@ -20,6 +20,10 @@ public sealed class PublicAddonTypeTests
             AssertThat(node.GetType()).IsEqual(typeof(SpatialCircuitNode));
             AssertThat(resource.GetType()).IsEqual(typeof(SpatialCircuitResource));
             AssertPublicShellType<SpatialCircuitNode, Node>("SpatialCircuitNode");
+            var deviceStep = typeof(SpatialCircuitNode).GetEvent(
+                "DeviceStep", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+            AssertThat(deviceStep).IsNotNull();
+            AssertThat(deviceStep!.EventHandlerType).IsEqual(typeof(Action<SpatialCircuitNodeStepContext>));
             AssertExportedResourceType<SpatialCircuitResource>("SpatialCircuitResource",
                 "BehaviorVersion", "DefinitionId", "Parameters", "Ports", "SchemaVersion", "SourcePanel", "Symbol");
             AssertExportedResourceType<SpatialCircuitPanelResource>("SpatialCircuitPanelResource",
@@ -47,9 +51,9 @@ public sealed class PublicAddonTypeTests
         AssertThat(publicType.IsDefined(typeof(GlobalClassAttribute), inherit: false)).IsTrue();
         AssertThat(publicType.GetConstructor(Type.EmptyTypes)).IsNotNull();
         AssertThat(publicType.GetFields(
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)).IsEmpty();
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)).IsEmpty();
         AssertThat(publicType.GetProperties(
-            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)).IsEmpty();
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)).IsEmpty();
     }
 
     private static void AssertExportedResourceType<TPublicType>(string expectedName, params string[] expectedPropertyNames)

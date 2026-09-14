@@ -178,7 +178,7 @@ renderer/rendering_method="gl_compatibility"
 
 }
 
-function Enable-ResourceAdapterPractice {
+function Enable-HostAdapterPractice {
     param([Parameter(Mandatory)][string] $ProjectRoot)
 
     $projectPath = Join-Path $ProjectRoot "SpatialWires.IndependentConsumer.csproj"
@@ -191,12 +191,14 @@ function Enable-ResourceAdapterPractice {
     $cellsProject = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "src\SpatialCircuits.Cells\SpatialCircuits.Cells.csproj"))
     $hierarchyProject = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "src\SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj"))
     $adapterSource = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "SpatialCircuitResourceAdapter.cs"))
+    $nodeBindingSource = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "SpatialCircuitNodeBinding.cs"))
     $projectItems = @"
   <ItemGroup>
     <ProjectReference Include="$coreProject" />
     <ProjectReference Include="$cellsProject" />
     <ProjectReference Include="$hierarchyProject" />
     <Compile Include="$adapterSource" Link="SpatialCircuitResourceAdapter.cs" />
+    <Compile Include="$nodeBindingSource" Link="SpatialCircuitNodeBinding.cs" />
   </ItemGroup>
 "@
 
@@ -272,10 +274,10 @@ try {
         -TimeoutMilliseconds 120000 `
         -WorkingDirectory $resolvedRunRoot | Out-Null
 
-    Enable-ResourceAdapterPractice -ProjectRoot $resolvedRunRoot
+    Enable-HostAdapterPractice -ProjectRoot $resolvedRunRoot
 
     Invoke-RequiredProcess `
-        -Name "gdUnit4 Resource adapter practice" `
+        -Name "gdUnit4 Resource and Node adapter practice" `
         -FilePath $dotnetExecutable `
         -ArgumentList @("test", $consumerProject, "--settings", $runSettings, "--nologo", "--verbosity", "normal") `
         -TimeoutMilliseconds 240000 `

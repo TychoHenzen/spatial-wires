@@ -53,6 +53,40 @@ public sealed class DeviceGraphInstanceTests
     }
 
     [Fact]
+    public void DefinitionsRejectDeviceAndLaneIdsThatCollideWithNodeBackendTargets()
+    {
+        const string targetId = "node-backend/responder";
+
+        var responderId = new ComponentId("responder");
+        var responder = DeviceDefinition.Create(responderId,
+            NodeBackend(DevicePortDefinition.Create("output", DevicePortDirection.Output)));
+        var collidingDevice = DeviceDefinition.Create(new ComponentId(targetId),
+            TimedBackend(DevicePortDefinition.Create("output", DevicePortDirection.Output)));
+
+        Assert.Throws<ArgumentException>(() => DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-device-target-collision"), [responder, collidingDevice], []));
+
+        var sinkId = new ComponentId("sink");
+        var sink = DeviceDefinition.Create(sinkId, TimedBackend(
+            DevicePortDefinition.Create("input", DevicePortDirection.Input),
+            DevicePortDefinition.Create("output", DevicePortDirection.Output)));
+        var lane = CableLaneDefinition.Create(
+            new ComponentId(targetId),
+            DevicePortEndpoint.Create(responderId, "output"),
+            DevicePortEndpoint.Create(sinkId, "input"),
+            1);
+
+        Assert.Throws<ArgumentException>(() => DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-lane-target-collision"), [responder, sink], [lane]));
+
+        var namespacedNode = DeviceDefinition.Create(new ComponentId("responder:script"),
+            NodeBackend(DevicePortDefinition.Create("output", DevicePortDirection.Output)));
+        var namespacedGraph = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-namespaced-id"), [namespacedNode], []);
+        Assert.Equal(0L, new DeviceGraphInstance(namespacedGraph).Step().Tick);
+    }
+
+    [Fact]
     public void BundledLanesKeepIndependentLatencyAndHistory()
     {
         var sourceBackend = TimedBackend(
@@ -317,6 +351,474 @@ public sealed class DeviceGraphInstanceTests
     }
 
     [Fact]
+    public void NodeBackendReceivesCommittedInputsAndTimersAndAcceptsOnlyFutureOutputs()
+    {
+        var deviceId = new ComponentId("node");
+        var device = DeviceDefinition.Create(deviceId, NodeBackend(
+            DevicePortDefinition.Create("input", DevicePortDirection.Input),
+            DevicePortDefinition.Create("output", DevicePortDirection.Output)));
+        var runtime = new DeviceGraphInstance(DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-step"), [device], []));
+        var contexts = new List<DeviceNodeStepContext>();
+        DeviceNodeOutputCapability? expiredCapability = null;
+        var rejectedCurrentTick = false;
+        var rejectedPastTick = false;
+        var acceptedFirstOutput = false;
+        var acceptedTimer = false;
+        var acceptedSecondOutput = false;
+
+        runtime.AttachNodeBackend(deviceId, new DeviceNodeBackendBinding(context =>
+        {
+            contexts.Add(context);
+            if (context.Tick == 0)
+            {
+                expiredCapability = context.Outputs;
+                rejectedCurrentTick = !context.Outputs.RequestOutput(
+                    context.Tick, "output", DeviceSignal.Scalar(LogicValue.High));
+                rejectedPastTick = !context.Outputs.RequestOutput(
+                    context.Tick - 1, "output", DeviceSignal.Scalar(LogicValue.High));
+                acceptedFirstOutput = context.Outputs.RequestOutput(
+                    context.Tick + 1, "output", DeviceSignal.Scalar(LogicValue.High));
+                acceptedTimer = context.Outputs.ScheduleTimer(context.Tick + 2, "wake");
+            }
+            else if (context.Tick == 2)
+            {
+                acceptedSecondOutput = context.Outputs.RequestOutput(
+                    context.Tick + 1, "output", DeviceSignal.Scalar(LogicValue.Low));
+            }
+        }));
+        runtime.SetInput(deviceId, "input", DeviceSignal.Scalar(LogicValue.High));
+
+        Assert.Equal(0, runtime.Step().Tick);
+        Assert.True(rejectedCurrentTick);
+        Assert.True(rejectedPastTick);
+        Assert.True(acceptedFirstOutput);
+        Assert.True(acceptedTimer);
+        Assert.Equal(LogicValue.HighImpedance, runtime.GetOutput(deviceId, "output").Bits[0]);
+        Assert.False(expiredCapability!.RequestOutput(
+            5, "output", DeviceSignal.Scalar(LogicValue.Low)));
+
+        Assert.Equal(1, runtime.Step().Tick);
+        Assert.Equal(LogicValue.High, runtime.GetOutput(deviceId, "output").Bits[0]);
+        Assert.Equal(2, runtime.Step().Tick);
+        Assert.True(acceptedSecondOutput);
+        Assert.Contains(contexts[0].CommittedInputs, transition =>
+            transition.PortName == "input" && transition.Signal.Equals(DeviceSignal.Scalar(LogicValue.High)));
+        Assert.Contains(contexts[2].DueTimers, timer => timer.TimerId == "wake" && timer.DueTick == 2);
+        Assert.Equal(LogicValue.High, runtime.GetOutput(deviceId, "output").Bits[0]);
+
+        Assert.Equal(3, runtime.Step().Tick);
+        Assert.Equal(LogicValue.Low, runtime.GetOutput(deviceId, "output").Bits[0]);
+        Assert.Equal([1L, 2L, 3L], runtime.AcceptedCommands.Select(item => item.AcceptedOrdinal));
+        Assert.Equal([1L, 2L, 3L], runtime.AcceptedCommands.Select(item => item.Command.DueTick));
+    }
+
+    [Fact]
+    public void NodeCallbacksRejectReentryAndDiscardAllRequestsWhenOneCallbackFails()
+    {
+        var firstId = new ComponentId("node-a");
+        var secondId = new ComponentId("node-b");
+        var first = DeviceDefinition.Create(firstId,
+            NodeBackend(DevicePortDefinition.Create("output", DevicePortDirection.Output)));
+        var second = DeviceDefinition.Create(secondId,
+            NodeBackend(DevicePortDefinition.Create("output", DevicePortDirection.Output)));
+        var runtime = new DeviceGraphInstance(DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-failure"), [first, second], []));
+        var nestedStepRejected = false;
+        var firstCallbackRan = false;
+
+        runtime.AttachNodeBackend(firstId, new DeviceNodeBackendBinding(context =>
+        {
+            firstCallbackRan = true;
+            try
+            {
+                runtime.Step();
+            }
+            catch (InvalidOperationException)
+            {
+                nestedStepRejected = true;
+            }
+
+            Assert.True(context.Outputs.RequestOutput(
+                context.Tick + 1, "output", DeviceSignal.Scalar(LogicValue.High)));
+        }));
+        runtime.AttachNodeBackend(secondId, new DeviceNodeBackendBinding(context =>
+        {
+            Assert.True(context.Outputs.RequestOutput(
+                context.Tick + 1, "output", DeviceSignal.Scalar(LogicValue.High)));
+            throw new InvalidOperationException("responder failed");
+        }));
+
+        var result = runtime.Step();
+
+        Assert.Equal(0, result.Tick);
+        Assert.Equal(1, runtime.CurrentTick);
+        Assert.Single(runtime.CaptureSnapshot().Scheduler.Trace);
+        Assert.True(nestedStepRejected);
+        Assert.True(firstCallbackRan);
+        Assert.Empty(runtime.AcceptedCommands);
+        Assert.Equal(LogicValue.HighImpedance, runtime.GetOutput(firstId, "output").Bits[0]);
+        Assert.Equal(LogicValue.HighImpedance, runtime.GetOutput(secondId, "output").Bits[0]);
+        Assert.Collection(result.NodeBackendFailures,
+            failure =>
+            {
+                Assert.Equal(secondId, failure.DeviceId);
+                Assert.Equal("responder failed", failure.Message);
+            });
+    }
+
+    [Fact]
+    public void RemovedNodeBackendInvalidatesStaleCommandsAndReleasesThroughCableLatency()
+    {
+        var nodeId = new ComponentId("node");
+        var sinkId = new ComponentId("sink");
+        var node = DeviceDefinition.Create(nodeId,
+            NodeBackend(DevicePortDefinition.Create("output", DevicePortDirection.Output)));
+        var sink = DeviceDefinition.Create(sinkId, TimedBackend(
+            [
+                DevicePortDefinition.Create("input", DevicePortDirection.Input),
+                DevicePortDefinition.Create("output", DevicePortDirection.Output)
+            ], []));
+        var laneId = new ComponentId("lane/node-sink");
+        var lane = CableLaneDefinition.Create(
+            laneId,
+            DevicePortEndpoint.Create(nodeId, "output"),
+            DevicePortEndpoint.Create(sinkId, "input"),
+            latency: 2);
+        var runtime = new DeviceGraphInstance(DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-delete"), [node, sink], [lane]));
+        DeviceNodeOutputCapability? expiredCapability = null;
+        var calls = 0;
+        var binding = new DeviceNodeBackendBinding(context =>
+        {
+            calls++;
+            if (context.Tick == 0)
+            {
+                expiredCapability = context.Outputs;
+                Assert.True(context.Outputs.RequestOutput(
+                    context.Tick + 1, "output", DeviceSignal.Scalar(LogicValue.High)));
+            }
+            else if (context.Tick == 1)
+            {
+                Assert.True(context.Outputs.RequestOutput(
+                    context.Tick + 3, "output", DeviceSignal.Scalar(LogicValue.Low)));
+            }
+        });
+        runtime.AttachNodeBackend(nodeId, binding);
+
+        runtime.Step();
+        runtime.Step();
+        runtime.Step();
+        runtime.Step();
+        Assert.Equal(LogicValue.High, runtime.CaptureSnapshot().Devices
+            .Single(device => device.DeviceId == sinkId).Inputs.Single(pair => pair.Key == "input").Value.Bits[0]);
+        Assert.Equal(LogicValue.High, runtime.GetOutput(nodeId, "output").Bits[0]);
+
+        binding.Invalidate();
+        runtime.Step();
+        Assert.True(runtime.IsConnected(laneId));
+        Assert.Equal(LogicValue.HighImpedance, runtime.GetOutput(nodeId, "output").Bits[0]);
+        Assert.Equal(LogicValue.High, runtime.CaptureSnapshot().Devices
+            .Single(device => device.DeviceId == sinkId).Inputs.Single(pair => pair.Key == "input").Value.Bits[0]);
+        Assert.False(expiredCapability!.RequestOutput(
+            10, "output", DeviceSignal.Scalar(LogicValue.Low)));
+
+        runtime.Step();
+        Assert.Equal(LogicValue.High, runtime.CaptureSnapshot().Devices
+            .Single(device => device.DeviceId == sinkId).Inputs.Single(pair => pair.Key == "input").Value.Bits[0]);
+        runtime.Step();
+        Assert.Equal(LogicValue.HighImpedance, runtime.CaptureSnapshot().Devices
+            .Single(device => device.DeviceId == sinkId).Inputs.Single(pair => pair.Key == "input").Value.Bits[0]);
+        Assert.Equal(4, calls);
+        Assert.Contains(runtime.GetLaneHistory(laneId), item =>
+            item.Status == CableTransitionStatus.Delivered && item.Signal.Equals(
+                DeviceSignal.Scalar(LogicValue.HighImpedance)) && item.DeliveredTick == 6);
+        Assert.DoesNotContain(runtime.GetLaneHistory(laneId), item =>
+            item.Signal.Equals(DeviceSignal.Scalar(LogicValue.Low)) &&
+            item.Status == CableTransitionStatus.Delivered);
+    }
+
+    [Fact]
+    public void NodeBackendCommandReplayMatchesPerTickHashesWithoutInvokingTheNode()
+    {
+        var deviceId = new ComponentId("node");
+        var definition = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-replay"),
+            [DeviceDefinition.Create(deviceId, NodeBackend(
+                DevicePortDefinition.Create("input", DevicePortDirection.Input),
+                DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
+            []);
+        var live = new DeviceGraphInstance(definition);
+        var liveCalls = 0;
+        live.AttachNodeBackend(deviceId, new DeviceNodeBackendBinding(context =>
+        {
+            liveCalls++;
+            if (context.Tick == 0)
+            {
+                Assert.True(context.Outputs.RequestOutput(
+                    context.Tick + 1, "output", DeviceSignal.Scalar(LogicValue.High)));
+                Assert.True(context.Outputs.ScheduleTimer(context.Tick + 2, "wake"));
+            }
+            else if (context.Tick == 2)
+            {
+                Assert.Contains(context.DueTimers, timer => timer.TimerId == "wake");
+                Assert.True(context.Outputs.RequestOutput(
+                    context.Tick + 1, "output", DeviceSignal.Scalar(LogicValue.Low)));
+            }
+        }));
+        live.SetInput(deviceId, "input", DeviceSignal.Scalar(LogicValue.High));
+        var initial = live.CaptureSnapshot();
+        var liveHashes = new List<string>();
+        for (var tick = 0; tick < 5; tick++)
+        {
+            live.Step();
+            liveHashes.Add(live.CaptureSnapshot().Scheduler.Trace[^1].Hash);
+        }
+
+        var acceptedCommands = live.AcceptedCommands;
+        var finalLive = live.CaptureSnapshot();
+        var replay = new DeviceGraphInstance(definition);
+        replay.RestoreSnapshot(initial);
+        replay.ReplayNodeBackendCommands(acceptedCommands);
+        var replayHashes = new List<string>();
+        for (var tick = 0; tick < 5; tick++)
+        {
+            replay.Step();
+            replayHashes.Add(replay.CaptureSnapshot().Scheduler.Trace[^1].Hash);
+        }
+
+        var finalReplay = replay.CaptureSnapshot();
+        Assert.Equal(5, liveCalls);
+        Assert.Equal(liveHashes, replayHashes);
+        Assert.True(finalLive.Scheduler.AcceptedCommands.SequenceEqual(finalReplay.Scheduler.AcceptedCommands));
+        Assert.True(finalLive.Devices.Single().Outputs.SequenceEqual(finalReplay.Devices.Single().Outputs));
+        Assert.True(finalLive.Lanes.SequenceEqual(finalReplay.Lanes));
+    }
+
+    [Fact]
+    public void RestoreRejectsMalformedPendingNodeOutputEvents()
+    {
+        var deviceId = new ComponentId("node");
+        var definition = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-snapshot"),
+            [DeviceDefinition.Create(deviceId, NodeBackend(
+                DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
+            []);
+        var snapshot = new DeviceGraphInstance(definition).CaptureSnapshot();
+        var targetStableId = "node-backend/" + deviceId.Value;
+        var target = snapshot.Scheduler.Targets.Single(item => item.StableId == targetStableId);
+        var malformedEvent = new ScheduledEvent(
+            new ScheduledEventKey(
+                1,
+                SchedulerPhase.Deliver,
+                targetStableId,
+                target.Incarnation,
+                "output",
+                targetStableId,
+                "output",
+                "device-node-output",
+                1),
+            LogicValue.High,
+            "not-a-signal",
+            SourceIncarnation: target.Incarnation);
+        var malformedSnapshot = snapshot with
+        {
+            Scheduler = snapshot.Scheduler with
+            {
+                NextCausalOrdinal = 2,
+                PendingEvents = [malformedEvent]
+            }
+        };
+
+        var exception = Assert.Throws<ArgumentException>(() =>
+            new DeviceGraphInstance(definition).RestoreSnapshot(malformedSnapshot));
+
+        Assert.Contains("Node output event", exception.Message);
+    }
+
+    [Fact]
+    public void RestoreRejectsPendingNodeEventsWithoutRecordedCommands()
+    {
+        var deviceId = new ComponentId("node");
+        var definition = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-unrecorded-event"),
+            [DeviceDefinition.Create(deviceId, NodeBackend(
+                DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
+            []);
+        var snapshot = new DeviceGraphInstance(definition).CaptureSnapshot();
+        var targetStableId = "node-backend/" + deviceId.Value;
+        var target = snapshot.Scheduler.Targets.Single(item => item.StableId == targetStableId);
+        var unrecordedEvent = new ScheduledEvent(
+            new ScheduledEventKey(
+                1,
+                SchedulerPhase.Deliver,
+                targetStableId,
+                target.Incarnation,
+                "output",
+                targetStableId,
+                "output",
+                "device-node-output",
+                1),
+            LogicValue.High,
+            "1",
+            SourceIncarnation: target.Incarnation);
+        var malformedSnapshot = snapshot with
+        {
+            Scheduler = snapshot.Scheduler with
+            {
+                NextCausalOrdinal = 2,
+                PendingEvents = [unrecordedEvent]
+            }
+        };
+
+        var exception = Assert.Throws<ArgumentException>(() =>
+            new DeviceGraphInstance(definition).RestoreSnapshot(malformedSnapshot));
+
+        Assert.Contains("no applied accepted command", exception.Message);
+    }
+
+    [Fact]
+    public void RestoreRejectsUnmatchedNodeDetachAndMalformedPendingNodeCommands()
+    {
+        var deviceId = new ComponentId("node");
+        var definition = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-command-snapshot"),
+            [DeviceDefinition.Create(deviceId, NodeBackend(
+                DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
+            []);
+        var snapshot = new DeviceGraphInstance(definition).CaptureSnapshot();
+        var targetStableId = "node-backend/" + deviceId.Value;
+        var target = snapshot.Scheduler.Targets.Single(item => item.StableId == targetStableId);
+        var pendingRemoval = SchedulerCommand.RemoveTarget(targetStableId, snapshot.Scheduler.CurrentTick);
+        var unmatchedDetach = snapshot with
+        {
+            Scheduler = snapshot.Scheduler with
+            {
+                NextAcceptedOrdinal = 2,
+                AcceptedCommands = [new AcceptedSchedulerCommand(1, pendingRemoval)]
+            }
+        };
+
+        var detachException = Assert.Throws<ArgumentException>(() =>
+            new DeviceGraphInstance(definition).RestoreSnapshot(unmatchedDetach));
+
+        Assert.Contains("detach", detachException.Message);
+
+        var detachingDevice = snapshot.Devices.Single() with
+        {
+            NodeDetachApplyAtTick = snapshot.Scheduler.CurrentTick
+        };
+        var duplicateDetaches = snapshot with
+        {
+            Devices = [detachingDevice],
+            Scheduler = snapshot.Scheduler with
+            {
+                NextAcceptedOrdinal = 3,
+                AcceptedCommands =
+                [
+                    new AcceptedSchedulerCommand(1, pendingRemoval),
+                    new AcceptedSchedulerCommand(2, pendingRemoval)
+                ]
+            }
+        };
+
+        var duplicateDetachException = Assert.Throws<ArgumentException>(() =>
+            new DeviceGraphInstance(definition).RestoreSnapshot(duplicateDetaches));
+
+        Assert.Contains("detach commands", duplicateDetachException.Message);
+
+        var malformedOutput = new ScheduledEvent(
+            new ScheduledEventKey(
+                1,
+                SchedulerPhase.Deliver,
+                targetStableId,
+                target.Incarnation,
+                "output",
+                targetStableId,
+                "output",
+                "device-node-output",
+                CausalOrdinal: 0),
+            LogicValue.High,
+            "not-a-signal",
+            SourceIncarnation: target.Incarnation);
+        var malformedCommand = SchedulerCommand.ScheduleEvent(malformedOutput, snapshot.Scheduler.CurrentTick);
+        var invalidCommandSnapshot = snapshot with
+        {
+            Scheduler = snapshot.Scheduler with
+            {
+                NextAcceptedOrdinal = 2,
+                AcceptedCommands = [new AcceptedSchedulerCommand(1, malformedCommand)]
+            }
+        };
+
+        var commandException = Assert.Throws<ArgumentException>(() =>
+            new DeviceGraphInstance(definition).RestoreSnapshot(invalidCommandSnapshot));
+
+        Assert.Contains("invalid signal", commandException.Message);
+    }
+
+    [Fact]
+    public void RestoreAppliesUnappliedNodeOutputCommandAtItsOriginalBoundary()
+    {
+        var deviceId = new ComponentId("node");
+        var definition = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-pending-output-command"),
+            [DeviceDefinition.Create(deviceId, NodeBackend(
+                DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
+            []);
+        var live = new DeviceGraphInstance(definition);
+        live.AttachNodeBackend(deviceId, new DeviceNodeBackendBinding(context =>
+        {
+            if (context.Tick == 0)
+            {
+                Assert.True(context.Outputs.RequestOutput(
+                    context.Tick + 3, "output", DeviceSignal.Scalar(LogicValue.High)));
+            }
+        }));
+        live.Step();
+        var snapshot = live.CaptureSnapshot();
+
+        var restored = new DeviceGraphInstance(definition);
+        restored.RestoreSnapshot(snapshot);
+        Assert.Equal(1L, restored.Step().Tick);
+        var pendingEventSnapshot = restored.CaptureSnapshot();
+        var resumed = new DeviceGraphInstance(definition);
+        resumed.RestoreSnapshot(pendingEventSnapshot);
+        Assert.Equal(2L, resumed.Step().Tick);
+        Assert.Equal(3L, resumed.Step().Tick);
+
+        Assert.Equal(LogicValue.High, resumed.GetOutput(deviceId, "output").Bits[0]);
+    }
+
+    [Fact]
+    public void RestoreAppliesPendingNodeDetachAndReRegistersItsTarget()
+    {
+        var deviceId = new ComponentId("node");
+        var definition = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-pending-detach"),
+            [DeviceDefinition.Create(deviceId, NodeBackend(
+                DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
+            []);
+        var live = new DeviceGraphInstance(definition);
+        DeviceNodeBackendBinding? binding = null;
+        binding = new DeviceNodeBackendBinding(_ => binding!.Invalidate());
+        live.AttachNodeBackend(deviceId, binding);
+        live.Step();
+        var snapshot = live.CaptureSnapshot();
+
+        var restored = new DeviceGraphInstance(definition);
+        restored.RestoreSnapshot(snapshot);
+        Assert.Equal(1L, restored.Step().Tick);
+
+        var restoredSnapshot = restored.CaptureSnapshot();
+        var target = restoredSnapshot.Scheduler.Targets
+            .Single(item => item.StableId == "node-backend/" + deviceId.Value);
+        Assert.Equal(2L, target.Incarnation);
+        Assert.True(target.Active);
+        Assert.Null(restoredSnapshot.Devices.Single().NodeDetachApplyAtTick);
+    }
+
+    [Fact]
     public void ControllerAndResponderExchangeShowsTicksAcrossTwoLanes()
     {
         var runtime = CreateExchangeRuntime();
@@ -380,6 +882,9 @@ public sealed class DeviceGraphInstanceTests
     private static TimedDeviceBackendDefinition TimedBackend(
         IEnumerable<DevicePortDefinition> ports,
         IEnumerable<TimedOutputChange> changes) => TimedDeviceBackendDefinition.Create(ports, changes);
+
+    private static NodeDeviceBackendDefinition NodeBackend(params DevicePortDefinition[] ports) =>
+        NodeDeviceBackendDefinition.Create(ports);
 
     private static PanelDeviceBackendDefinition PanelBackend(string panelId, string input, string output)
     {

@@ -1,7 +1,9 @@
 using GdUnit4;
 using Godot;
 using SpatialCircuits.Cells;
+using SpatialCircuits.Core;
 using SpatialCircuits.GodotAdapter;
+using SpatialCircuits.Hierarchy;
 using static GdUnit4.Assertions;
 
 namespace SpatialWires.IndependentConsumer.Tests;
@@ -149,6 +151,124 @@ public sealed class IndependentConsumerAddonTests
             panel.Dispose();
             clock.Dispose();
             RemoveSavedResource(path);
+        }
+    }
+
+    // covers: spatial-circuits/recorded-node-bridge :: Public record-disable-replay responder practice :: Node-disabled replay matches causal hashes
+    [TestCase]
+    [RequireGodotRuntime]
+    public void ScriptedResponderRecordsAndReplaysWithoutExecutingItsNode()
+    {
+        var sceneTree = Engine.GetMainLoop() as SceneTree;
+        AssertThat(sceneTree).IsNotNull();
+        var parent = new Node();
+        sceneTree!.Root.AddChild(parent);
+        var node = new SpatialCircuitNode();
+        parent.AddChild(node);
+        SpatialCircuitNodeBinding? binding = null;
+
+        try
+        {
+            var controllerId = new ComponentId("controller");
+            var responderId = new ComponentId("responder");
+            var sinkId = new ComponentId("sink");
+            var controller = DeviceDefinition.Create(controllerId, TimedDeviceBackendDefinition.Create(
+                [
+                    DevicePortDefinition.Create("challenge", DevicePortDirection.Output),
+                    DevicePortDefinition.Create("enable", DevicePortDirection.Output)
+                ],
+                [
+                    new TimedOutputChange(1, "challenge", DeviceSignal.Scalar(LogicValue.High)),
+                    new TimedOutputChange(1, "enable", DeviceSignal.Scalar(LogicValue.High))
+                ]));
+            var responder = DeviceDefinition.Create(responderId, NodeDeviceBackendDefinition.Create(
+                [
+                    DevicePortDefinition.Create("challenge", DevicePortDirection.Input),
+                    DevicePortDefinition.Create("enable", DevicePortDirection.Input),
+                    DevicePortDefinition.Create("response", DevicePortDirection.Output)
+                ]));
+            var sink = DeviceDefinition.Create(sinkId, TimedDeviceBackendDefinition.Create(
+                [
+                    DevicePortDefinition.Create("response", DevicePortDirection.Input),
+                    DevicePortDefinition.Create("readback", DevicePortDirection.Output)
+                ], []));
+            var definition = DeviceGraphDefinition.Create(
+                new DefinitionId("graph/node-responder"),
+                [controller, responder, sink],
+                [
+                    CableLaneDefinition.Create(new ComponentId("lane/challenge"),
+                        DevicePortEndpoint.Create(controllerId, "challenge"),
+                        DevicePortEndpoint.Create(responderId, "challenge"), 1),
+                    CableLaneDefinition.Create(new ComponentId("lane/enable"),
+                        DevicePortEndpoint.Create(controllerId, "enable"),
+                        DevicePortEndpoint.Create(responderId, "enable"), 1),
+                    CableLaneDefinition.Create(new ComponentId("lane/response"),
+                        DevicePortEndpoint.Create(responderId, "response"),
+                        DevicePortEndpoint.Create(sinkId, "response"), 1)
+                ]);
+            var live = new DeviceGraphInstance(definition);
+            binding = new SpatialCircuitNodeBinding(live, responderId, node);
+            node.DeviceStep += context =>
+            {
+                var hasChallenge = context.CommittedInputs.Any(input =>
+                    input.PortName == "challenge" && input.Signal == "1");
+                var isEnabled = context.CommittedInputs.Any(input =>
+                    input.PortName == "enable" && input.Signal == "1");
+                if (hasChallenge && isEnabled)
+                {
+                    AssertThat(context.Outputs.ScheduleTimer(context.Tick + 1, "respond")).IsTrue();
+                }
+
+                if (context.DueTimers.Any(timer => timer.TimerId == "respond"))
+                {
+                    AssertThat(context.Outputs.RequestOutput(context.Tick + 1, "response", "1")).IsTrue();
+                }
+            };
+
+            var initial = live.CaptureSnapshot();
+            var liveHashes = new List<string>();
+            for (var tick = 0; tick < 6; tick++)
+            {
+                live.Step();
+                liveHashes.Add(live.CaptureSnapshot().Scheduler.Trace[^1].Hash);
+            }
+
+            var recordedCommands = live.AcceptedCommands;
+            var finalLive = live.CaptureSnapshot();
+            AssertThat(recordedCommands.Length).IsEqual(2);
+            AssertThat(finalLive.Devices.Single(device => device.DeviceId == responderId)
+                .Outputs.Single(pair => pair.Key == "response").Value.Bits[0]).IsEqual(LogicValue.High);
+            AssertThat(finalLive.Devices
+                .Single(device => device.DeviceId == sinkId)
+                .Inputs.Single(pair => pair.Key == "response").Value).IsEqual(DeviceSignal.Scalar(LogicValue.High));
+
+            node.Free();
+            var replay = new DeviceGraphInstance(definition);
+            replay.RestoreSnapshot(initial);
+            replay.ReplayNodeBackendCommands(recordedCommands);
+            var replayHashes = new List<string>();
+            for (var tick = 0; tick < 6; tick++)
+            {
+                replay.Step();
+                replayHashes.Add(replay.CaptureSnapshot().Scheduler.Trace[^1].Hash);
+            }
+
+            var finalReplay = replay.CaptureSnapshot();
+            AssertThat(liveHashes.SequenceEqual(replayHashes)).IsTrue();
+            AssertThat(finalLive.Scheduler.AcceptedCommands.SequenceEqual(finalReplay.Scheduler.AcceptedCommands))
+                .IsTrue();
+            AssertThat(finalReplay.Devices
+                .Single(device => device.DeviceId == sinkId)
+                .Inputs.Single(pair => pair.Key == "response").Value).IsEqual(DeviceSignal.Scalar(LogicValue.High));
+            GD.Print($"Node responder replay hashes match: {liveHashes[^1]} = {replayHashes[^1]}");
+        }
+        finally
+        {
+            binding?.Dispose();
+            if (GodotObject.IsInstanceValid(parent))
+            {
+                parent.Free();
+            }
         }
     }
 
