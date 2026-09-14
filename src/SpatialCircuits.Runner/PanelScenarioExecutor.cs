@@ -6,12 +6,15 @@ namespace SpatialCircuits.Runner;
 
 public static class PanelScenarioExecutor
 {
+    private static readonly CustomCellRuleRegistry CustomCellRules =
+        new([PatternDetectorRule.Registration]);
+
     public static IReadOnlyList<PanelTraceRecord> Execute(RunnerFixture fixture)
     {
         ArgumentNullException.ThrowIfNull(fixture);
         var plan = fixture.PanelScenario
             ?? throw new ArgumentException("Fixture does not contain a panel scenario.", nameof(fixture));
-        var runtime = new PanelRuntimeInstance(plan.CreatePanelDefinition());
+        var runtime = new PanelRuntimeInstance(plan.CreatePanelDefinition(), CustomCellRules);
         var inputsByTick = plan.Inputs
             .GroupBy(input => input.Tick)
             .ToDictionary(group => group.Key, group => group.ToArray());

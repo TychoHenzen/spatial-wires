@@ -1,0 +1,86 @@
+[
+  {
+    "findingId": "0716cd7d7f227b1f1b7056e234f93ed2e14917b3996e01d04c64c980bd379058",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "Stable migration diagnostics are part of the public custom-cell error contract.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "29cdfdacba4b3eb34e537d98691bf2b2095710105a4972b7356aad7df4c821f0",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "External consumers need the stable error code on failed custom-cell registration and execution.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "4ab5db365b6564a034efe83449cdbfdf21abd5cc18989038a5b0a5cf4cc75394",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "Public snapshot restore is required for deterministic custom-cell replay and state migration.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "4cd476ae0d22dad1ad1e1d428f6be0a2bc3c07eab02ee8856d80176bde823ce6",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "Stable registration diagnostics are part of the public custom-cell error contract.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "a05724f3a8e0c02726026aa421264db00c38eedf9efe8ee76e3d5517449ee8bb",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "Stable transition diagnostics are part of the public custom-cell error contract.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "b4399b2e3183683a0a93da586bf97c6a56940a39c7908c8e4c85ce499fa6b300",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "External consumers need a stable diagnostic when a behavior identifier has no registration.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "c7018d366fbeadeb20f0eba96ae334728430c453571f7a0bd4ebec1051329eb4",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "External rules require the public deterministic random step to reproduce saved runtime state.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "cf355e0ac1b689434e02d247685a0a5e2b15b7d866c42273f5c82fad0ba86381",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "Stable migration diagnostics are part of the public custom-cell error contract.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "d5e6157afea8aade91ede3e827daf90a3d14eca04404ce3d2a79ddc33e3a5ef7",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "Public snapshot capture is required to verify deterministic custom-cell state and replay hashes.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "e60bee6f7a0863aaade6dabb95cab0eb4b918299b85e5f521bcdda59d519da97",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "Stable state diagnostics are part of the public custom-cell error contract.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "fc02abc8223185513d0f22d6431beef859710b3b72828bc00bed8be3e9d5a20a",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "Stable duplicate-registration diagnostics are part of the public custom-cell error contract.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  },
+  {
+    "findingId": "fc682ace38e57f9b6b470151f450dcb20d7007e9866596e489aef57b58a6168e",
+    "fingerprint": "397b51f21bf48b177d59a7d520f8949f92a3847c1aed7acdadbfe0ee81abf36f",
+    "reason": "External rules need a stable diagnostic when immutable input parameters are rejected.",
+    "author": "Codex",
+    "time": "2026-09-14T00:01:22Z"
+  }
+]

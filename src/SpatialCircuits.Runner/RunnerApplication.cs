@@ -1,3 +1,5 @@
+using SpatialCircuits.Cells;
+
 namespace SpatialCircuits.Runner;
 
 public static class RunnerApplication
@@ -45,7 +47,19 @@ public static class RunnerApplication
 
         if (fixture.Action == FixtureAction.PanelScenario)
         {
-            var panelRecords = PanelScenarioExecutor.Execute(fixture);
+            IReadOnlyList<PanelTraceRecord> panelRecords;
+            try
+            {
+                panelRecords = PanelScenarioExecutor.Execute(fixture);
+            }
+            catch (CustomCellRuleException exception)
+            {
+                return Fail(output, new FixtureDiagnostic(
+                    exception.Code,
+                    "$.panelScenario.cells",
+                    exception.Message));
+            }
+
             foreach (var record in panelRecords)
             {
                 TraceOutput.WritePanelScenarioTrace(output, record);

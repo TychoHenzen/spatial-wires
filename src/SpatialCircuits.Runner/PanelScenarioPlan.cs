@@ -21,7 +21,8 @@ public sealed record PanelScenarioPlan(
             ParseKind(cell.Kind),
             ParseOrientation(cell.Orientation),
             cell.PortId is null ? null : new PortId(cell.PortId),
-            cell.Parameters));
+            cell.Parameters,
+            cell.BehaviorId is null ? null : new BehaviorId(cell.BehaviorId)));
         return PanelDefinition.Create(new CircuitId(PanelId), Width, Height, cells);
     }
 
@@ -39,6 +40,7 @@ public sealed record PanelScenarioPlan(
         "clock" => CellKind.Clock,
         "d-flip-flop" => CellKind.DFlipFlop,
         "stability-filter" => CellKind.StabilityFilter,
+        "custom" => CellKind.Custom,
         _ => throw new ArgumentException($"Cell kind '{kind}' is not supported.", nameof(kind))
     };
 
@@ -61,8 +63,15 @@ public sealed record PanelCellPlan(
     string Kind,
     string Orientation,
     string? PortId,
-    ImmutableArray<KeyValuePair<string, string>> Parameters);
+    ImmutableArray<KeyValuePair<string, string>> Parameters,
+    string? BehaviorId = null)
+{
+}
 
-public sealed record PanelInputChange(int Tick, string PortId, string Value);
+public sealed record PanelInputChange(int Tick, string PortId, string Value)
+{
+}
 
-public sealed record PanelProbeExpectation(int Tick, string ProbeId, string Value);
+public sealed record PanelProbeExpectation(int Tick, string ProbeId, string Value)
+{
+}

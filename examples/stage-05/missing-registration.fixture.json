@@ -1,0 +1,51 @@
+{
+  "fixtureSchema": {
+    "major": 1,
+    "minor": 0
+  },
+  "traceSchema": {
+    "major": 1,
+    "minor": 0
+  },
+  "fixtureId": "stage-05-missing-registration",
+  "action": "panelScenario",
+  "panelScenario": {
+    "panelId": "stage-05/missing-registration",
+    "width": 3,
+    "height": 1,
+    "microticks": 1,
+    "cells": [
+      {
+        "cellId": "signal-source",
+        "x": 0,
+        "y": 0,
+        "kind": "input-port",
+        "orientation": "east",
+        "portId": "signal"
+      },
+      {
+        "cellId": "unknown-rule",
+        "x": 1,
+        "y": 0,
+        "kind": "custom",
+        "orientation": "east",
+        "behaviorId": "tests.missing:example/v1"
+      },
+      {
+        "cellId": "probe",
+        "x": 2,
+        "y": 0,
+        "kind": "probe",
+        "orientation": "east"
+      }
+    ],
+    "inputs": [],
+    "expectations": [
+      {
+        "tick": 0,
+        "probeId": "probe",
+        "value": "HighImpedance"
+      }
+    ]
+  }
+}
