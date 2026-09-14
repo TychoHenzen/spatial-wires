@@ -19,6 +19,8 @@ public static class FixtureDiagnosticCodes
     public const string PanelScenarioInvalid = "FIXTURE_PANEL_SCENARIO_INVALID";
     public const string ChipScenarioRequired = "FIXTURE_CHIP_SCENARIO_REQUIRED";
     public const string ChipScenarioInvalid = "FIXTURE_CHIP_SCENARIO_INVALID";
+    public const string DeviceExchangeScenarioRequired = "FIXTURE_DEVICE_EXCHANGE_SCENARIO_REQUIRED";
+    public const string DeviceExchangeScenarioInvalid = "FIXTURE_DEVICE_EXCHANGE_SCENARIO_INVALID";
     public const string PathRequired = "FIXTURE_PATH_REQUIRED";
     public const string FileNotFound = "FIXTURE_FILE_NOT_FOUND";
     public const string FileUnreadable = "FIXTURE_FILE_UNREADABLE";

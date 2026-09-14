@@ -1,0 +1,29 @@
+{
+  "fixtureSchema": { "major": 1, "minor": 0 },
+  "traceSchema": { "major": 1, "minor": 0 },
+  "fixtureId": "stage-07-controller-responder-two-link-exchange",
+  "action": "deviceExchangeScenario",
+  "deviceExchangeScenario": {
+    "microticks": 10,
+    "linkLatency": 2,
+    "expectations": [
+      { "tick": 0, "challenge": "HighImpedance", "response": "HighImpedance" },
+      { "tick": 1, "challenge": "High", "response": "HighImpedance" },
+      { "tick": 2, "challenge": "High", "response": "HighImpedance" },
+      { "tick": 3, "challenge": "High", "response": "HighImpedance" },
+      { "tick": 4, "challenge": "High", "response": "HighImpedance" },
+      { "tick": 5, "challenge": "High", "response": "Unknown" },
+      { "tick": 6, "challenge": "High", "response": "Unknown" },
+      { "tick": 7, "challenge": "High", "response": "Unknown" },
+      { "tick": 8, "challenge": "High", "response": "Unknown" },
+      { "tick": 9, "challenge": "High", "response": "Low" }
+    ],
+    "deliveryExpectations": [
+      { "tick": 2, "laneId": "lane/challenge", "signal": "HighImpedance" },
+      { "tick": 2, "laneId": "lane/response", "signal": "HighImpedance" },
+      { "tick": 3, "laneId": "lane/challenge", "signal": "High" },
+      { "tick": 4, "laneId": "lane/response", "signal": "Unknown" },
+      { "tick": 8, "laneId": "lane/response", "signal": "Low" }
+    ]
+  }
+}

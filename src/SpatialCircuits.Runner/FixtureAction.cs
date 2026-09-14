@@ -6,5 +6,6 @@ public enum FixtureAction
     ResolveDrives,
     ScheduledDrive,
     PanelScenario,
-    ChipNetworkScenario
+    ChipNetworkScenario,
+    DeviceExchangeScenario
 }

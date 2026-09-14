@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
 
@@ -127,6 +128,37 @@ public static class TraceOutput
         });
     }
 
+    public static void WriteDeviceExchangeTrace(TextWriter writer, DeviceExchangeTraceRecord record)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(record);
+
+        WriteLine(writer, json =>
+        {
+            WriteVersion(json, record.TraceSchema);
+            json.WriteString("fixtureId", record.FixtureId);
+            json.WriteNumber("sequence", record.Sequence);
+            json.WriteNumber("microtick", record.Microtick);
+            json.WriteString("challenge", record.Challenge);
+            json.WriteString("expectedChallenge", record.ExpectedChallenge);
+            json.WriteString("response", record.Response);
+            json.WriteString("expectedResponse", record.ExpectedResponse);
+            WriteDeliveries(json, "deliveries", record.Deliveries);
+            json.WriteStartArray("expectedDeliveries");
+            foreach (var delivery in record.ExpectedDeliveries)
+            {
+                json.WriteStartObject();
+                json.WriteString("laneId", delivery.LaneId);
+                json.WriteNumber("tick", delivery.Tick);
+                json.WriteString("signal", delivery.Signal);
+                json.WriteEndObject();
+            }
+
+            json.WriteEndArray();
+            json.WriteBoolean("passed", record.Passed);
+        });
+    }
+
     public static void WriteDiagnostic(TextWriter writer, FixtureDiagnostic diagnostic)
     {
         ArgumentNullException.ThrowIfNull(writer);
@@ -163,6 +195,24 @@ public static class TraceOutput
         }
 
         writer.WriteEndObject();
+    }
+
+    private static void WriteDeliveries(
+        Utf8JsonWriter writer,
+        string propertyName,
+        ImmutableArray<DeviceExchangeDeliveryTrace> deliveries)
+    {
+        writer.WriteStartArray(propertyName);
+        foreach (var delivery in deliveries)
+        {
+            writer.WriteStartObject();
+            writer.WriteString("laneId", delivery.LaneId);
+            writer.WriteNumber("tick", delivery.Tick);
+            writer.WriteString("signal", delivery.Signal);
+            writer.WriteEndObject();
+        }
+
+        writer.WriteEndArray();
     }
 
     private static void WriteLine(TextWriter writer, Action<Utf8JsonWriter> writeProperties)
