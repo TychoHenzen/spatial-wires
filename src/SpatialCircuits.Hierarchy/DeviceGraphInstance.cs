@@ -84,7 +84,7 @@ public sealed class DeviceGraphInstance
                 InitialSignal(lane.Target, definition)));
         }
 
-        foreach (var lane in _lanes.Values)
+        foreach (var lane in _lanes.Values.OrderBy(item => item.Definition.Id.Value, StringComparer.Ordinal))
         {
             ScheduleLaneTransition(lane, ReadOutput(lane.Definition.Source), CurrentTick, isRelease: false);
         }
@@ -183,6 +183,7 @@ public sealed class DeviceGraphInstance
 
         var changedOutputs = replacement.Outputs
             .Where(pair => !current.Outputs.TryGetValue(pair.Key, out var oldValue) || !oldValue.Equals(pair.Value))
+            .OrderBy(pair => pair.Key, StringComparer.Ordinal)
             .ToArray();
         foreach (var output in changedOutputs)
         {
@@ -283,6 +284,18 @@ public sealed class DeviceGraphInstance
 
         var scheduler = new DeterministicScheduler();
         scheduler.RestoreSnapshot(snapshot.Scheduler);
+        ValidateSnapshotTargets(snapshot);
+        var devices = RestoreDeviceRuntimes(snapshot);
+        var lanes = RestoreLaneRuntimes(snapshot, scheduler);
+        ValidatePendingLaneEvents(snapshot.Scheduler, lanes);
+        _definition = snapshot.Definition;
+        _scheduler = scheduler;
+        _devices = devices;
+        _lanes = lanes;
+    }
+
+    private static void ValidateSnapshotTargets(DeviceGraphRuntimeSnapshot snapshot)
+    {
         var expectedTargets = snapshot.Definition.Devices.Select(device => device.Id.Value)
             .Concat(snapshot.Definition.Lanes.Select(lane => lane.Id.Value))
             .ToHashSet(StringComparer.Ordinal);
@@ -293,6 +306,10 @@ public sealed class DeviceGraphInstance
             throw new ArgumentException("Device graph snapshot targets do not match its definitions.", nameof(snapshot));
         }
 
+    }
+
+    private static Dictionary<string, DeviceRuntime> RestoreDeviceRuntimes(DeviceGraphRuntimeSnapshot snapshot)
+    {
         var deviceSnapshots = snapshot.Devices.ToDictionary(item => item.DeviceId);
         if (deviceSnapshots.Count != snapshot.Definition.Devices.Length ||
             !deviceSnapshots.Keys.ToHashSet().SetEquals(snapshot.Definition.Devices.Select(device => device.Id)))
@@ -303,79 +320,121 @@ public sealed class DeviceGraphInstance
         var devices = new Dictionary<string, DeviceRuntime>(StringComparer.Ordinal);
         foreach (var definition in snapshot.Definition.Devices)
         {
-            var saved = deviceSnapshots[definition.Id];
-            var runtime = CreateRuntime(definition, 0);
-            if (saved.Inputs.IsDefault || saved.Outputs.IsDefault || saved.Timers.IsDefault ||
-                saved.Inputs.Select(pair => pair.Key).Distinct(StringComparer.Ordinal).Count() != saved.Inputs.Length ||
-                saved.Outputs.Select(pair => pair.Key).Distinct(StringComparer.Ordinal).Count() != saved.Outputs.Length ||
-                !saved.Inputs.Select(pair => pair.Key).ToHashSet(StringComparer.Ordinal)
-                    .SetEquals(runtime.Panel is null
-                        ? definition.Ports.Where(port => port.Direction == DevicePortDirection.Input).Select(port => port.Name)
-                        : []) ||
-                !saved.Outputs.Select(pair => pair.Key).ToHashSet(StringComparer.Ordinal)
-                    .SetEquals(definition.Ports.Where(port => port.Direction == DevicePortDirection.Output)
-                        .Select(port => port.Name)))
-            {
-                throw new ArgumentException("Device graph snapshot output state is invalid.", nameof(snapshot));
-            }
-
-            if ((runtime.Panel is null) != (saved.Panel is null))
-            {
-                throw new ArgumentException("Device graph snapshot backend state is invalid.", nameof(snapshot));
-            }
-
-            if (saved.Panel is not null)
-            {
-                runtime.Panel!.RestoreSnapshot(saved.Panel);
-            }
-
-            if ((runtime.Panel is not null || definition.Backend is not TimedDeviceBackendDefinition) &&
-                saved.Timers.Length > 0)
-            {
-                throw new ArgumentException("Device snapshot contains timers for a backend without timers.", nameof(snapshot));
-            }
-
-            runtime.Inputs.Clear();
-            runtime.Outputs.Clear();
-            foreach (var (name, value) in saved.Inputs)
-            {
-                FindPort(definition, name, DevicePortDirection.Input).ValidateSignal(value, nameof(snapshot));
-                runtime.Inputs.Add(name, value);
-            }
-
-            foreach (var (name, value) in saved.Outputs)
-            {
-                FindPort(definition, name, DevicePortDirection.Output).ValidateSignal(value, nameof(snapshot));
-                runtime.Outputs.Add(name, value);
-            }
-
-            if (runtime.Panel is not null && runtime.Outputs.Any(pair =>
-                    !pair.Value.Equals(DeviceSignal.Scalar(runtime.Panel.GetOutput(new PortId(pair.Key))))))
-            {
-                throw new ArgumentException("Device graph snapshot panel outputs do not match panel state.", nameof(snapshot));
-            }
-
-            var timers = saved.Timers.ToArray();
-            if (timers.Any(timer => timer is null || timer.DueTick < snapshot.Scheduler.CurrentTick) ||
-                timers.Select(timer => (timer.DueTick, timer.PortName)).Distinct().Count() != timers.Length ||
-                !timers.SequenceEqual(timers.OrderBy(timer => timer.DueTick)
-                    .ThenBy(timer => timer.PortName, StringComparer.Ordinal)))
-            {
-                throw new ArgumentException("Timed device snapshot state is invalid.", nameof(snapshot));
-            }
-
-            foreach (var timer in timers)
-            {
-                FindPort(definition, timer.PortName, DevicePortDirection.Output)
-                    .ValidateSignal(timer.Value, nameof(snapshot));
-            }
-
-            runtime.Timers.Clear();
-            runtime.Timers.AddRange(timers.Select(timer =>
-                new TimedDeviceTimer(timer.DueTick, timer.PortName, timer.Value)));
-            devices.Add(definition.Id.Value, runtime);
+            devices.Add(definition.Id.Value, RestoreDeviceRuntime(
+                definition,
+                deviceSnapshots[definition.Id],
+                snapshot.Scheduler.CurrentTick));
         }
 
+        return devices;
+    }
+
+    private static DeviceRuntime RestoreDeviceRuntime(
+        DeviceDefinition definition,
+        DeviceRuntimeSnapshot snapshot,
+        long currentTick)
+    {
+        var runtime = CreateRuntime(definition, 0);
+        ValidateDeviceSnapshotShape(definition, snapshot, runtime);
+        if (snapshot.Panel is not null)
+        {
+            runtime.Panel!.RestoreSnapshot(snapshot.Panel);
+        }
+
+        RestoreDeviceSignals(definition, snapshot, runtime);
+        RestoreDeviceTimers(definition, snapshot, runtime, currentTick);
+        return runtime;
+    }
+
+    private static void ValidateDeviceSnapshotShape(
+        DeviceDefinition definition,
+        DeviceRuntimeSnapshot snapshot,
+        DeviceRuntime runtime)
+    {
+        if (snapshot.Inputs.IsDefault || snapshot.Outputs.IsDefault || snapshot.Timers.IsDefault ||
+            snapshot.Inputs.Select(pair => pair.Key).Distinct(StringComparer.Ordinal).Count() != snapshot.Inputs.Length ||
+            snapshot.Outputs.Select(pair => pair.Key).Distinct(StringComparer.Ordinal).Count() != snapshot.Outputs.Length ||
+            !snapshot.Inputs.Select(pair => pair.Key).ToHashSet(StringComparer.Ordinal)
+                .SetEquals(runtime.Panel is null
+                    ? definition.Ports.Where(port => port.Direction == DevicePortDirection.Input).Select(port => port.Name)
+                    : []) ||
+            !snapshot.Outputs.Select(pair => pair.Key).ToHashSet(StringComparer.Ordinal)
+                .SetEquals(definition.Ports.Where(port => port.Direction == DevicePortDirection.Output)
+                    .Select(port => port.Name)))
+        {
+            throw new ArgumentException("Device graph snapshot output state is invalid.", nameof(snapshot));
+        }
+
+        if ((runtime.Panel is null) != (snapshot.Panel is null))
+        {
+            throw new ArgumentException("Device graph snapshot backend state is invalid.", nameof(snapshot));
+        }
+    }
+
+    private static void RestoreDeviceSignals(
+        DeviceDefinition definition,
+        DeviceRuntimeSnapshot snapshot,
+        DeviceRuntime runtime)
+    {
+        runtime.Inputs.Clear();
+        runtime.Outputs.Clear();
+        foreach (var (name, value) in snapshot.Inputs)
+        {
+            FindPort(definition, name, DevicePortDirection.Input).ValidateSignal(value, nameof(snapshot));
+            runtime.Inputs.Add(name, value);
+        }
+
+        foreach (var (name, value) in snapshot.Outputs)
+        {
+            FindPort(definition, name, DevicePortDirection.Output).ValidateSignal(value, nameof(snapshot));
+            runtime.Outputs.Add(name, value);
+        }
+
+        if (runtime.Panel is not null && runtime.Outputs.Any(pair =>
+                !pair.Value.Equals(DeviceSignal.Scalar(runtime.Panel.GetOutput(new PortId(pair.Key))))))
+        {
+            throw new ArgumentException("Device graph snapshot panel outputs do not match panel state.", nameof(snapshot));
+        }
+    }
+
+    private static void RestoreDeviceTimers(
+        DeviceDefinition definition,
+        DeviceRuntimeSnapshot snapshot,
+        DeviceRuntime runtime,
+        long currentTick)
+    {
+        if ((runtime.Panel is not null || definition.Backend is not TimedDeviceBackendDefinition) &&
+            snapshot.Timers.Length > 0)
+        {
+            throw new ArgumentException("Device snapshot contains timers for a backend without timers.", nameof(snapshot));
+        }
+
+        var timers = snapshot.Timers.ToArray();
+        if (timers.Any(timer => timer is null || timer.DueTick < currentTick) ||
+            timers.Select(timer => (timer.DueTick, timer.PortName)).Distinct().Count() != timers.Length ||
+            !timers.SequenceEqual(timers.OrderBy(timer => timer.DueTick)
+                .ThenBy(timer => timer.PortName, StringComparer.Ordinal)))
+        {
+            throw new ArgumentException("Timed device snapshot state is invalid.", nameof(snapshot));
+        }
+
+        foreach (var timer in timers)
+        {
+            FindPort(definition, timer.PortName, DevicePortDirection.Output)
+                .ValidateSignal(timer.Value, nameof(snapshot));
+        }
+
+        runtime.Timers.Clear();
+        foreach (var timer in timers)
+        {
+            runtime.Timers.Enqueue(new TimedDeviceTimer(timer.DueTick, timer.PortName, timer.Value));
+        }
+    }
+
+    private static Dictionary<string, LaneRuntime> RestoreLaneRuntimes(
+        DeviceGraphRuntimeSnapshot snapshot,
+        DeterministicScheduler scheduler)
+    {
         var laneSnapshots = snapshot.Lanes.ToDictionary(item => item.LaneId);
         if (laneSnapshots.Count != snapshot.Definition.Lanes.Length ||
             !laneSnapshots.Keys.ToHashSet().SetEquals(snapshot.Definition.Lanes.Select(lane => lane.Id)))
@@ -390,7 +449,7 @@ public sealed class DeviceGraphInstance
             var sourcePort = FindPort(snapshot.Definition.GetDevice(definition.Source.DeviceId),
                 definition.Source.PortName, DevicePortDirection.Output);
             sourcePort.ValidateSignal(saved.CurrentSignal, nameof(snapshot));
-            if (saved.Epoch != targets[definition.Id.Value].Incarnation || saved.Epoch <= 0)
+            if (saved.Epoch != scheduler.GetTarget(definition.Id.Value).Incarnation || saved.Epoch <= 0)
             {
                 throw new ArgumentException("Device graph snapshot lane epoch is invalid.", nameof(snapshot));
             }
@@ -419,11 +478,7 @@ public sealed class DeviceGraphInstance
             lanes.Add(definition.Id.Value, lane);
         }
 
-        ValidatePendingLaneEvents(snapshot.Scheduler, lanes);
-        _definition = snapshot.Definition;
-        _scheduler = scheduler;
-        _devices = devices;
-        _lanes = lanes;
+        return lanes;
     }
 
     private void DeliverCableEvent(
@@ -475,15 +530,15 @@ public sealed class DeviceGraphInstance
     {
         foreach (var runtime in _devices.Values.OrderBy(item => item.Definition.Id.Value, StringComparer.Ordinal))
         {
-            while (runtime.Timers.Count > 0 && runtime.Timers[0].DueTick <= tick)
+            while (runtime.Timers.Count > 0 && runtime.Timers.Peek().DueTick <= tick)
             {
-                var timer = runtime.Timers[0];
+                var timer = runtime.Timers.Peek();
                 if (timer.DueTick < tick)
                 {
                     throw new InvalidOperationException("Timed device contains a timer in the past.");
                 }
 
-                runtime.Timers.RemoveAt(0);
+                runtime.Timers.Dequeue();
                 if (runtime.Outputs[timer.PortName].Equals(timer.Value))
                 {
                     continue;
@@ -500,7 +555,8 @@ public sealed class DeviceGraphInstance
         ValidateOutputTicks(deviceId, portName, tick);
         foreach (var lane in _lanes.Values.Where(lane => lane.Connected &&
                      lane.Definition.Source.DeviceId == deviceId &&
-                     string.Equals(lane.Definition.Source.PortName, portName, StringComparison.Ordinal)))
+                     string.Equals(lane.Definition.Source.PortName, portName, StringComparison.Ordinal))
+                 .OrderBy(lane => lane.Definition.Id.Value, StringComparer.Ordinal))
         {
             ScheduleLaneTransition(lane, value, tick, isRelease: false);
         }
@@ -536,7 +592,7 @@ public sealed class DeviceGraphInstance
             null));
     }
 
-    private DeviceRuntime CreateRuntime(DeviceDefinition definition, long fromTick)
+    private static DeviceRuntime CreateRuntime(DeviceDefinition definition, long fromTick)
     {
         var panel = definition.Backend is PanelDeviceBackendDefinition panelBackend
             ? new PanelRuntimeInstance(panelBackend.Panel)
@@ -554,12 +610,11 @@ public sealed class DeviceGraphInstance
         }
 
         var timers = definition.Backend is TimedDeviceBackendDefinition timed
-            ? timed.Changes.Select(change => new TimedDeviceTimer(
+            ? new Queue<TimedDeviceTimer>(timed.Changes.Select(change => new TimedDeviceTimer(
                     checked(fromTick + change.DelayTicks), change.PortName, change.Value))
                 .OrderBy(timer => timer.DueTick)
-                .ThenBy(timer => timer.PortName, StringComparer.Ordinal)
-                .ToList()
-            : [];
+                .ThenBy(timer => timer.PortName, StringComparer.Ordinal))
+            : new Queue<TimedDeviceTimer>();
         return new DeviceRuntime(definition, panel, inputs, outputs, timers);
     }
 
@@ -606,7 +661,8 @@ public sealed class DeviceGraphInstance
     {
         foreach (var lane in _lanes.Values.Where(lane => lane.Connected &&
                      lane.Definition.Source.DeviceId == deviceId &&
-                     string.Equals(lane.Definition.Source.PortName, portName, StringComparison.Ordinal)))
+                     string.Equals(lane.Definition.Source.PortName, portName, StringComparison.Ordinal))
+                 .OrderBy(lane => lane.Definition.Id.Value, StringComparer.Ordinal))
         {
             _ = checked(tick + lane.Definition.Latency);
         }
@@ -662,7 +718,7 @@ public sealed class DeviceGraphInstance
         PanelRuntimeInstance? panel,
         Dictionary<string, DeviceSignal> inputs,
         Dictionary<string, DeviceSignal> outputs,
-        List<TimedDeviceTimer> timers)
+        Queue<TimedDeviceTimer> timers)
     {
         public DeviceDefinition Definition { get; } = definition;
 
@@ -672,7 +728,7 @@ public sealed class DeviceGraphInstance
 
         public Dictionary<string, DeviceSignal> Outputs { get; } = outputs;
 
-        public List<TimedDeviceTimer> Timers { get; } = timers;
+        public Queue<TimedDeviceTimer> Timers { get; } = timers;
     }
 
     private sealed record TimedDeviceTimer(long DueTick, string PortName, DeviceSignal Value);

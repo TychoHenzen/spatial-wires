@@ -76,7 +76,7 @@ public sealed class DeviceGraphInstanceTests
         var graph = DeviceGraphDefinition.Create(
             new DefinitionId("graph/bundle"),
             [source, left, right],
-            [leftLane, rightLane],
+            [rightLane, leftLane],
             [CableBundleDefinition.Create(new ComponentId("bundle"), [leftLane.Id, rightLane.Id])]);
         var runtime = new DeviceGraphInstance(graph);
         var deliveries = new List<DeviceCableDelivery>();
@@ -99,6 +99,8 @@ public sealed class DeviceGraphInstanceTests
                 .Select(item => (item.DeliveredTick, item.Signal.Bits[0])));
         Assert.Equal([1L, 3L], runtime.GetLaneHistory(leftLane.Id).Select(item => item.ScheduledTick));
         Assert.Equal([2L, 4L], runtime.GetLaneHistory(rightLane.Id).Select(item => item.ScheduledTick));
+        Assert.Equal([1L, 3L], runtime.GetLaneHistory(leftLane.Id).Select(item => item.CausalOrdinal));
+        Assert.Equal([2L, 4L], runtime.GetLaneHistory(rightLane.Id).Select(item => item.CausalOrdinal));
         Assert.Equal(LogicValue.High, runtime.GetOutput(left.Id, "out").Bits[0]);
         Assert.Equal(LogicValue.High, runtime.GetOutput(right.Id, "out").Bits[0]);
     }
@@ -296,7 +298,9 @@ public sealed class DeviceGraphInstanceTests
     {
         var device = DeviceDefinition.Create(new ComponentId("timer"), TimedBackend(
             DevicePortDefinition.Create("out", DevicePortDirection.Output),
-            new TimedOutputChange(5, "out", DeviceSignal.Scalar(LogicValue.High))));
+            DevicePortDefinition.Create("second", DevicePortDirection.Output),
+            new TimedOutputChange(5, "out", DeviceSignal.Scalar(LogicValue.High)),
+            new TimedOutputChange(5, "second", DeviceSignal.Scalar(LogicValue.High))));
         var runtime = new DeviceGraphInstance(DeviceGraphDefinition.Create(
             new DefinitionId("graph/timer"), [device], []));
 
@@ -304,10 +308,12 @@ public sealed class DeviceGraphInstanceTests
         {
             Assert.Equal(tick, runtime.Step().Tick);
             Assert.Equal(LogicValue.HighImpedance, runtime.GetOutput(device.Id, "out").Bits[0]);
+            Assert.Equal(LogicValue.HighImpedance, runtime.GetOutput(device.Id, "second").Bits[0]);
         }
 
         Assert.Equal(5, runtime.Step().Tick);
         Assert.Equal(LogicValue.High, runtime.GetOutput(device.Id, "out").Bits[0]);
+        Assert.Equal(LogicValue.High, runtime.GetOutput(device.Id, "second").Bits[0]);
     }
 
     [Fact]
