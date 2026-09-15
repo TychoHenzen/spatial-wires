@@ -1,7 +1,10 @@
 using System.Text.Json;
 using GdUnit4;
 using Godot;
+using SpatialCircuits.Cells;
+using SpatialCircuits.Core;
 using SpatialCircuits.GodotAdapter;
+using SpatialCircuits.Hierarchy;
 using static GdUnit4.Assertions;
 
 namespace SpatialWires.BlankConsumer.Tests;
@@ -71,6 +74,86 @@ public sealed class BlankConsumerAddonTests
         AssertThat(reenabled.GetProperty("dock_count").GetInt32()).IsEqual(1);
         AssertThat(reenabled.GetProperty("handler_count").GetInt32()).IsEqual(1);
     }
+
+    [TestCase]
+    [RequireGodotRuntime]
+    public void BlankProjectRunsATwoDeviceTimedExchange()
+    {
+        var controllerPanel = PanelDefinition.Create(
+            new CircuitId("panel/blank-controller"),
+            3,
+            2,
+            [
+                InputPort("challenge-in", 0, 0, "challenge-drive"),
+                Wire("challenge-wire", 1, 0),
+                OutputPort("challenge-out", 2, 0, "challenge"),
+                InputPort("response-in", 0, 1, "response-in"),
+                Wire("response-wire", 1, 1),
+                OutputPort("response-out", 2, 1, "response")
+            ]);
+        var responderPanel = PanelDefinition.Create(
+            new CircuitId("panel/blank-responder"),
+            3,
+            1,
+            [
+                InputPort("challenge-in", 0, 0, "challenge"),
+                Wire("response-wire", 1, 0),
+                OutputPort("response-out", 2, 0, "response")
+            ]);
+        var controller = DeviceDefinition.Create(
+            new ComponentId("device/blank-controller"),
+            PanelDeviceBackendDefinition.Create(controllerPanel));
+        var responder = DeviceDefinition.Create(
+            new ComponentId("device/blank-responder"),
+            PanelDeviceBackendDefinition.Create(responderPanel));
+        var graph = new DeviceGraphInstance(DeviceGraphDefinition.Create(
+            new DefinitionId("graph/blank-exchange"),
+            [controller, responder],
+            [
+                CableLaneDefinition.Create(
+                    new ComponentId("lane/challenge"),
+                    DevicePortEndpoint.Create(controller.Id, "challenge"),
+                    DevicePortEndpoint.Create(responder.Id, "challenge"),
+                    2),
+                CableLaneDefinition.Create(
+                    new ComponentId("lane/response"),
+                    DevicePortEndpoint.Create(responder.Id, "response"),
+                    DevicePortEndpoint.Create(controller.Id, "response-in"),
+                    2)
+            ]));
+
+        graph.SetInput(controller.Id, "challenge-drive", DeviceSignal.Scalar(LogicValue.High));
+        for (var tick = 0; tick < 16; tick++)
+        {
+            graph.Step();
+        }
+
+        AssertThat(graph.GetOutput(controller.Id, "response")).IsEqual(
+            DeviceSignal.Scalar(LogicValue.High));
+    }
+
+    private static PanelCellDefinition InputPort(string id, int x, int y, string port) =>
+        PanelCellDefinition.Create(
+            new ComponentId(id),
+            new GridCoordinate(x, y),
+            CellKind.InputPort,
+            CardinalDirection.East,
+            new PortId(port));
+
+    private static PanelCellDefinition OutputPort(string id, int x, int y, string port) =>
+        PanelCellDefinition.Create(
+            new ComponentId(id),
+            new GridCoordinate(x, y),
+            CellKind.OutputPort,
+            CardinalDirection.East,
+            new PortId(port));
+
+    private static PanelCellDefinition Wire(string id, int x, int y) =>
+        PanelCellDefinition.Create(
+            new ComponentId(id),
+            new GridCoordinate(x, y),
+            CellKind.Wire,
+            CardinalDirection.East);
 
     private static JsonDocument LoadEditorLifecycleReport()
     {

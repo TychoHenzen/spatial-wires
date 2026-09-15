@@ -827,9 +827,9 @@
   },
   {
     "findingId": "04f7093e080d7af88b94c240f262b41022b7fdc77a95894e73ab0576fdf441fb",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
     "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
     "author": "Codex independent review",
-    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
     "time": "2026-09-15T01:46:16.893Z"
   },
   {
@@ -4695,8 +4695,7 @@
     "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
     "author": "Codex",
     "time": "2026-09-15T15:16:20.466Z"
-  }
-,
+  },
   {
     "findingId": "02841c3e3d90e73c456915d43726142df34a33ffecec254a91161119f59a77c6",
     "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
@@ -5368,4 +5367,229 @@
     "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
     "author": "Codex",
     "time": "2026-09-15T16:37:52.667Z"
-  }]
+  },
+  {
+    "findingId": "09fc7923bc16df2ffa3cc0d4bb754879de0320b2043f61c8bb68eeab4e589ab2",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:23:17.091Z"
+  },
+  {
+    "findingId": "0b57c0054402bde8837f61ab734cdc78b38b3ebbf348565425b8442cf87b7399",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:23:35.646Z"
+  },
+  {
+    "findingId": "26be619b1f24dbb25f7178800aac5d7da8244601174d48abcb451bd36d0f7381",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:23:54.437Z"
+  },
+  {
+    "findingId": "320cf8cb0a470885c47922ce8b187b0b92ab9f652d3924909025c5d559aba89c",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:24:13.211Z"
+  },
+  {
+    "findingId": "486e5a4a43939c713198b9742b162a727305687dee99fec1e913ed1d2d82399e",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:24:32.168Z"
+  },
+  {
+    "findingId": "4d4e3400951a3aae8f6dbd65e949c70b1f8e2460518fc3620ce10e0e55b1bd87",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:24:51.094Z"
+  },
+  {
+    "findingId": "561f6d46f5136028a6b323916bd9407a985c7d2bd706d18b7c2cae845ac6e884",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:25:09.609Z"
+  },
+  {
+    "findingId": "5a9158a9d8be67b67f185c129cb107310d4503ff61d5204c6754f3157bf79bd5",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:25:28.339Z"
+  },
+  {
+    "findingId": "5e5cfa183c5bd96e91c690e4a94ff84902845cc320536d42972001e768ce91a0",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:25:46.946Z"
+  },
+  {
+    "findingId": "70975b79cc8fbb6372b759bda80970b278c3d5a23121845134cb51bc83e08ec9",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:26:05.535Z"
+  },
+  {
+    "findingId": "7920fe70cb74f641c0aaf8156ceab4fa59d8fd7afcb96d4b294c4f48a74e1b94",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:26:24.381Z"
+  },
+  {
+    "findingId": "b78853f288b4ab6f5d2605d03792591903de5090267d9634597abf5c79b5377f",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:26:44.147Z"
+  },
+  {
+    "findingId": "b9741a69ec2adc2a62720047ac92862ddcd0617dbf2cc653b0e6dacb32c8eaba",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:27:05.375Z"
+  },
+  {
+    "findingId": "db96d720f0add04edafd2817b893c0b8fad3a17894173f16da678350601df455",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:27:24.940Z"
+  },
+  {
+    "findingId": "eb786aa7f3f5cc6d209f2288024952566762398c4d73aa68f079e4a8c65a1512",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:27:44.938Z"
+  },
+  {
+    "findingId": "ed87964b45f6e1bea354c20a05e89227ea73215f75ab7088a1ae5ea60e333eae",
+    "fingerprint": "8324ee60f37874f6a31feeafff56792ced0ebdd5165e4c558b94ba925f8d7fb6",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, and release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T18:28:04.273Z"
+  },
+  {
+    "findingId": "09fc7923bc16df2ffa3cc0d4bb754879de0320b2043f61c8bb68eeab4e589ab2",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:09:30.015Z"
+  },
+  {
+    "findingId": "0b57c0054402bde8837f61ab734cdc78b38b3ebbf348565425b8442cf87b7399",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:09:48.770Z"
+  },
+  {
+    "findingId": "26be619b1f24dbb25f7178800aac5d7da8244601174d48abcb451bd36d0f7381",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:10:07.880Z"
+  },
+  {
+    "findingId": "320cf8cb0a470885c47922ce8b187b0b92ab9f652d3924909025c5d559aba89c",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:10:27.136Z"
+  },
+  {
+    "findingId": "486e5a4a43939c713198b9742b162a727305687dee99fec1e913ed1d2d82399e",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:10:47.608Z"
+  },
+  {
+    "findingId": "4d4e3400951a3aae8f6dbd65e949c70b1f8e2460518fc3620ce10e0e55b1bd87",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:11:09.296Z"
+  },
+  {
+    "findingId": "561f6d46f5136028a6b323916bd9407a985c7d2bd706d18b7c2cae845ac6e884",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:11:34.646Z"
+  },
+  {
+    "findingId": "5a9158a9d8be67b67f185c129cb107310d4503ff61d5204c6754f3157bf79bd5",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:11:56.547Z"
+  },
+  {
+    "findingId": "5e5cfa183c5bd96e91c690e4a94ff84902845cc320536d42972001e768ce91a0",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:12:17.764Z"
+  },
+  {
+    "findingId": "70975b79cc8fbb6372b759bda80970b278c3d5a23121845134cb51bc83e08ec9",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:12:38.413Z"
+  },
+  {
+    "findingId": "7920fe70cb74f641c0aaf8156ceab4fa59d8fd7afcb96d4b294c4f48a74e1b94",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:12:59.108Z"
+  },
+  {
+    "findingId": "b78853f288b4ab6f5d2605d03792591903de5090267d9634597abf5c79b5377f",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:13:19.173Z"
+  },
+  {
+    "findingId": "b9741a69ec2adc2a62720047ac92862ddcd0617dbf2cc653b0e6dacb32c8eaba",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:13:40.951Z"
+  },
+  {
+    "findingId": "db96d720f0add04edafd2817b893c0b8fad3a17894173f16da678350601df455",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:14:01.406Z"
+  },
+  {
+    "findingId": "eb786aa7f3f5cc6d209f2288024952566762398c4d73aa68f079e4a8c65a1512",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "time": "2026-09-15T19:14:21.780Z"
+  },
+  {
+    "findingId": "ed87964b45f6e1bea354c20a05e89227ea73215f75ab7088a1ae5ea60e333eae",
+    "reason": "Required release qualification surface is intentionally added for selectable execution, trace comparison, worker admission, and package evidence. Coverage is provided by the PBI16 runner, workbench, benchmark, package consumer, and Windows release checks.",
+    "author": "Codex",
+    "fingerprint": "56ffa875dd781fac1344d9661e93d737640a6d730b990e4bbfe688bdd5f49a4d",
+    "time": "2026-09-15T19:14:43.418Z"
+  }
+]

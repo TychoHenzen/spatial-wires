@@ -119,6 +119,8 @@ public sealed class PanelWorkbenchSession
 
     public bool IsPaused { get; private set; } = true;
 
+    public WorkbenchExecutionMode ExecutionMode { get; private set; } = WorkbenchExecutionMode.Reference;
+
     public Guid SaveId { get; private set; }
 
     public long CurrentTick => _chipNetwork.CurrentTick;
@@ -732,6 +734,26 @@ public sealed class PanelWorkbenchSession
         Changed?.Invoke();
     }
 
+    public bool TrySetExecutionMode(
+        WorkbenchExecutionMode mode,
+        out WorkbenchDiagnostic? diagnostic)
+    {
+        if (!WorkbenchExecutionAdmission.TryAdmit(this, mode, out diagnostic))
+        {
+            LastDiagnostic = diagnostic;
+            return false;
+        }
+
+        _chipNetwork.SetExecutionMode(
+            mode == WorkbenchExecutionMode.Reference
+                ? PanelExecutionMode.Reference
+                : PanelExecutionMode.Optimized);
+        ExecutionMode = mode;
+        LastDiagnostic = null;
+        Changed?.Invoke();
+        return true;
+    }
+
     public bool TrySelect(GridCoordinate location, out WorkbenchDiagnostic? diagnostic)
     {
         diagnostic = null;
@@ -1115,6 +1137,12 @@ public sealed class PanelWorkbenchSession
 
     public PanelTickResult StepMicrotick(bool commitStaged = true)
     {
+        if (ExecutionMode == WorkbenchExecutionMode.Worker && !WorkerExecutionAllowed)
+        {
+            throw new InvalidOperationException(
+                "Worker execution requires the main-thread barrier while a Node backend is active.");
+        }
+
         if (commitStaged)
         {
             CommitPendingMutations();

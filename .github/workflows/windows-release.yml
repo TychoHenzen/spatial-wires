@@ -1,0 +1,77 @@
+name: windows-release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  GODOT_RELEASE_TAG: 4.7.1-stable
+  GODOT_ASSET: Godot_v4.7.1-stable_mono_win64.zip
+  GODOT_TEMPLATES_ASSET: Godot_v4.7.1-stable_mono_export_templates.tpz
+
+jobs:
+  windows-release:
+    name: windows-release
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1f # v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 8.0.410
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22
+
+      - name: Download and verify Godot .NET
+        shell: pwsh
+        run: |
+          $godotDirectory = Join-Path $env:RUNNER_TEMP 'godot'
+          $archivePath = Join-Path $env:RUNNER_TEMP $env:GODOT_ASSET
+          $baseUrl = "https://github.com/godotengine/godot/releases/download/$env:GODOT_RELEASE_TAG"
+          Invoke-WebRequest -Uri "$baseUrl/$env:GODOT_ASSET" -OutFile $archivePath
+          $sums = (Invoke-WebRequest -Uri "$baseUrl/SHA512-SUMS.txt").Content
+          $matchingLine = $sums -split "`r?`n" |
+            Where-Object { $_.TrimEnd() -match [regex]::Escape($env:GODOT_ASSET) + '\s*$' } |
+            Select-Object -First 1
+          $expected = ($matchingLine.Trim() -split '\s+' | Select-Object -First 1).ToLowerInvariant()
+          $actual = (Get-FileHash -LiteralPath $archivePath -Algorithm SHA512).Hash.ToLowerInvariant()
+          if ([string]::IsNullOrWhiteSpace($expected) -or $actual -ne $expected) {
+            throw 'Godot archive checksum mismatch.'
+          }
+          Expand-Archive -LiteralPath $archivePath -DestinationPath $godotDirectory -Force
+          $godotExecutable = Get-ChildItem -LiteralPath $godotDirectory -Filter $env:GODOT_ASSET.Replace('.zip', '.exe') -Recurse -File |
+            Select-Object -First 1 -ExpandProperty FullName
+          if ([string]::IsNullOrWhiteSpace($godotExecutable)) {
+            throw "Godot executable was not found below '$godotDirectory'."
+          }
+          "GODOT_BIN=$godotExecutable" >> $env:GITHUB_ENV
+          $templateArchivePath = Join-Path $env:RUNNER_TEMP 'Godot_v4.7.1-stable_mono_export_templates.zip'
+          $templateExtractPath = Join-Path $env:RUNNER_TEMP 'godot-export-templates'
+          Invoke-WebRequest -Uri "$baseUrl/$env:GODOT_TEMPLATES_ASSET" -OutFile $templateArchivePath
+          $templateLine = $sums -split "`r?`n" |
+            Where-Object { $_.TrimEnd() -match [regex]::Escape($env:GODOT_TEMPLATES_ASSET) + '\s*$' } |
+            Select-Object -First 1
+          $expectedTemplate = ($templateLine.Trim() -split '\s+' | Select-Object -First 1).ToLowerInvariant()
+          $actualTemplate = (Get-FileHash -LiteralPath $templateArchivePath -Algorithm SHA512).Hash.ToLowerInvariant()
+          if ([string]::IsNullOrWhiteSpace($expectedTemplate) -or $actualTemplate -ne $expectedTemplate) {
+            throw 'Godot export template checksum mismatch.'
+          }
+          Expand-Archive -LiteralPath $templateArchivePath -DestinationPath $templateExtractPath -Force
+          $templateSource = Join-Path $templateExtractPath 'templates'
+          $templateDestination = Join-Path $env:APPDATA 'Godot\export_templates\4.7.1.stable.mono'
+          New-Item -ItemType Directory -Path $templateDestination -Force | Out-Null
+          Copy-Item -Path (Join-Path $templateSource '*') -Destination $templateDestination -Recurse -Force
+
+      - name: Run bounded Windows release qualification
+        shell: pwsh
+        run: pwsh -NoProfile -File ./scripts/Test-WindowsRelease.ps1 -GodotExecutable $env:GODOT_BIN -OutputRoot (Join-Path $env:RUNNER_TEMP 'spatial-wires-release')
