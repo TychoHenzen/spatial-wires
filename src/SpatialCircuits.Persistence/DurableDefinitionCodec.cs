@@ -6,7 +6,7 @@ using SpatialCircuits.Workbench;
 
 namespace SpatialCircuits.Persistence;
 
-internal static class DurableDefinitionCodec
+public static class DurableDefinitionCodec
 {
     public static DurableWorkbenchDefinition ToDto(WorkbenchDefinition definition)
     {
@@ -211,7 +211,7 @@ internal static class DurableDefinitionCodec
         ? ChipPortEndpoint.ChildChip(new ComponentId(instanceId), endpoint.PortName)
         : ChipPortEndpoint.ParentPanel(new PortId(endpoint.PortName));
 
-    private static DurableDeviceGraphDefinition ToDto(DeviceGraphDefinition graph)
+    public static DurableDeviceGraphDefinition ToDto(DeviceGraphDefinition graph)
     {
         var withoutHash = new DurableDeviceGraphDefinition(
             graph.Id.Value,

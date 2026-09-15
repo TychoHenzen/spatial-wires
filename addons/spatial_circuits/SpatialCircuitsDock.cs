@@ -36,6 +36,7 @@ public partial class SpatialCircuitsDock : EditorDock
     private static readonly LogicValue[] LogicValues = Enum.GetValues<LogicValue>();
 
     private PanelWorkbenchSession _session;
+    private readonly SpatialCircuitEditorAuthoringSession _authoring;
     private readonly SpatialCircuitsWorkbenchCanvas _canvas;
     private readonly OptionButton _toolPicker = new();
     private readonly OptionButton _cellPicker = new();
@@ -50,6 +51,8 @@ public partial class SpatialCircuitsDock : EditorDock
     private readonly PanelWorkbenchWaveform _waveform = new();
     private readonly Label _waveformValues = new();
     private readonly Label _practiceStatus = new();
+    private readonly Label _identity = new();
+    private readonly OptionButton _referencePicker = new();
     private readonly RichTextLabel _commandLog = new();
     private readonly Button _runButton = new();
     private readonly Godot.Timer _runTimer = new();
@@ -68,6 +71,7 @@ public partial class SpatialCircuitsDock : EditorDock
     {
         ArgumentNullException.ThrowIfNull(session);
         _session = session;
+        _authoring = new SpatialCircuitEditorAuthoringSession(session);
         _canvas = new SpatialCircuitsWorkbenchCanvas { Name = "Canvas" };
         _canvas.Bind(_session);
         _canvas.CellPressed += OnCellPressed;
@@ -91,6 +95,12 @@ public partial class SpatialCircuitsDock : EditorDock
     public TamperDetectionPracticeResult? LastTamperPracticeResult { get; private set; }
 
     public SpatialCircuitsWorkbenchCanvas WorkbenchCanvas => _canvas;
+
+    public SpatialCircuitEditorAuthoringSession EditorAuthoring => _authoring;
+
+    public SpatialCircuitEditorAuthoringPracticeResult? LastEditorPracticeResult { get; private set; }
+
+    public string? LastSavedPanelPath => _authoring.LastSavedPath;
 
     public override void _ExitTree()
     {
@@ -143,6 +153,9 @@ public partial class SpatialCircuitsDock : EditorDock
         var assets = new HBoxContainer { Name = "Assets" };
         root.AddChild(assets);
         AddButton(assets, "PackageChip", "Package panel", PackagePanel);
+        AddButton(assets, "SavePanel", "Save panel", SavePanel);
+        AddButton(assets, "EditorPractice", "Editor practice", RunEditorPractice);
+        AddButton(assets, "OpenReference", "Open reference", OpenReference);
         AddButton(assets, "PlaceChip", "Place chip", PlaceChip);
         AddButton(assets, "AddPanelDevice", "Add panel device", AddPanelDevice);
         AddButton(assets, "AddTimedDevice", "Add timed device", AddTimedDevice);
@@ -158,6 +171,13 @@ public partial class SpatialCircuitsDock : EditorDock
 
         _status.Name = "Status";
         root.AddChild(_status);
+        _identity.Name = "Identity";
+        root.AddChild(_identity);
+        var references = new HBoxContainer { Name = "References" };
+        references.AddChild(new Label { Text = "Reference" });
+        _referencePicker.Name = "ReferencePicker";
+        references.AddChild(_referencePicker);
+        root.AddChild(references);
         _topology.Name = "Topology";
         root.AddChild(_topology);
         _deviceStatus.Name = "DeviceGraphStatus";
@@ -333,9 +353,107 @@ public partial class SpatialCircuitsDock : EditorDock
     private void PackagePanel()
     {
         var id = new DefinitionId("chip/workbench-panel");
-        _session.TryPackagePanelAsChip(id, "panel", out _, out var diagnostic);
-        ShowDiagnostic(diagnostic);
+        if (!_authoring.TryPackageChip(id, "panel", out _, out _, out var diagnostic))
+        {
+            _status.Text = diagnostic;
+        }
+        else
+        {
+            ShowDiagnostic(null);
+        }
+
         Refresh();
+    }
+
+    private void SavePanel()
+    {
+        if (_authoring.TrySavePanel(
+                "user://spatial-circuits-editor-panel.tres",
+                out _,
+                out var diagnostic))
+        {
+            _status.Text = $"Saved panel to {_authoring.LastSavedPath}";
+        }
+        else
+        {
+            _status.Text = diagnostic;
+        }
+    }
+
+    private void RunEditorPractice()
+    {
+        Pause();
+        try
+        {
+            LastEditorPracticeResult = SpatialCircuitEditorAuthoringPractice.Run();
+            _session.Changed -= Refresh;
+            _session = LastEditorPracticeResult.Session;
+            _authoring.BindSession(_session);
+            _authoring.References.Register(
+                LastEditorPracticeResult.PanelReference,
+                LastEditorPracticeResult.PanelResource,
+                () => SpatialCircuitReference.Create(
+                    SpatialCircuitReferenceKind.Panel,
+                    LastEditorPracticeResult.PanelResource.PanelId,
+                    SpatialCircuitEditorIdentity.HashPanel(
+                        SpatialCircuitResourceAdapter.ToPanelDefinition(
+                            LastEditorPracticeResult.PanelResource))));
+            _authoring.References.Register(
+                LastEditorPracticeResult.ChipReference,
+                LastEditorPracticeResult.ChipResource,
+                () => SpatialCircuitReference.Create(
+                    SpatialCircuitReferenceKind.Chip,
+                    LastEditorPracticeResult.ChipResource.DefinitionId,
+                    SpatialCircuitResourceAdapter.ToDefinition(
+                        LastEditorPracticeResult.ChipResource).ContentHash));
+            _session.Changed += Refresh;
+            _canvas.Bind(_session);
+            _practiceStatus.Text = LastEditorPracticeResult.Succeeded
+                ? $"editor-practice: chip hash {LastEditorPracticeResult.ChipReference.ContentHash[..8]}, runtime output high"
+                : "editor-practice.failed: authored asset trace did not match.";
+            Refresh();
+        }
+        catch (Exception exception) when (exception is ArgumentException or InvalidOperationException)
+        {
+            _practiceStatus.Text = $"editor-practice.failed: {exception.Message}";
+        }
+    }
+
+    public bool TryImportCircuit(SpatialCircuitResource resource, out string diagnostic)
+    {
+        if (!_authoring.TryImportChip(resource, out _, out diagnostic))
+        {
+            return false;
+        }
+
+        _session.Changed -= Refresh;
+        _session = _authoring.Session;
+        _session.Changed += Refresh;
+        _canvas.Bind(_session);
+        Refresh();
+        return true;
+    }
+
+    public bool TryOpenReference(SpatialCircuitReference reference, out string diagnostic) =>
+        _authoring.TryOpenReference(reference, out diagnostic);
+
+    private void OpenReference()
+    {
+        var references = _authoring.References.References;
+        var index = _referencePicker.GetSelectedId();
+        if (index < 0 || index >= references.Length)
+        {
+            _status.Text = $"{SpatialCircuitEditorDiagnosticCodes.ReferenceMissing}: no reference is selected.";
+            return;
+        }
+
+        if (!_authoring.TryOpenReference(references[index], out var diagnostic))
+        {
+            _status.Text = diagnostic;
+            return;
+        }
+
+        _status.Text = $"Opened {references[index].Kind} '{references[index].StableId}'";
     }
 
     private void PlaceChip()
@@ -346,7 +464,7 @@ public partial class SpatialCircuitsDock : EditorDock
             return;
         }
 
-        var chip = _session.Definition.ChipCatalog.Definitions.LastOrDefault();
+        var chip = _authoring.CurrentChip ?? _session.Definition.ChipCatalog.Definitions.LastOrDefault();
         if (chip is null)
         {
             _status.Text = "Package the panel before placing a chip.";
@@ -379,6 +497,7 @@ public partial class SpatialCircuitsDock : EditorDock
             ShowDiagnostic(diagnostic);
             if (ok)
             {
+                _authoring.RegisterDeviceReference(device);
                 Refresh();
             }
         }
@@ -409,6 +528,7 @@ public partial class SpatialCircuitsDock : EditorDock
         ShowDiagnostic(diagnostic);
         if (ok)
         {
+            _authoring.RegisterDeviceReference(device);
             Refresh();
         }
     }
@@ -454,6 +574,7 @@ public partial class SpatialCircuitsDock : EditorDock
                 ReadXorPracticeFixture());
             _session.Changed -= Refresh;
             _session = result.Session;
+            _authoring.BindSession(_session);
             _session.Changed += Refresh;
             _canvas.Bind(_session);
             _practiceRawWaveform = result.XorWaveform.ToArray();
@@ -523,6 +644,18 @@ public partial class SpatialCircuitsDock : EditorDock
             ? $"{diagnostic.Code}: {diagnostic.Message}"
             : $"Tick {_session.CurrentTick} | {_session.PendingCommandCount} pending | " +
               $"{_session.StagedEditCount} staged";
+        _identity.Text = _authoring.IdentityText;
+        var references = _authoring.References.References;
+        _referencePicker.Clear();
+        foreach (var reference in references)
+        {
+            _referencePicker.AddItem(
+                $"{reference.Kind}:{reference.StableId}@{reference.ContentHash[..8]}");
+        }
+        if (references.Length > 0)
+        {
+            _referencePicker.Select(0);
+        }
         var definition = _session.Definition;
         var graph = definition.DeviceGraph;
         _topology.Text = graph is null

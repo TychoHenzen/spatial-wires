@@ -25,4 +25,7 @@ public partial class SpatialCircuitResource : Resource
 
     [Export]
     public Godot.Collections.Dictionary<string, string> Parameters { get; set; } = new();
+
+    [Export]
+    public SpatialCircuitChildNetworkResource ChildNetwork { get; set; } = new();
 }
