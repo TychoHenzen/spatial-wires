@@ -130,7 +130,7 @@ public sealed class SpatialCircuitEditorAuthoringSession
             diagnostic = string.Empty;
             return true;
         }
-        catch (Exception exception) when (exception is ArgumentException or ChipDefinitionException)
+        catch (Exception exception) when (exception is ArgumentException or InvalidOperationException)
         {
             reference = null;
             diagnostic = $"{SpatialCircuitEditorDiagnosticCodes.ImportInvalid}: {exception.Message}";
@@ -165,7 +165,7 @@ public sealed class SpatialCircuitEditorAuthoringSession
                 published.Id.Value,
                 published.ContentHash);
         }
-        catch (Exception exception) when (exception is ArgumentException or ChipDefinitionException)
+        catch (Exception exception) when (exception is ArgumentException or InvalidOperationException)
         {
             reference = null;
             diagnostic = $"{SpatialCircuitEditorDiagnosticCodes.ImportInvalid}: {exception.Message}";
@@ -206,7 +206,7 @@ public sealed class SpatialCircuitEditorAuthoringSession
                 chip.ContentHash);
             nextSession = CreateSessionForChip(chip);
         }
-        catch (Exception exception) when (exception is ArgumentException or ChipDefinitionException)
+        catch (Exception exception) when (exception is ArgumentException or InvalidOperationException)
         {
             reference = null;
             diagnostic = $"{SpatialCircuitEditorDiagnosticCodes.ImportInvalid}: {exception.Message}";
