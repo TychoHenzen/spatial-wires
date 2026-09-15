@@ -9,6 +9,41 @@ namespace SpatialCircuits.Workbench.Tests;
 public sealed class PanelWorkbenchSessionTests
 {
     [Fact]
+    public void PublicEditorPlacesNodeCellBindingInItsOwningPanel()
+    {
+        var owner = new CircuitId("panel/node-placement");
+        var binding = NodeCellBindingDefinition.Create(
+            owner,
+            "cell/placement",
+            1,
+            new ComponentId("device/placement"),
+            [DevicePortDefinition.Create("output", DevicePortDirection.Output)]);
+        var session = new PanelWorkbenchSession(PanelDefinition.Create(owner, 2, 2, []));
+
+        Assert.True(session.TryPlaceNodeCell(binding, new GridCoordinate(1, 1), out var diagnostic), diagnostic?.Message);
+        Assert.True(session.CommitStaged(out diagnostic), diagnostic?.Message);
+        Assert.Contains(session.CommittedDefinition.DevicePlacements,
+            placement => placement.DeviceId == binding.Device.Id);
+    }
+
+    [Fact]
+    public void PublicEditorRejectsNodeCellBindingOwnedByAnotherPanel()
+    {
+        var session = new PanelWorkbenchSession(PanelDefinition.Create(
+            new CircuitId("panel/actual"), 2, 2, []));
+        var binding = NodeCellBindingDefinition.Create(
+            new CircuitId("panel/other"),
+            "cell/wrong-owner",
+            1,
+            new ComponentId("device/wrong-owner"),
+            [DevicePortDefinition.Create("output", DevicePortDirection.Output)]);
+
+        Assert.False(session.TryPlaceNodeCell(binding, new GridCoordinate(0, 0), out var diagnostic));
+        Assert.Equal(NodeCellDiagnosticCodes.BindingOwnerMismatch, diagnostic!.Code);
+        Assert.Empty(session.CommittedDefinition.DevicePlacements);
+    }
+
+    [Fact]
     public void WorkbenchModelDoesNotDependOnGodot()
     {
         Assert.DoesNotContain(

@@ -13,6 +13,38 @@ namespace SpatialCircuits.Persistence.Tests;
 public sealed class DurableSnapshotCodecTests
 {
     [Fact]
+    public void CodecPreservesNodeCellBindingIdentityAndVersion()
+    {
+        var panel = PanelDefinition.Create(new CircuitId("panel/node-binding-save"), 2, 1, []);
+        var nodeDevice = DeviceDefinition.Create(
+            new ComponentId("device/node-cell"),
+            NodeDeviceBackendDefinition.Create(
+                [DevicePortDefinition.Create("output", DevicePortDirection.Output)],
+                "cell/monitor",
+                3));
+        var graph = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-binding-save"),
+            [nodeDevice],
+            []);
+        var definition = WorkbenchDefinition.Restore(
+            panel,
+            ChipDefinitionCatalog.Create([]),
+            PanelOwnedChipNetworkDefinition.Create(panel.Id, [], []),
+            [],
+            graph,
+            [new WorkbenchDevicePlacement(nodeDevice.Id, new GridCoordinate(1, 0))]);
+        var session = new PanelWorkbenchSession(definition);
+
+        var loaded = DurableSnapshotCodec.Deserialize(DurableSnapshotCodec.Serialize(session));
+
+        Assert.True(loaded.Succeeded, string.Join(Environment.NewLine, loaded.Diagnostics));
+        var backend = Assert.IsType<NodeDeviceBackendDefinition>(
+            loaded.Session!.CommittedDefinition.DeviceGraph!.Devices.Single().Backend);
+        Assert.Equal("cell/monitor", backend.BindingId);
+        Assert.Equal(3, backend.BindingVersion);
+    }
+
+    [Fact]
     public void DurableSnapshotRoundTripsCanonicallyAndResumesTheSameTrace()
     {
         var panel = PanelDefinition.Create(

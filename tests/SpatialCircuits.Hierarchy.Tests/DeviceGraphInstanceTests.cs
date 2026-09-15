@@ -404,6 +404,7 @@ public sealed class DeviceGraphInstanceTests
         Assert.True(acceptedSecondOutput);
         Assert.Contains(contexts[0].CommittedInputs, transition =>
             transition.PortName == "input" && transition.Signal.Equals(DeviceSignal.Scalar(LogicValue.High)));
+        Assert.Single(contexts[0].CommittedInputs);
         Assert.Contains(contexts[2].DueTimers, timer => timer.TimerId == "wake" && timer.DueTick == 2);
         Assert.Equal(LogicValue.High, runtime.GetOutput(deviceId, "output").Bits[0]);
 

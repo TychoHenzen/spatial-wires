@@ -51,6 +51,8 @@ public sealed record DeviceRuntimeSnapshot(
     public string? NodeBehaviorFingerprint { get; init; }
 
     public ImmutableArray<DeviceNodeInputTransition> NodeInputHistory { get; init; } = [];
+
+    public ImmutableArray<DeviceNodePresentationEvent> PresentationEvents { get; init; } = [];
 }
 
 public sealed record DeviceTimerSnapshot(long DueTick, string PortName, DeviceSignal Value);
@@ -82,6 +84,7 @@ public sealed class DeviceGraphInstance
     private const string CableReleaseEvent = "device-cable-transition-release";
     private const string NodeOutputEvent = "device-node-output";
     private const string NodeTimerEvent = "device-node-timer";
+    private const string NodePresentationEvent = "device-node-presentation";
     private const string NodeBackendTargetPrefix = NodeDeviceBackendDefinition.TargetStableIdPrefix;
 
     private DeviceGraphDefinition _definition;
@@ -245,6 +248,23 @@ public sealed class DeviceGraphInstance
         }
     }
 
+    public void InvalidateNodeBackend(ComponentId deviceId, DeviceNodeBackendBinding binding)
+    {
+        ArgumentNullException.ThrowIfNull(binding);
+        var runtime = GetDevice(deviceId);
+        if (runtime.NodeBinding is null || !ReferenceEquals(runtime.NodeBinding, binding))
+        {
+            return;
+        }
+
+        binding.Invalidate();
+        runtime.NodeDetachRequested = true;
+        if (!_isStepping)
+        {
+            QueueNodeBackendDetach(runtime, CurrentTick);
+        }
+    }
+
     public void ReplayNodeBackendCommands(IEnumerable<AcceptedSchedulerCommand> commands)
     {
         EnsureNotStepping();
@@ -309,6 +329,49 @@ public sealed class DeviceGraphInstance
         var device = GetDevice(deviceId);
         FindPort(device.Definition, portName, DevicePortDirection.Output);
         return ReadOutput(deviceId, portName);
+    }
+
+    public ImmutableArray<DeviceNodePresentationEvent> GetNodePresentationEvents(ComponentId deviceId)
+    {
+        EnsureNotStepping();
+        return GetDevice(deviceId).PresentationEvents.ToImmutableArray();
+    }
+
+    public void RestoreNodePresentationEvents(
+        ComponentId deviceId,
+        ImmutableArray<DeviceNodePresentationEvent> events)
+    {
+        EnsureNotStepping();
+        var runtime = GetDevice(deviceId);
+        if (runtime.Definition.Backend is not NodeDeviceBackendDefinition ||
+            events.IsDefault || events.Any(item => item.Tick < 0 || item.Tick > CurrentTick ||
+                                                  !ChipData.IsStableId(item.EventId)))
+        {
+            throw new ArgumentException("Node presentation events do not match the active graph.", nameof(events));
+        }
+
+        runtime.PresentationEvents.Clear();
+        runtime.PresentationEvents.AddRange(events);
+    }
+
+    public bool WorkerExecutionAllowed => !_devices.Values.Any(runtime =>
+        runtime.Definition.Backend is NodeDeviceBackendDefinition &&
+        runtime.NodeBinding is { IsActive: true });
+
+    public void EnsureWorkerExecutionAllowed()
+    {
+        var active = _devices.Values.FirstOrDefault(runtime =>
+            runtime.Definition.Backend is NodeDeviceBackendDefinition &&
+            runtime.NodeBinding is { IsActive: true });
+        if (active is null)
+        {
+            return;
+        }
+
+        var backend = (NodeDeviceBackendDefinition)active.Definition.Backend;
+        var bindingId = backend.BindingId ?? active.Definition.Id.Value;
+        throw new InvalidOperationException(
+            $"{NodeCellDiagnosticCodes.WorkerRequiresMainThread}: binding '{bindingId}' requires the main-thread barrier.");
     }
 
     public bool IsConnected(ComponentId laneId) => GetLane(laneId).Connected;
@@ -383,10 +446,25 @@ public sealed class DeviceGraphInstance
 
             replacement.PendingNodeInputs.AddRange(current.PendingNodeInputs);
             replacement.NodeInputHistory.AddRange(current.NodeInputHistory);
-            replacement.NodeBinding = current.NodeBinding;
-            replacement.NodeBehaviorFingerprint = current.NodeBehaviorFingerprint;
-            replacement.NodeDetachApplyAtTick = current.NodeDetachApplyAtTick;
-            replacement.NodeDetachRequested = current.NodeDetachRequested;
+            var previousNode = current.Definition.Backend as NodeDeviceBackendDefinition;
+            var nextNode = (NodeDeviceBackendDefinition)backend;
+            var bindingChanged = previousNode is not null &&
+                                 (!string.Equals(previousNode.BindingId, nextNode.BindingId,
+                                     StringComparison.Ordinal) ||
+                                  previousNode.BindingVersion != nextNode.BindingVersion);
+            if (bindingChanged)
+            {
+                current.NodeBinding?.Invalidate();
+                _scheduler.ReplaceTarget(NodeBackendTargetId(deviceId));
+            }
+            else
+            {
+                replacement.NodeBinding = current.NodeBinding;
+                replacement.NodeBehaviorFingerprint = current.NodeBehaviorFingerprint;
+                replacement.NodeDetachApplyAtTick = current.NodeDetachApplyAtTick;
+                replacement.NodeDetachRequested = current.NodeDetachRequested;
+                replacement.PresentationEvents.AddRange(current.PresentationEvents);
+            }
         }
 
         var changedOutputs = replacement.Outputs
@@ -475,6 +553,10 @@ public sealed class DeviceGraphInstance
             {
                 DeliverNodeTimer(scheduledEvent);
             }
+            else if (scheduledEvent.EventKind == NodePresentationEvent)
+            {
+                DeliverNodePresentation(scheduledEvent);
+            }
         }
 
         return deliveries.ToImmutable();
@@ -538,11 +620,16 @@ public sealed class DeviceGraphInstance
     {
         var backendCommands = new List<PendingNodeCommand>();
         var capability = CreateNodeOutputCapability(runtime, binding, tick, backendCommands);
+        var committedInputs = runtime.PendingNodeInputs
+            .GroupBy(input => input.PortName, StringComparer.Ordinal)
+            .Select(group => group.OrderBy(input => input.Tick).Last())
+            .OrderBy(input => input.PortName, StringComparer.Ordinal)
+            .ToImmutableArray();
         try
         {
             binding.Invoke(new DeviceNodeStepContext(
                 tick,
-                runtime.PendingNodeInputs.ToImmutableArray(),
+                committedInputs,
                 runtime.DueNodeTimers.ToImmutableArray(),
                 capability));
         }
@@ -589,6 +676,7 @@ public sealed class DeviceGraphInstance
                     NodeDetachRequested = runtime.NodeDetachRequested ||
                                           runtime.NodeBinding is { IsActive: false },
                     NodeInputHistory = runtime.NodeInputHistory.ToImmutableArray(),
+                    PresentationEvents = runtime.PresentationEvents.ToImmutableArray(),
                     NodeBehaviorFingerprint = runtime.NodeBinding?.BehaviorAssemblyFingerprint ??
                                               runtime.NodeBehaviorFingerprint
                 })
@@ -619,7 +707,8 @@ public sealed class DeviceGraphInstance
         ArgumentNullException.ThrowIfNull(snapshot);
         ArgumentNullException.ThrowIfNull(snapshot.Definition);
         ArgumentNullException.ThrowIfNull(snapshot.Scheduler);
-        if (snapshot.Definition.Id != _definition.Id || snapshot.Devices.IsDefault || snapshot.Lanes.IsDefault ||
+        if (snapshot.Definition.Id != _definition.Id || !DefinitionsMatch(_definition, snapshot.Definition) ||
+            snapshot.Devices.IsDefault || snapshot.Lanes.IsDefault ||
             snapshot.ReplayCommands.IsDefault || snapshot.NextReplayCommandIndex < 0 ||
             snapshot.NextReplayCommandIndex > snapshot.ReplayCommands.Length)
         {
@@ -788,6 +877,7 @@ public sealed class DeviceGraphInstance
             .Where(device => device.Backend is NodeDeviceBackendDefinition)
             .ToDictionary(device => NodeBackendTargetId(device.Id), _ => 1L, StringComparer.Ordinal);
         var availableAt = incarnations.Keys.ToDictionary(key => key, _ => 0L, StringComparer.Ordinal);
+        var removedAt = new Dictionary<string, long>(StringComparer.Ordinal);
         var previousApplyAtTick = 0L;
         for (var index = 0; index < snapshot.ReplayCommands.Length; index++)
         {
@@ -836,6 +926,18 @@ public sealed class DeviceGraphInstance
 
                 incarnations[command.TargetStableId] = checked(expectedIncarnation + 1);
                 availableAt[command.TargetStableId] = checked(command.ApplyAtTick + 1);
+                removedAt[command.TargetStableId] = command.ApplyAtTick;
+            }
+            else if (command.Kind == SchedulerCommandKind.RegisterTarget)
+            {
+                if (!removedAt.TryGetValue(command.TargetStableId, out var removedTick) ||
+                    command.ApplyAtTick != removedTick)
+                {
+                    throw new ArgumentException("Device graph replay register command has no matching removal.", nameof(snapshot));
+                }
+
+                removedAt.Remove(command.TargetStableId);
+                availableAt[command.TargetStableId] = command.ApplyAtTick;
             }
             else if (command.TargetIncarnation != expectedIncarnation ||
                      command.ApplyAtTick < availableAt[command.TargetStableId])
@@ -971,10 +1073,11 @@ public sealed class DeviceGraphInstance
 
         return scheduledEvent.SourceStableId == scheduledEvent.TargetStableId &&
                scheduledEvent.SourcePort == scheduledEvent.TargetPortOrLane &&
-               scheduledEvent.EventKind is NodeOutputEvent or NodeTimerEvent &&
+               (scheduledEvent.EventKind is NodeOutputEvent or NodeTimerEvent or NodePresentationEvent) &&
                (nodeTarget.Ports.Any(port => port.Direction == DevicePortDirection.Output &&
                                              port.Name == scheduledEvent.TargetPortOrLane) ||
-                scheduledEvent.EventKind == NodeTimerEvent && ChipData.IsStableId(scheduledEvent.TargetPortOrLane));
+                (scheduledEvent.EventKind is NodeTimerEvent or NodePresentationEvent) &&
+                ChipData.IsStableId(scheduledEvent.TargetPortOrLane));
     }
 
     private static bool IsDeviceSchedulerAddress(
@@ -1056,15 +1159,16 @@ public sealed class DeviceGraphInstance
             .Where(command => scheduler.AppliedCommandOrdinals.Contains(command.AcceptedOrdinal) &&
                               command.Command.Kind == SchedulerCommandKind.ScheduleEvent &&
                               nodeDevices.ContainsKey(command.Command.TargetStableId) &&
-                              command.Command.EventKind is NodeOutputEvent or NodeTimerEvent)
+                              (command.Command.EventKind is NodeOutputEvent or NodeTimerEvent or NodePresentationEvent))
             .ToArray();
         var matchedCommands = new HashSet<long>();
         var nodeEvents = scheduler.PendingEvents
             .Concat(scheduler.Trace.SelectMany(trace => trace.DeliveredEvents))
-            .Where(scheduledEvent => scheduledEvent.EventKind is NodeOutputEvent or NodeTimerEvent)
+            .Where(scheduledEvent =>
+                scheduledEvent.EventKind is NodeOutputEvent or NodeTimerEvent or NodePresentationEvent)
             .ToArray();
         if (scheduler.PendingEvents.Any(scheduledEvent =>
-                scheduledEvent.EventKind is not (NodeOutputEvent or NodeTimerEvent or CableTransitionEvent or CableReleaseEvent)))
+                scheduledEvent.EventKind is not (NodeOutputEvent or NodeTimerEvent or NodePresentationEvent or CableTransitionEvent or CableReleaseEvent)))
         {
             throw new ArgumentException("Device graph snapshot contains an unsupported scheduler event.", nameof(scheduler));
         }
@@ -1077,7 +1181,7 @@ public sealed class DeviceGraphInstance
                 throw new ArgumentException("Device graph snapshot Node backend event has no matching target.", nameof(scheduler));
             }
 
-            if (scheduledEvent.EventKind is not (NodeOutputEvent or NodeTimerEvent) ||
+            if (scheduledEvent.EventKind is not (NodeOutputEvent or NodeTimerEvent or NodePresentationEvent) ||
                 scheduledEvent.Key.Phase != SchedulerPhase.Deliver ||
                 scheduledEvent.TargetIncarnation <= 0 ||
                 scheduledEvent.TargetIncarnation > target.Incarnation ||
@@ -1102,11 +1206,20 @@ public sealed class DeviceGraphInstance
 
                 port.ValidateSignal(signal, nameof(scheduler));
             }
-            else if (!ChipData.IsStableId(scheduledEvent.TargetPortOrLane) ||
+            else if (scheduledEvent.EventKind == NodeTimerEvent &&
+                     (!ChipData.IsStableId(scheduledEvent.TargetPortOrLane) ||
                      !string.Equals(scheduledEvent.Payload, scheduledEvent.TargetPortOrLane, StringComparison.Ordinal) ||
-                     scheduledEvent.Value != LogicValue.HighImpedance)
+                     scheduledEvent.Value != LogicValue.HighImpedance))
             {
                 throw new ArgumentException("Device graph snapshot Node timer event is invalid.", nameof(scheduler));
+            }
+            else if (scheduledEvent.EventKind == NodePresentationEvent &&
+                     (!ChipData.IsStableId(scheduledEvent.TargetPortOrLane) ||
+                      !string.Equals(scheduledEvent.Payload, scheduledEvent.TargetPortOrLane,
+                          StringComparison.Ordinal) ||
+                      scheduledEvent.Value != LogicValue.HighImpedance))
+            {
+                throw new ArgumentException("Device graph snapshot Node presentation event is invalid.", nameof(scheduler));
             }
 
             var matchingCommand = acceptedCommands.FirstOrDefault(accepted =>
@@ -1253,6 +1366,23 @@ public sealed class DeviceGraphInstance
                 continue;
             }
 
+            if (command.Kind == SchedulerCommandKind.RegisterTarget)
+            {
+                if (command.TargetIncarnation != 0 ||
+                    !string.IsNullOrEmpty(command.TargetPortOrLane) ||
+                    !string.IsNullOrEmpty(command.SourceStableId) ||
+                    !string.IsNullOrEmpty(command.SourcePort) ||
+                    !string.IsNullOrEmpty(command.EventKind) ||
+                    command.Value != LogicValue.HighImpedance || command.DueTick != 0 ||
+                    !string.IsNullOrEmpty(command.RootId) || !string.IsNullOrEmpty(command.Payload) ||
+                    command.SourceIncarnation != 0)
+                {
+                    throw new ArgumentException("Device graph snapshot Node register command is invalid.", nameof(scheduler));
+                }
+
+                continue;
+            }
+
             ValidateNodeScheduleCommand(
                 device,
                 command,
@@ -1281,6 +1411,7 @@ public sealed class DeviceGraphInstance
         runtime.NodeDetachApplyAtTick = snapshot.NodeDetachApplyAtTick;
         runtime.NodeDetachRequested = snapshot.NodeDetachRequested;
         runtime.NodeBehaviorFingerprint = snapshot.NodeBehaviorFingerprint;
+        runtime.PresentationEvents.AddRange(snapshot.PresentationEvents);
         return runtime;
     }
 
@@ -1313,10 +1444,14 @@ public sealed class DeviceGraphInstance
 
         if ((!usesNodeBackend && (snapshot.PendingNodeInputs.Length > 0 ||
                                   snapshot.NodeDetachApplyAtTick is not null || snapshot.NodeDetachRequested ||
-                                  snapshot.NodeBehaviorFingerprint is not null)) ||
+                                  snapshot.NodeBehaviorFingerprint is not null ||
+                                  !snapshot.PresentationEvents.IsDefaultOrEmpty)) ||
             (snapshot.NodeBehaviorFingerprint is { } fingerprint && !IsSha256(fingerprint)) ||
             (snapshot.NodeDetachApplyAtTick is { } detachAt && detachAt < currentTick) ||
-            snapshot.PendingNodeInputs.Any(input => input is null || input.Tick < 0 || input.Tick > currentTick))
+            snapshot.PendingNodeInputs.Any(input => input is null || input.Tick < 0 || input.Tick > currentTick) ||
+            snapshot.PresentationEvents.IsDefault ||
+            snapshot.PresentationEvents.Any(item => item is null || item.Tick < 0 || item.Tick > currentTick ||
+                                                   !ChipData.IsStableId(item.EventId)))
         {
             throw new ArgumentException("Device graph snapshot Node backend state is invalid.", nameof(snapshot));
         }
@@ -1627,7 +1762,10 @@ public sealed class DeviceGraphInstance
                 stagedCommands, targetTick, portName, signal),
             (dueTick, timerId) => StageNodeTimerCommand(
                 runtime, binding, tick, callbackThreadId, targetStableId, targetIncarnation,
-                stagedCommands, dueTick, timerId));
+                stagedCommands, dueTick, timerId),
+            (targetTick, eventId) => StageNodePresentationCommand(
+                runtime, binding, tick, callbackThreadId, targetStableId, targetIncarnation,
+                stagedCommands, targetTick, eventId));
     }
 
     private bool StageNodeOutputCommand(
@@ -1708,6 +1846,45 @@ public sealed class DeviceGraphInstance
                 NodeTimerEvent,
                 CausalOrdinal: 0),
             Payload: timerId,
+            SourceIncarnation: targetIncarnation);
+        stagedCommands.Add(new PendingNodeCommand(
+            runtime.Definition.Id,
+            SchedulerCommand.ScheduleEvent(scheduledEvent, _scheduler.CurrentTick) with
+            {
+                CausalOriginTick = tick
+            }));
+        return true;
+    }
+
+    private bool StageNodePresentationCommand(
+        DeviceRuntime runtime,
+        DeviceNodeBackendBinding binding,
+        long tick,
+        int callbackThreadId,
+        string targetStableId,
+        long targetIncarnation,
+        ICollection<PendingNodeCommand> stagedCommands,
+        long targetTick,
+        string eventId)
+    {
+        if (!IsCurrentNodeCallback(runtime, binding, callbackThreadId, targetStableId, targetIncarnation) ||
+            targetTick <= tick || !ChipData.IsStableId(eventId))
+        {
+            return false;
+        }
+
+        var scheduledEvent = new ScheduledEvent(
+            new ScheduledEventKey(
+                targetTick,
+                SchedulerPhase.Deliver,
+                targetStableId,
+                targetIncarnation,
+                eventId,
+                targetStableId,
+                eventId,
+                NodePresentationEvent,
+                CausalOrdinal: 0),
+            Payload: eventId,
             SourceIncarnation: targetIncarnation);
         stagedCommands.Add(new PendingNodeCommand(
             runtime.Definition.Id,
@@ -1829,6 +2006,14 @@ public sealed class DeviceGraphInstance
         }
 
         if (command.EventKind == NodeTimerEvent &&
+            ChipData.IsStableId(command.TargetPortOrLane) &&
+            string.Equals(command.Payload, command.TargetPortOrLane, StringComparison.Ordinal) &&
+            command.Value == LogicValue.HighImpedance)
+        {
+            return;
+        }
+
+        if (command.EventKind == NodePresentationEvent &&
             ChipData.IsStableId(command.TargetPortOrLane) &&
             string.Equals(command.Payload, command.TargetPortOrLane, StringComparison.Ordinal) &&
             command.Value == LogicValue.HighImpedance)
@@ -1977,6 +2162,21 @@ public sealed class DeviceGraphInstance
         }
     }
 
+    private void DeliverNodePresentation(ScheduledEvent scheduledEvent)
+    {
+        var runtime = FindNodeBackendRuntime(scheduledEvent.TargetStableId)
+            ?? throw new InvalidOperationException("Node presentation event has no Node backend.");
+        if (!ChipData.IsStableId(scheduledEvent.TargetPortOrLane) ||
+            !string.Equals(scheduledEvent.Payload, scheduledEvent.TargetPortOrLane, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException("Node presentation event identifier is invalid.");
+        }
+
+        runtime.PresentationEvents.Add(new DeviceNodePresentationEvent(
+            scheduledEvent.Key.DueTick,
+            scheduledEvent.TargetPortOrLane));
+    }
+
     private void AcceptReplayCommandsAt(long applyAtTick)
     {
         if (_replayCommands.IsDefault)
@@ -1994,20 +2194,27 @@ public sealed class DeviceGraphInstance
                _replayCommands[_nextReplayCommandIndex].Command.ApplyAtTick == applyAtTick)
         {
             var recorded = _replayCommands[_nextReplayCommandIndex];
-            if (recorded.Command.Kind == SchedulerCommandKind.ScheduleEvent &&
-                _scheduler.GetTarget(recorded.Command.TargetStableId).Incarnation !=
-                recorded.Command.TargetIncarnation)
-            {
-                throw new InvalidOperationException("Recorded Node command targets a different backend incarnation.");
-            }
-
-            var acceptedOrdinal = _scheduler.Accept(recorded.Command);
+            var replacementRemoval = recorded.Command.Kind == SchedulerCommandKind.RemoveTarget &&
+                                     _nextReplayCommandIndex + 1 < _replayCommands.Length &&
+                                     _replayCommands[_nextReplayCommandIndex + 1].Command.Kind ==
+                                     SchedulerCommandKind.RegisterTarget &&
+                                     string.Equals(
+                                         _replayCommands[_nextReplayCommandIndex + 1].Command.TargetStableId,
+                                         recorded.Command.TargetStableId,
+                                         StringComparison.Ordinal) &&
+                                     _replayCommands[_nextReplayCommandIndex + 1].Command.ApplyAtTick == applyAtTick;
+            var applyImmediately = replacementRemoval ||
+                                   recorded.Command.Kind == SchedulerCommandKind.RegisterTarget &&
+                                   !_scheduler.TryGetTarget(recorded.Command.TargetStableId, out _);
+            var acceptedOrdinal = applyImmediately
+                ? _scheduler.AcceptAppliedTargetCommand(recorded.Command)
+                : _scheduler.Accept(recorded.Command);
             if (acceptedOrdinal != recorded.AcceptedOrdinal)
             {
                 throw new InvalidOperationException("Recorded Node command ordinals do not match replay order.");
             }
 
-            if (recorded.Command.Kind == SchedulerCommandKind.RemoveTarget)
+            if (recorded.Command.Kind == SchedulerCommandKind.RemoveTarget && !replacementRemoval)
             {
                 var runtime = FindNodeBackendRuntime(recorded.Command.TargetStableId)
                     ?? throw new InvalidOperationException("Recorded Node detach has no Node backend.");
@@ -2049,9 +2256,16 @@ public sealed class DeviceGraphInstance
             return false;
         }
 
-        if (command.Kind == SchedulerCommandKind.RemoveTarget)
+        if (command.Kind is SchedulerCommandKind.RegisterTarget or SchedulerCommandKind.RemoveTarget)
         {
-            return true;
+            return command.TargetIncarnation == 0 &&
+                   string.IsNullOrEmpty(command.TargetPortOrLane) &&
+                   string.IsNullOrEmpty(command.SourceStableId) &&
+                   string.IsNullOrEmpty(command.SourcePort) &&
+                   string.IsNullOrEmpty(command.EventKind) &&
+                   command.Value == LogicValue.HighImpedance &&
+                   command.DueTick == 0 && string.IsNullOrEmpty(command.RootId) &&
+                   string.IsNullOrEmpty(command.Payload) && command.SourceIncarnation == 0;
         }
 
         if (command.Kind != SchedulerCommandKind.ScheduleEvent ||
@@ -2078,7 +2292,8 @@ public sealed class DeviceGraphInstance
                    string.Equals(command.Payload, signal.ToString(), StringComparison.Ordinal);
         }
 
-        return command.EventKind == NodeTimerEvent && ChipData.IsStableId(command.TargetPortOrLane) &&
+        return (command.EventKind is NodeTimerEvent or NodePresentationEvent) &&
+               ChipData.IsStableId(command.TargetPortOrLane) &&
                string.Equals(command.Payload, command.TargetPortOrLane, StringComparison.Ordinal) &&
                command.Value == LogicValue.HighImpedance;
     }
@@ -2263,13 +2478,80 @@ public sealed class DeviceGraphInstance
     private static bool IsSha256(string value) =>
         value.Length == 64 && value.All(character => character is >= '0' and <= '9' or >= 'a' and <= 'f');
 
+    private static bool DefinitionsMatch(DeviceGraphDefinition left, DeviceGraphDefinition right)
+    {
+        if (left.Id != right.Id || left.Lanes.Length != right.Lanes.Length ||
+            left.Devices.Length != right.Devices.Length || left.Bundles.Length != right.Bundles.Length ||
+            !left.Lanes.SequenceEqual(right.Lanes) || !left.Bundles.SequenceEqual(right.Bundles))
+        {
+            return false;
+        }
+
+        var rightDevices = right.Devices.ToDictionary(device => device.Id.Value, StringComparer.Ordinal);
+        return left.Devices.All(device => rightDevices.TryGetValue(device.Id.Value, out var other) &&
+                                          BackendsMatch(device.Backend, other.Backend));
+    }
+
+    private static bool BackendsMatch(DeviceBackendDefinition left, DeviceBackendDefinition right)
+    {
+        if (left.GetType() != right.GetType() || !PortsMatch(left.Ports, right.Ports))
+        {
+            return false;
+        }
+
+        return (left, right) switch
+        {
+            (NodeDeviceBackendDefinition first, NodeDeviceBackendDefinition second) =>
+                string.Equals(first.BindingId, second.BindingId, StringComparison.Ordinal) &&
+                first.BindingVersion == second.BindingVersion,
+            (TimedDeviceBackendDefinition first, TimedDeviceBackendDefinition second) =>
+                first.Changes.SequenceEqual(second.Changes),
+            (PanelDeviceBackendDefinition first, PanelDeviceBackendDefinition second) =>
+                PanelsMatch(first.Panel, second.Panel),
+            _ => true
+        };
+    }
+
+    private static bool PortsMatch(
+        ImmutableArray<DevicePortDefinition> left,
+        ImmutableArray<DevicePortDefinition> right) =>
+        left.Length == right.Length && left.Zip(right).All(pair =>
+            string.Equals(pair.First.Name, pair.Second.Name, StringComparison.Ordinal) &&
+            pair.First.Direction == pair.Second.Direction &&
+            pair.First.Width == pair.Second.Width &&
+            pair.First.ValueContract == pair.Second.ValueContract);
+
+    private static bool PanelsMatch(PanelDefinition left, PanelDefinition right)
+    {
+        if (left.Id != right.Id || left.Width != right.Width || left.Height != right.Height ||
+            left.Cells.Length != right.Cells.Length)
+        {
+            return false;
+        }
+
+        return left.Cells.Zip(right.Cells).All(pair =>
+        {
+            var first = pair.First;
+            var second = pair.Second;
+            if (first is null || second is null)
+            {
+                return first is null && second is null;
+            }
+
+            return first.Id == second.Id && first.Location == second.Location &&
+                   first.Kind == second.Kind && first.Orientation == second.Orientation &&
+                   first.PortId == second.PortId && first.BehaviorId == second.BehaviorId &&
+                   first.Parameters.SequenceEqual(second.Parameters);
+        });
+    }
+
     private static string ComputeStateIntegrityHash(DeviceGraphRuntimeSnapshot snapshot)
     {
         var payload = new
         {
             SchedulerTraceIntegrity = snapshot.Scheduler.TraceIntegrityHash,
             snapshot.Scheduler.TraceStartTick,
-            snapshot.Devices,
+            Devices = snapshot.Devices.Select(device => device with { NodeBehaviorFingerprint = null }),
             snapshot.Lanes,
             snapshot.ReplayCommands,
             snapshot.NextReplayCommandIndex
@@ -2297,6 +2579,8 @@ public sealed class DeviceGraphInstance
         public List<DeviceNodeInputTransition> PendingNodeInputs { get; } = [];
 
         public List<DeviceNodeInputTransition> NodeInputHistory { get; } = [];
+
+        public List<DeviceNodePresentationEvent> PresentationEvents { get; } = [];
 
         public List<DeviceNodeTimer> DueNodeTimers { get; } = [];
 

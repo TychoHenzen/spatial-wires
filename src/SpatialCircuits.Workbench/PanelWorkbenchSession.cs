@@ -695,6 +695,12 @@ public sealed class PanelWorkbenchSession
         (_deviceGraph ?? throw new InvalidOperationException("No device graph is active."))
         .GetOutput(deviceId, portName);
 
+    public bool WorkerExecutionAllowed => _deviceGraph?.WorkerExecutionAllowed ?? true;
+
+    public void EnsureWorkerExecutionAllowed() =>
+        (_deviceGraph ?? throw new InvalidOperationException("No device graph is active."))
+        .EnsureWorkerExecutionAllowed();
+
     public void AttachNodeBackend(ComponentId deviceId, DeviceNodeBackendBinding binding)
     {
         (_deviceGraph ?? throw new InvalidOperationException("No device graph is active."))
@@ -1051,6 +1057,23 @@ public sealed class PanelWorkbenchSession
                 current.DevicePlacements.Add(new WorkbenchDevicePlacement(device.Id, location)));
         },
         out diagnostic);
+
+    public bool TryPlaceNodeCell(
+        NodeCellBindingDefinition binding,
+        GridCoordinate location,
+        out WorkbenchDiagnostic? diagnostic)
+    {
+        ArgumentNullException.ThrowIfNull(binding);
+        if (binding.OwnerPanelId != _committedDefinition.Panel.Id)
+        {
+            diagnostic = SetDiagnostic(
+                NodeCellDiagnosticCodes.BindingOwnerMismatch,
+                $"Node cell binding '{binding.BindingId}' belongs to another panel.");
+            return false;
+        }
+
+        return TryPlaceDevice(binding.Device, location, out diagnostic);
+    }
 
     public bool TryAddCableBundle(
         CableBundleDefinition bundle,

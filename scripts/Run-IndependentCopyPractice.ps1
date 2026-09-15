@@ -208,11 +208,9 @@ function Enable-HostAdapterPractice {
     }
 
     $adapterSource = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "SpatialCircuitResourceAdapter.cs"))
-    $nodeBindingSource = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "SpatialCircuitNodeBinding.cs"))
     $projectItems = @"
   <ItemGroup>
     <Compile Include="$adapterSource" Link="SpatialCircuitResourceAdapter.cs" />
-    <Compile Include="$nodeBindingSource" Link="SpatialCircuitNodeBinding.cs" />
   </ItemGroup>
 "@
 
