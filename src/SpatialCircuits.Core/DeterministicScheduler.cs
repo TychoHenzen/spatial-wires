@@ -11,6 +11,7 @@ public sealed class DeterministicScheduler
     private readonly List<AcceptedSchedulerCommand> _acceptedCommands = [];
     private readonly HashSet<long> _appliedCommandOrdinals = [];
     private readonly Dictionary<string, TargetState> _targets = new(StringComparer.Ordinal);
+    private readonly List<SchedulerTargetSnapshot> _targetHistory = [];
     private readonly Dictionary<SchedulerDriveKey, LogicValue> _drives = [];
     private readonly Dictionary<string, SchedulerTemporalRoot> _temporalRoots = new(StringComparer.Ordinal);
     private readonly HashSet<string> _cancelledTemporalRoots = new(StringComparer.Ordinal);
@@ -72,7 +73,32 @@ public sealed class DeterministicScheduler
     public void RemoveTarget(string stableId)
     {
         EnsureCanMutateOutsideStep();
+        ValidateStableId(stableId, nameof(stableId));
+        if (_targets.TryGetValue(stableId, out var existing) && existing.Active)
+        {
+            RecordAppliedTargetCommand(SchedulerCommand.RemoveTarget(stableId, CurrentTick));
+        }
+
         RemoveTargetCore(stableId, []);
+    }
+
+    public SchedulerTargetHandle ReplaceTarget(string stableId)
+    {
+        EnsureCanMutateOutsideStep();
+        ValidateStableId(stableId, nameof(stableId));
+        if (_targets.TryGetValue(stableId, out var existing) && existing.Active)
+        {
+            RecordAppliedTargetCommand(SchedulerCommand.RemoveTarget(stableId, CurrentTick));
+            RemoveTargetCore(stableId, []);
+        }
+
+        var handle = RegisterTargetCore(stableId);
+        if (handle.Incarnation > 1)
+        {
+            RecordAppliedTargetCommand(SchedulerCommand.RegisterTarget(stableId, CurrentTick));
+        }
+
+        return handle;
     }
 
     public bool TryGetTarget(string stableId, out SchedulerTargetHandle target)
@@ -165,13 +191,17 @@ public sealed class DeterministicScheduler
             CurrentPhase = SchedulerPhase.Commit;
 
             CurrentPhase = SchedulerPhase.Record;
-            var hash = ComputeHash(tick, delivered, resolvedInputs, diagnostics);
+            var traceState = CaptureTraceState();
+            var hash = ComputeHash(traceState, tick, delivered, resolvedInputs, diagnostics);
             var trace = new SchedulerTickTrace(
                 tick,
                 delivered,
                 resolvedInputs,
                 diagnostics.ToImmutableArray(),
-                hash);
+                hash)
+            {
+                State = traceState
+            };
             _trace.Add(trace);
 
             CurrentPhase = SchedulerPhase.Advance;
@@ -545,7 +575,15 @@ public sealed class DeterministicScheduler
 
         var incarnation = existing is null ? 1 : checked(existing.Incarnation + 1);
         _targets[stableId] = new TargetState(incarnation, true);
+        _targetHistory.Add(new SchedulerTargetSnapshot(stableId, incarnation, true));
         return new SchedulerTargetHandle(stableId, incarnation);
+    }
+
+    private void RecordAppliedTargetCommand(SchedulerCommand command)
+    {
+        var accepted = new AcceptedSchedulerCommand(_nextAcceptedOrdinal++, command);
+        _acceptedCommands.Add(accepted);
+        _appliedCommandOrdinals.Add(accepted.AcceptedOrdinal);
     }
 
     private void RemoveTargetCore(
@@ -593,6 +631,16 @@ public sealed class DeterministicScheduler
         }
 
         _targets[stableId] = state with { Active = false };
+        var historyIndex = _targetHistory.FindIndex(target =>
+            target.StableId == stableId && target.Incarnation == state.Incarnation);
+        if (historyIndex >= 0)
+        {
+            _targetHistory[historyIndex] = _targetHistory[historyIndex] with { Active = false };
+        }
+        else
+        {
+            _targetHistory.Add(new SchedulerTargetSnapshot(stableId, state.Incarnation, false));
+        }
         diagnostics.Add(new SchedulerDiagnostic(
             "SCHEDULER_TARGET_REMOVED",
             $"Target '{stableId}' incarnation {state.Incarnation} was invalidated.",
@@ -852,38 +900,50 @@ public sealed class DeterministicScheduler
         return source.Active && source.Incarnation == scheduledEvent.SourceIncarnation;
     }
 
-    private SchedulerSnapshot CaptureSnapshotCore() => new(
-        CurrentTick,
-        _nextAcceptedOrdinal,
-        _nextCausalOrdinal,
-        _pendingEvents.ToImmutableArray(),
-        _acceptedCommands.ToImmutableArray(),
-        _appliedCommandOrdinals.ToImmutableHashSet(),
-        _targets
-            .OrderBy(pair => pair.Key, StringComparer.Ordinal)
-            .Select(pair => new SchedulerTargetSnapshot(
-                pair.Key,
-                pair.Value.Incarnation,
-                pair.Value.Active))
-            .ToImmutableArray(),
-        _drives
-            .OrderBy(pair => pair.Key.TargetStableId, StringComparer.Ordinal)
-            .ThenBy(pair => pair.Key.TargetIncarnation)
-            .ThenBy(pair => pair.Key.TargetPortOrLane, StringComparer.Ordinal)
-            .ThenBy(pair => pair.Key.SourceStableId, StringComparer.Ordinal)
-            .ThenBy(pair => pair.Key.SourcePort, StringComparer.Ordinal)
-            .Select(pair => new SchedulerDriveSnapshot(pair.Key, pair.Value))
-            .ToImmutableArray(),
-        _temporalRoots
-            .OrderBy(pair => pair.Key, StringComparer.Ordinal)
-            .Select(pair => pair.Value)
-            .ToImmutableArray(),
-        _cancelledTemporalRoots.ToImmutableHashSet(StringComparer.Ordinal),
-        _trace.ToImmutableArray());
+    private SchedulerSnapshot CaptureSnapshotCore()
+    {
+        var snapshot = new SchedulerSnapshot(
+            CurrentTick,
+            _nextAcceptedOrdinal,
+            _nextCausalOrdinal,
+            _pendingEvents.ToImmutableArray(),
+            _acceptedCommands.ToImmutableArray(),
+            _appliedCommandOrdinals.ToImmutableHashSet(),
+            _targets
+                .OrderBy(pair => pair.Key, StringComparer.Ordinal)
+                .Select(pair => new SchedulerTargetSnapshot(
+                    pair.Key,
+                    pair.Value.Incarnation,
+                    pair.Value.Active))
+                .ToImmutableArray(),
+            _drives
+                .OrderBy(pair => pair.Key.TargetStableId, StringComparer.Ordinal)
+                .ThenBy(pair => pair.Key.TargetIncarnation)
+                .ThenBy(pair => pair.Key.TargetPortOrLane, StringComparer.Ordinal)
+                .ThenBy(pair => pair.Key.SourceStableId, StringComparer.Ordinal)
+                .ThenBy(pair => pair.Key.SourcePort, StringComparer.Ordinal)
+                .Select(pair => new SchedulerDriveSnapshot(pair.Key, pair.Value))
+                .ToImmutableArray(),
+            _temporalRoots
+                .OrderBy(pair => pair.Key, StringComparer.Ordinal)
+                .Select(pair => pair.Value)
+                .ToImmutableArray(),
+            _cancelledTemporalRoots.ToImmutableHashSet(StringComparer.Ordinal),
+            _trace.ToImmutableArray())
+        {
+            TargetHistory = _targetHistory.ToImmutableArray(),
+            TraceIntegrityHash = ComputeTraceIntegrityHash(_trace),
+            TraceStartTick = _trace.Count == 0 ? CurrentTick : _trace[0].Tick
+        };
+        return snapshot with { StateIntegrityHash = ComputeStateIntegrityHash(snapshot) };
+    }
 
     private void RestoreSnapshotCore(SchedulerSnapshot snapshot)
     {
-        if (snapshot.CurrentTick < 0 || snapshot.NextAcceptedOrdinal <= 0 || snapshot.NextCausalOrdinal <= 0)
+        if (snapshot.CurrentTick < 0 || snapshot.NextAcceptedOrdinal <= 0 || snapshot.NextCausalOrdinal <= 0 ||
+            snapshot.TraceStartTick < 0 ||
+            snapshot.Trace.IsEmpty && snapshot.TraceStartTick != snapshot.CurrentTick ||
+            !snapshot.Trace.IsEmpty && snapshot.Trace[0].Tick != snapshot.TraceStartTick)
         {
             throw InvalidCommand("Snapshot counters must contain non-negative ticks and positive ordinals.");
         }
@@ -943,6 +1003,8 @@ public sealed class DeterministicScheduler
             throw InvalidCommand("Snapshot contains an applied command ordinal that was not accepted.");
         }
 
+        ValidateAppliedCommands(snapshot, acceptedCommands, appliedCommandOrdinals);
+
         var targets = new Dictionary<string, TargetState>(StringComparer.Ordinal);
         foreach (var target in snapshot.Targets)
         {
@@ -958,13 +1020,25 @@ public sealed class DeterministicScheduler
             }
         }
 
+        ValidateTargetHistory(
+            snapshot.TargetHistory,
+            snapshot.Targets,
+            snapshot.AcceptedCommands,
+            snapshot.AppliedCommandOrdinals);
+
         var drives = new Dictionary<SchedulerDriveKey, LogicValue>();
         foreach (var drive in snapshot.Drives)
         {
             if (drive.Key.SourceIncarnation < 0 || drive.Key.TargetIncarnation < 0 ||
+                string.IsNullOrWhiteSpace(drive.Key.SourceStableId) ||
+                string.IsNullOrWhiteSpace(drive.Key.SourcePort) ||
+                string.IsNullOrWhiteSpace(drive.Key.TargetStableId) ||
+                string.IsNullOrWhiteSpace(drive.Key.TargetPortOrLane) ||
+                !targets.TryGetValue(drive.Key.TargetStableId, out var target) ||
+                !target.Active || target.Incarnation != drive.Key.TargetIncarnation ||
                 !Enum.IsDefined(typeof(LogicValue), drive.Value))
             {
-                throw InvalidCommand("Snapshot contains an invalid persistent drive.");
+                throw InvalidCommand("Snapshot contains an unresolved persistent drive.");
             }
 
             if (!drives.TryAdd(drive.Key, drive.Value))
@@ -977,6 +1051,26 @@ public sealed class DeterministicScheduler
         foreach (var rootId in cancelledTemporalRoots)
         {
             ValidateSnapshotIdentifier(rootId, nameof(rootId));
+        }
+
+        ValidateSnapshotTrace(snapshot.Trace, snapshot.CurrentTick);
+        ValidateSnapshotCounters(snapshot, pendingEvents);
+        if (!IsSha256(snapshot.TraceIntegrityHash) ||
+            !string.Equals(
+                snapshot.TraceIntegrityHash,
+                ComputeTraceIntegrityHash(snapshot.Trace),
+                StringComparison.Ordinal))
+        {
+            throw InvalidCommand("Snapshot trace integrity hash does not match its entries.");
+        }
+
+        if (!IsSha256(snapshot.StateIntegrityHash) ||
+            !string.Equals(
+                snapshot.StateIntegrityHash,
+                ComputeStateIntegrityHash(snapshot),
+                StringComparison.Ordinal))
+        {
+            throw InvalidCommand("Snapshot state integrity hash does not match its scheduler state.");
         }
 
         var trace = snapshot.Trace.ToList();
@@ -998,6 +1092,8 @@ public sealed class DeterministicScheduler
         {
             _targets.Add(target.Key, target.Value);
         }
+        _targetHistory.Clear();
+        _targetHistory.AddRange(snapshot.TargetHistory);
 
         _drives.Clear();
         foreach (var drive in drives)
@@ -1018,7 +1114,158 @@ public sealed class DeterministicScheduler
         _currentInputs = currentInputs;
     }
 
-    private string ComputeHash(
+    private void ValidateSnapshotCounters(
+        SchedulerSnapshot snapshot,
+        IReadOnlyCollection<ScheduledEvent> pendingEvents)
+    {
+        var acceptedOrdinals = snapshot.AcceptedCommands
+            .Select(command => command.AcceptedOrdinal)
+            .Order()
+            .ToArray();
+        if (acceptedOrdinals.Select((ordinal, index) => ordinal == index + 1L).Any(valid => !valid) ||
+            acceptedOrdinals.Length + 1L != snapshot.NextAcceptedOrdinal)
+        {
+            throw InvalidCommand("Snapshot accepted command counter does not match its command log.");
+        }
+
+        var causalMax = pendingEvents.Any()
+            ? pendingEvents.Max(item => item.Key.CausalOrdinal)
+            : 0;
+        foreach (var root in snapshot.TemporalRoots)
+        {
+            causalMax = Math.Max(causalMax, root.Event.Key.CausalOrdinal);
+        }
+
+        foreach (var trace in snapshot.Trace)
+        {
+            causalMax = Math.Max(
+                causalMax,
+                trace.DeliveredEvents.Any()
+                    ? trace.DeliveredEvents.Max(item => item.Key.CausalOrdinal)
+                    : 0);
+            if (trace.State is { } state && state.PendingEvents.Any())
+            {
+                causalMax = Math.Max(causalMax, state.PendingEvents.Max(item => item.Key.CausalOrdinal));
+            }
+        }
+
+        if (snapshot.CancelledTemporalRoots.IsEmpty && snapshot.NextCausalOrdinal != causalMax + 1)
+        {
+            throw InvalidCommand("Snapshot causal counter does not match its recorded events.");
+        }
+
+        if (!snapshot.CancelledTemporalRoots.IsEmpty && snapshot.NextCausalOrdinal <= causalMax)
+        {
+            throw InvalidCommand("Snapshot causal counter does not match its recorded events.");
+        }
+
+        var previousAcceptedOrdinal = 0L;
+        var previousCausalOrdinal = 0L;
+        var observedTraceCausalOrdinal = 0L;
+        var finalTargetIds = snapshot.Targets.Select(target => target.StableId).ToHashSet(StringComparer.Ordinal);
+        foreach (var trace in snapshot.Trace)
+        {
+            if (trace.State is not { } state ||
+                state.NextAcceptedOrdinal > snapshot.NextAcceptedOrdinal ||
+                state.NextCausalOrdinal > snapshot.NextCausalOrdinal ||
+                state.NextAcceptedOrdinal < previousAcceptedOrdinal ||
+                state.NextCausalOrdinal < previousCausalOrdinal ||
+                state.Targets.Any(target => !finalTargetIds.Contains(target.StableId)))
+            {
+                throw InvalidCommand("Snapshot trace state counters are not monotonic.");
+            }
+
+            if (state.AcceptedCommands.Any(accepted =>
+                    !snapshot.AcceptedCommands.Any(final =>
+                        final.AcceptedOrdinal == accepted.AcceptedOrdinal && final.Command == accepted.Command)))
+            {
+                throw InvalidCommand("Snapshot trace state command is outside the accepted command prefix.");
+            }
+
+            if (trace.DeliveredEvents.Any())
+            {
+                observedTraceCausalOrdinal = Math.Max(
+                    observedTraceCausalOrdinal,
+                    trace.DeliveredEvents.Max(item => item.Key.CausalOrdinal));
+            }
+
+            if (state.PendingEvents.Any())
+            {
+                observedTraceCausalOrdinal = Math.Max(
+                    observedTraceCausalOrdinal,
+                    state.PendingEvents.Max(item => item.Key.CausalOrdinal));
+            }
+
+            if (state.CancelledTemporalRoots.IsEmpty &&
+                state.NextCausalOrdinal != observedTraceCausalOrdinal + 1)
+            {
+                throw InvalidCommand("Snapshot trace state causal counter does not match its events.");
+            }
+
+            previousAcceptedOrdinal = state.NextAcceptedOrdinal;
+            previousCausalOrdinal = state.NextCausalOrdinal;
+        }
+    }
+
+    private void ValidateAppliedCommands(
+        SchedulerSnapshot snapshot,
+        IReadOnlyList<AcceptedSchedulerCommand> acceptedCommands,
+        IReadOnlySet<long> appliedCommandOrdinals)
+    {
+        foreach (var accepted in acceptedCommands)
+        {
+            var applied = appliedCommandOrdinals.Contains(accepted.AcceptedOrdinal);
+            if (applied && accepted.Command.ApplyAtTick > snapshot.CurrentTick ||
+                !applied && accepted.Command.ApplyAtTick < snapshot.CurrentTick)
+            {
+                throw InvalidCommand("Snapshot command application state does not match its apply tick.");
+            }
+        }
+
+        foreach (var group in acceptedCommands
+                     .Where(accepted => accepted.Command.ApplyAtTick == snapshot.CurrentTick)
+                     .GroupBy(accepted => accepted.Command.ApplyAtTick))
+        {
+            var highestApplied = group
+                .Where(accepted => appliedCommandOrdinals.Contains(accepted.AcceptedOrdinal))
+                .Select(accepted => accepted.AcceptedOrdinal)
+                .DefaultIfEmpty(0)
+                .Max();
+            if (highestApplied > 0 && group.Any(accepted =>
+                    accepted.AcceptedOrdinal < highestApplied &&
+                    !appliedCommandOrdinals.Contains(accepted.AcceptedOrdinal)))
+            {
+                throw InvalidCommand("Snapshot command application order is not contiguous.");
+            }
+        }
+    }
+
+    private SchedulerTraceState CaptureTraceState() => new(
+        _nextAcceptedOrdinal,
+        _nextCausalOrdinal,
+        _acceptedCommands.ToImmutableArray(),
+        _appliedCommandOrdinals.ToImmutableHashSet(),
+        _targets
+            .OrderBy(pair => pair.Key, StringComparer.Ordinal)
+            .Select(pair => new SchedulerTargetSnapshot(pair.Key, pair.Value.Incarnation, pair.Value.Active))
+            .ToImmutableArray(),
+        _drives
+            .OrderBy(pair => pair.Key.TargetStableId, StringComparer.Ordinal)
+            .ThenBy(pair => pair.Key.TargetIncarnation)
+            .ThenBy(pair => pair.Key.TargetPortOrLane, StringComparer.Ordinal)
+            .ThenBy(pair => pair.Key.SourceStableId, StringComparer.Ordinal)
+            .ThenBy(pair => pair.Key.SourcePort, StringComparer.Ordinal)
+            .Select(pair => new SchedulerDriveSnapshot(pair.Key, pair.Value))
+            .ToImmutableArray(),
+        _pendingEvents.ToImmutableArray(),
+        _temporalRoots
+            .OrderBy(pair => pair.Key, StringComparer.Ordinal)
+            .Select(pair => pair.Value)
+            .ToImmutableArray(),
+        _cancelledTemporalRoots.ToImmutableHashSet(StringComparer.Ordinal));
+
+    private static string ComputeHash(
+        SchedulerTraceState state,
         long tick,
         IEnumerable<ScheduledEvent> delivered,
         IEnumerable<KeyValuePair<SchedulerPortAddress, LogicValue>> resolvedInputs,
@@ -1026,29 +1273,29 @@ public sealed class DeterministicScheduler
     {
         var builder = new StringBuilder();
         AppendCanonical(builder, "tick", tick);
-        AppendCanonical(builder, "next-accepted", _nextAcceptedOrdinal);
-        AppendCanonical(builder, "next-causal", _nextCausalOrdinal);
-        foreach (var accepted in _acceptedCommands.OrderBy(item => item.AcceptedOrdinal))
+        AppendCanonical(builder, "next-accepted", state.NextAcceptedOrdinal);
+        AppendCanonical(builder, "next-causal", state.NextCausalOrdinal);
+        foreach (var accepted in state.AcceptedCommands.OrderBy(item => item.AcceptedOrdinal))
         {
             AppendCanonical(
                 builder,
                 "command",
                 accepted.AcceptedOrdinal,
                 CanonicalCommandValues(accepted.Command),
-                _appliedCommandOrdinals.Contains(accepted.AcceptedOrdinal));
+                state.AppliedCommandOrdinals.Contains(accepted.AcceptedOrdinal));
         }
 
-        foreach (var target in _targets.OrderBy(pair => pair.Key, StringComparer.Ordinal))
+        foreach (var target in state.Targets.OrderBy(item => item.StableId, StringComparer.Ordinal))
         {
-            AppendCanonical(builder, "target", target.Key, target.Value.Incarnation, target.Value.Active);
+            AppendCanonical(builder, "target", target.StableId, target.Incarnation, target.Active);
         }
 
-        foreach (var drive in _drives
-                     .OrderBy(pair => pair.Key.TargetStableId, StringComparer.Ordinal)
-                     .ThenBy(pair => pair.Key.TargetIncarnation)
-                     .ThenBy(pair => pair.Key.TargetPortOrLane, StringComparer.Ordinal)
-                     .ThenBy(pair => pair.Key.SourceStableId, StringComparer.Ordinal)
-                     .ThenBy(pair => pair.Key.SourcePort, StringComparer.Ordinal))
+        foreach (var drive in state.Drives
+                     .OrderBy(item => item.Key.TargetStableId, StringComparer.Ordinal)
+                     .ThenBy(item => item.Key.TargetIncarnation)
+                     .ThenBy(item => item.Key.TargetPortOrLane, StringComparer.Ordinal)
+                     .ThenBy(item => item.Key.SourceStableId, StringComparer.Ordinal)
+                     .ThenBy(item => item.Key.SourcePort, StringComparer.Ordinal))
         {
             AppendCanonical(
                 builder,
@@ -1057,17 +1304,17 @@ public sealed class DeterministicScheduler
                 (byte)drive.Value);
         }
 
-        foreach (var scheduledEvent in _pendingEvents)
+        foreach (var scheduledEvent in state.PendingEvents)
         {
             AppendCanonical(builder, "pending", CanonicalEventValues(scheduledEvent));
         }
 
-        foreach (var root in _temporalRoots.OrderBy(pair => pair.Key, StringComparer.Ordinal))
+        foreach (var root in state.TemporalRoots.OrderBy(item => item.RootId, StringComparer.Ordinal))
         {
-            AppendCanonical(builder, "root", root.Key, CanonicalEventValues(root.Value.Event));
+            AppendCanonical(builder, "root", root.RootId, CanonicalEventValues(root.Event));
         }
 
-        foreach (var root in _cancelledTemporalRoots.OrderBy(root => root, StringComparer.Ordinal))
+        foreach (var root in state.CancelledTemporalRoots.OrderBy(root => root, StringComparer.Ordinal))
         {
             AppendCanonical(builder, "cancelled-root", root);
         }
@@ -1120,7 +1367,8 @@ public sealed class DeterministicScheduler
         command.RootId,
         command.Payload,
         command.SourceIncarnation,
-        (byte)command.EventPhase
+        (byte)command.EventPhase,
+        command.CausalOriginTick
     ];
 
     private static object?[] CanonicalEventValues(ScheduledEvent scheduledEvent) =>
@@ -1179,6 +1427,12 @@ public sealed class DeterministicScheduler
         if (command.ApplyAtTick < 0)
         {
             throw InvalidCommand($"Command apply tick {command.ApplyAtTick} is invalid.");
+        }
+
+        if (command.CausalOriginTick is { } originTick &&
+            (originTick < 0 || originTick > command.ApplyAtTick))
+        {
+            throw InvalidCommand("Command causal origin tick is invalid.");
         }
 
         if (!Enum.IsDefined(typeof(SchedulerPhase), command.EventPhase))
@@ -1259,6 +1513,505 @@ public sealed class DeterministicScheduler
             !Enum.IsDefined(typeof(LogicValue), scheduledEvent.Value))
         {
             throw InvalidCommand("Snapshot contains an invalid scheduled event.");
+        }
+    }
+
+    private void ValidateSnapshotTrace(
+        ImmutableArray<SchedulerTickTrace> trace,
+        long snapshotTick)
+    {
+        if (trace.IsDefault)
+        {
+            throw InvalidCommand("Snapshot trace collection is missing.");
+        }
+
+        long? previousTick = null;
+        foreach (var entry in trace)
+        {
+            if (entry is null || entry.DeliveredEvents.IsDefault || entry.ResolvedInputs is null ||
+                entry.Diagnostics.IsDefault || entry.State is null || entry.Tick < 0 || entry.Tick >= snapshotTick ||
+                !IsSha256(entry.Hash) || previousTick.HasValue && entry.Tick != previousTick.Value + 1)
+            {
+                throw InvalidCommand("Snapshot contains an invalid scheduler trace entry.");
+            }
+
+            ValidateTraceState(entry.State, entry.Tick, entry.DeliveredEvents);
+            ValidateTraceInputs(entry);
+            var expectedTraceHash = ComputeHash(entry.State, entry.Tick, entry.DeliveredEvents, entry.ResolvedInputs, entry.Diagnostics);
+            if (!string.Equals(
+                    entry.Hash,
+                    expectedTraceHash,
+                    StringComparison.Ordinal))
+            {
+                throw InvalidCommand("Snapshot trace hash does not match its recorded scheduler state.");
+            }
+
+            foreach (var scheduledEvent in entry.DeliveredEvents)
+            {
+                ValidateSnapshotEvent(scheduledEvent, entry.Tick);
+                if (scheduledEvent.Key.DueTick != entry.Tick)
+                {
+                    throw InvalidCommand("Snapshot trace delivered event tick does not match its trace entry.");
+                }
+            }
+
+            foreach (var input in entry.ResolvedInputs)
+            {
+                ValidateSnapshotIdentifier(input.Key.TargetStableId, nameof(input.Key.TargetStableId));
+                ValidateSnapshotIdentifier(input.Key.PortOrLane, nameof(input.Key.PortOrLane));
+                if (input.Key.TargetIncarnation <= 0 || !Enum.IsDefined(typeof(LogicValue), input.Value))
+                {
+                    throw InvalidCommand("Snapshot trace contains an invalid resolved input.");
+                }
+            }
+
+            foreach (var diagnostic in entry.Diagnostics)
+            {
+                if (diagnostic is null || string.IsNullOrWhiteSpace(diagnostic.Code) ||
+                    string.IsNullOrWhiteSpace(diagnostic.Message) || diagnostic.Tick != entry.Tick ||
+                    !Enum.IsDefined(typeof(SchedulerPhase), diagnostic.Phase))
+                {
+                    throw InvalidCommand("Snapshot trace contains an invalid diagnostic.");
+                }
+            }
+
+            previousTick = entry.Tick;
+        }
+
+        if (previousTick.HasValue && previousTick.Value != snapshotTick - 1)
+        {
+            throw InvalidCommand("Snapshot trace does not end at the current tick boundary.");
+        }
+
+        ValidateTraceStateTransitions(trace);
+    }
+
+    private void ValidateTraceInputs(SchedulerTickTrace trace)
+    {
+        var expected = trace.State!.Drives
+            .Where(drive => trace.State.Targets.Any(target =>
+                target.StableId == drive.Key.TargetStableId &&
+                target.Active &&
+                target.Incarnation == drive.Key.TargetIncarnation))
+            .GroupBy(drive => new SchedulerPortAddress(
+                drive.Key.TargetStableId,
+                drive.Key.TargetIncarnation,
+                drive.Key.TargetPortOrLane))
+            .ToDictionary(group => group.Key, group => DriveResolver.Resolve(group.Select(drive => drive.Value)));
+        if (expected.Count != trace.ResolvedInputs.Count ||
+            trace.ResolvedInputs.Any(input =>
+                !expected.TryGetValue(input.Key, out var value) || value != input.Value))
+        {
+            throw InvalidCommand("Snapshot trace resolved inputs do not match its persistent drives.");
+        }
+    }
+
+    private void ValidateTraceStateTransitions(ImmutableArray<SchedulerTickTrace> trace)
+    {
+        if (trace.Length < 2)
+        {
+            return;
+        }
+
+        var previous = trace[0].State!;
+        var expectedTargets = previous.Targets.ToDictionary(
+            target => target.StableId,
+            target => target,
+            StringComparer.Ordinal);
+        var expectedDrives = previous.Drives.ToDictionary(drive => drive.Key, drive => drive.Value);
+        var applied = previous.AppliedCommandOrdinals.ToHashSet();
+        for (var index = 1; index < trace.Length; index++)
+        {
+            var current = trace[index];
+            var state = current.State!;
+            foreach (var accepted in state.AcceptedCommands
+                         .Where(accepted => state.AppliedCommandOrdinals.Contains(accepted.AcceptedOrdinal) &&
+                                            !applied.Contains(accepted.AcceptedOrdinal))
+                         .OrderBy(accepted => accepted.AcceptedOrdinal))
+            {
+                ApplyTraceCommand(accepted.Command, expectedTargets, expectedDrives);
+            }
+
+            foreach (var scheduledEvent in current.DeliveredEvents)
+            {
+                ApplyTraceEvent(scheduledEvent, expectedDrives);
+            }
+
+            if (!TargetsMatch(expectedTargets, state.Targets) ||
+                !DrivesMatch(expectedDrives, state.Drives))
+            {
+                throw InvalidCommand("Snapshot trace state does not follow its causal transitions.");
+            }
+
+            previous = state;
+            applied = state.AppliedCommandOrdinals.ToHashSet();
+        }
+    }
+
+    private static void ApplyTraceCommand(
+        SchedulerCommand command,
+        IDictionary<string, SchedulerTargetSnapshot> targets,
+        IDictionary<SchedulerDriveKey, LogicValue> drives)
+    {
+        switch (command.Kind)
+        {
+            case SchedulerCommandKind.RegisterTarget:
+                if (!targets.TryGetValue(command.TargetStableId, out var existing))
+                {
+                    targets[command.TargetStableId] = new SchedulerTargetSnapshot(command.TargetStableId, 1, true);
+                }
+                else if (!existing.Active)
+                {
+                    targets[command.TargetStableId] = existing with
+                    {
+                        Incarnation = existing.Incarnation + 1,
+                        Active = true
+                    };
+                }
+
+                break;
+            case SchedulerCommandKind.RemoveTarget:
+                if (targets.TryGetValue(command.TargetStableId, out var removed) && removed.Active)
+                {
+                    targets[command.TargetStableId] = removed with { Active = false };
+                    foreach (var removedKey in drives.Keys.Where(key =>
+                                 key.SourceStableId == command.TargetStableId ||
+                                 key.TargetStableId == command.TargetStableId).ToArray())
+                    {
+                        drives.Remove(removedKey);
+                    }
+                }
+
+                break;
+            case SchedulerCommandKind.SetPersistentDrive:
+                var targetIncarnation = command.TargetIncarnation;
+                if (targetIncarnation == 0 && targets.TryGetValue(command.TargetStableId, out var target))
+                {
+                    targetIncarnation = target.Incarnation;
+                }
+
+                var sourceIncarnation = command.SourceIncarnation;
+                if (sourceIncarnation == 0 && targets.TryGetValue(command.SourceStableId, out var source) &&
+                    source.Active)
+                {
+                    sourceIncarnation = source.Incarnation;
+                }
+
+                var driveKey = new SchedulerDriveKey(
+                    command.SourceStableId,
+                    sourceIncarnation,
+                    command.SourcePort,
+                    command.TargetStableId,
+                    targetIncarnation,
+                    command.TargetPortOrLane);
+                if (command.Value == LogicValue.HighImpedance)
+                {
+                    drives.Remove(driveKey);
+                }
+                else
+                {
+                    drives[driveKey] = command.Value;
+                }
+
+                break;
+            case SchedulerCommandKind.ReleaseSource:
+                var releaseIncarnation = command.SourceIncarnation;
+                if (releaseIncarnation == 0 && targets.TryGetValue(command.SourceStableId, out var releaseSource) &&
+                    releaseSource.Active)
+                {
+                    releaseIncarnation = releaseSource.Incarnation;
+                }
+
+                foreach (var key in drives.Keys.Where(key =>
+                             key.SourceStableId == command.SourceStableId &&
+                             (releaseIncarnation == 0 || key.SourceIncarnation == releaseIncarnation)).ToArray())
+                {
+                    drives.Remove(key);
+                }
+
+                break;
+        }
+    }
+
+    private static void ApplyTraceEvent(
+        ScheduledEvent scheduledEvent,
+        IDictionary<SchedulerDriveKey, LogicValue> drives)
+    {
+        if (scheduledEvent.EventKind is not ("drive" or "persistent-drive" or "drive-release"))
+        {
+            return;
+        }
+
+        var eventKey = new SchedulerDriveKey(
+            scheduledEvent.SourceStableId,
+            scheduledEvent.SourceIncarnation,
+            scheduledEvent.SourcePort,
+            scheduledEvent.TargetStableId,
+            scheduledEvent.TargetIncarnation,
+            scheduledEvent.TargetPortOrLane);
+        if (scheduledEvent.EventKind == "drive-release" || scheduledEvent.Value == LogicValue.HighImpedance)
+        {
+            drives.Remove(eventKey);
+        }
+        else
+        {
+            drives[eventKey] = scheduledEvent.Value;
+        }
+    }
+
+    private static bool TargetsMatch(
+        IReadOnlyDictionary<string, SchedulerTargetSnapshot> expected,
+        ImmutableArray<SchedulerTargetSnapshot> actual) =>
+        expected.Count == actual.Length && actual.All(target =>
+            expected.TryGetValue(target.StableId, out var candidate) && candidate == target);
+
+    private static bool DrivesMatch(
+        IReadOnlyDictionary<SchedulerDriveKey, LogicValue> expected,
+        ImmutableArray<SchedulerDriveSnapshot> actual) =>
+        expected.Count == actual.Length && actual.All(drive =>
+            expected.TryGetValue(drive.Key, out var value) && value == drive.Value);
+
+    private void ValidateTraceState(
+        SchedulerTraceState state,
+        long traceTick,
+        ImmutableArray<ScheduledEvent> deliveredEvents)
+    {
+        if (state.AcceptedCommands.IsDefault || state.AppliedCommandOrdinals is null ||
+            state.Targets.IsDefault || state.Drives.IsDefault || state.PendingEvents.IsDefault ||
+            state.TemporalRoots.IsDefault || state.CancelledTemporalRoots is null ||
+            state.NextAcceptedOrdinal <= 0 || state.NextCausalOrdinal <= 0)
+        {
+            throw InvalidCommand("Snapshot trace state is incomplete.");
+        }
+
+        var acceptedOrdinals = new HashSet<long>();
+        foreach (var accepted in state.AcceptedCommands)
+        {
+            if (accepted is null || accepted.AcceptedOrdinal <= 0 ||
+                !acceptedOrdinals.Add(accepted.AcceptedOrdinal))
+            {
+                throw InvalidCommand("Snapshot trace state contains invalid accepted commands.");
+            }
+
+            ValidateCommandShape(accepted.Command);
+        }
+
+        if (acceptedOrdinals.Order().Select((ordinal, index) => ordinal == index + 1L).Any(valid => !valid) ||
+            state.NextAcceptedOrdinal != acceptedOrdinals.Count + 1 ||
+            !state.AppliedCommandOrdinals.IsSubsetOf(acceptedOrdinals))
+        {
+            throw InvalidCommand("Snapshot trace state accepted command counter is invalid.");
+        }
+
+        foreach (var accepted in state.AcceptedCommands)
+        {
+            var applied = state.AppliedCommandOrdinals.Contains(accepted.AcceptedOrdinal);
+            if (applied && accepted.Command.ApplyAtTick > traceTick ||
+                !applied && accepted.Command.ApplyAtTick < traceTick)
+            {
+                throw InvalidCommand("Snapshot trace state command application does not match its tick.");
+            }
+        }
+
+        var sameTickCommands = state.AcceptedCommands
+            .Where(accepted => accepted.Command.ApplyAtTick == traceTick)
+            .ToArray();
+        var highestApplied = sameTickCommands
+            .Where(accepted => state.AppliedCommandOrdinals.Contains(accepted.AcceptedOrdinal))
+            .Select(accepted => accepted.AcceptedOrdinal)
+            .DefaultIfEmpty(0)
+            .Max();
+        if (highestApplied > 0 && sameTickCommands.Any(accepted =>
+                accepted.AcceptedOrdinal < highestApplied &&
+                !state.AppliedCommandOrdinals.Contains(accepted.AcceptedOrdinal)))
+        {
+            throw InvalidCommand("Snapshot trace state command application order is not contiguous.");
+        }
+
+        var targets = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var target in state.Targets)
+        {
+            ValidateSnapshotIdentifier(target.StableId, nameof(target.StableId));
+            if (target.Incarnation <= 0 || !targets.Add(target.StableId))
+            {
+                throw InvalidCommand("Snapshot trace state contains invalid targets.");
+            }
+        }
+
+        var observedCausalOrdinal = 0L;
+        foreach (var scheduledEvent in state.PendingEvents)
+        {
+            ValidateSnapshotEvent(scheduledEvent, traceTick);
+            if (scheduledEvent.Key.DueTick <= traceTick)
+            {
+                throw InvalidCommand("Snapshot trace state contains an event due at its trace tick.");
+            }
+
+            observedCausalOrdinal = Math.Max(observedCausalOrdinal, scheduledEvent.Key.CausalOrdinal);
+        }
+
+        foreach (var scheduledEvent in deliveredEvents)
+        {
+            observedCausalOrdinal = Math.Max(observedCausalOrdinal, scheduledEvent.Key.CausalOrdinal);
+        }
+
+        foreach (var root in state.TemporalRoots)
+        {
+            ValidateSnapshotIdentifier(root.RootId, nameof(root.RootId));
+            ValidateSnapshotEvent(root.Event, traceTick);
+            if (!state.PendingEvents.Contains(root.Event) || root.Event.Key.DueTick <= traceTick)
+            {
+                throw InvalidCommand("Snapshot trace state contains an invalid temporal root.");
+            }
+        }
+
+        foreach (var rootId in state.CancelledTemporalRoots)
+        {
+            ValidateSnapshotIdentifier(rootId, nameof(rootId));
+        }
+
+        foreach (var drive in state.Drives
+                     .OrderBy(item => item.Key.TargetStableId, StringComparer.Ordinal)
+                     .ThenBy(item => item.Key.TargetIncarnation)
+                     .ThenBy(item => item.Key.TargetPortOrLane, StringComparer.Ordinal)
+                     .ThenBy(item => item.Key.SourceStableId, StringComparer.Ordinal)
+                     .ThenBy(item => item.Key.SourcePort, StringComparer.Ordinal))
+        {
+            if (!targets.Contains(drive.Key.TargetStableId) ||
+                !state.Targets.Any(target => target.StableId == drive.Key.TargetStableId &&
+                                             target.Active && target.Incarnation == drive.Key.TargetIncarnation) ||
+                string.IsNullOrWhiteSpace(drive.Key.SourceStableId) ||
+                string.IsNullOrWhiteSpace(drive.Key.SourcePort) ||
+                string.IsNullOrWhiteSpace(drive.Key.TargetPortOrLane) ||
+                drive.Key.SourceIncarnation < 0 || !Enum.IsDefined(typeof(LogicValue), drive.Value))
+            {
+                throw InvalidCommand("Snapshot trace state contains an unresolved persistent drive.");
+            }
+        }
+
+        if (state.NextCausalOrdinal <= observedCausalOrdinal)
+        {
+            throw InvalidCommand("Snapshot trace state causal counter is invalid.");
+        }
+    }
+
+    private static bool IsSha256(string value) =>
+        value is { Length: 64 } && value.All(character =>
+            character is >= '0' and <= '9' or >= 'a' and <= 'f' or >= 'A' and <= 'F');
+
+    private static string ComputeTraceIntegrityHash(IEnumerable<SchedulerTickTrace> traces)
+    {
+        var builder = new StringBuilder();
+        foreach (var trace in traces)
+        {
+            AppendCanonical(builder, "trace", trace.Tick, trace.Hash);
+            foreach (var scheduledEvent in trace.DeliveredEvents.OrderBy(item => item.Key))
+            {
+                AppendCanonical(builder, "trace-delivered", CanonicalEventValues(scheduledEvent));
+            }
+
+            foreach (var input in trace.ResolvedInputs
+                         .OrderBy(pair => pair.Key.TargetStableId, StringComparer.Ordinal)
+                         .ThenBy(pair => pair.Key.TargetIncarnation)
+                         .ThenBy(pair => pair.Key.PortOrLane, StringComparer.Ordinal))
+            {
+                AppendCanonical(
+                    builder,
+                    "trace-input",
+                    input.Key.TargetStableId,
+                    input.Key.TargetIncarnation,
+                    input.Key.PortOrLane,
+                    (byte)input.Value);
+            }
+
+            foreach (var diagnostic in trace.Diagnostics)
+            {
+                AppendCanonical(
+                    builder,
+                    "trace-diagnostic",
+                    diagnostic.Code,
+                    diagnostic.Message,
+                    diagnostic.Tick,
+                    (byte)diagnostic.Phase);
+            }
+
+        }
+
+        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString()))).ToLowerInvariant();
+    }
+
+    private static string ComputeStateIntegrityHash(SchedulerSnapshot snapshot)
+    {
+        var state = new SchedulerTraceState(
+            snapshot.NextAcceptedOrdinal,
+            snapshot.NextCausalOrdinal,
+            snapshot.AcceptedCommands,
+            snapshot.AppliedCommandOrdinals,
+            snapshot.Targets,
+            snapshot.Drives,
+            snapshot.PendingEvents,
+            snapshot.TemporalRoots,
+            snapshot.CancelledTemporalRoots);
+        var builder = new StringBuilder(ComputeHash(state, snapshot.CurrentTick, [], [], []));
+        foreach (var target in snapshot.TargetHistory)
+        {
+            AppendCanonical(builder, "target-history", target.StableId, target.Incarnation, target.Active);
+        }
+
+        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString()))).ToLowerInvariant();
+    }
+
+    private void ValidateTargetHistory(
+        ImmutableArray<SchedulerTargetSnapshot> history,
+        ImmutableArray<SchedulerTargetSnapshot> targets,
+        ImmutableArray<AcceptedSchedulerCommand> acceptedCommands,
+        ImmutableHashSet<long> appliedCommandOrdinals)
+    {
+        if (history.IsDefault)
+        {
+            throw InvalidCommand("Snapshot target history is missing.");
+        }
+
+        var finalTargets = targets.ToDictionary(target => target.StableId, StringComparer.Ordinal);
+        foreach (var group in history.GroupBy(target => target.StableId, StringComparer.Ordinal))
+        {
+            var entries = group.OrderBy(target => target.Incarnation).ToArray();
+            if (entries.Length == 0 || entries[0].Incarnation != 1 ||
+                entries.Select((target, index) => target.Incarnation == index + 1L).Any(valid => !valid) ||
+                entries.SkipLast(1).Any(target => target.Active) ||
+                !finalTargets.TryGetValue(group.Key, out var final) || final != entries[^1])
+            {
+                throw InvalidCommand("Snapshot target history does not match its final targets.");
+            }
+
+            var replacementCount = 0;
+            var removalPending = false;
+            foreach (var accepted in acceptedCommands
+                         .Where(accepted => accepted.AcceptedOrdinal > 0 &&
+                                            appliedCommandOrdinals.Contains(accepted.AcceptedOrdinal) &&
+                                            accepted.Command.TargetStableId == group.Key)
+                         .OrderBy(accepted => accepted.AcceptedOrdinal))
+            {
+                if (accepted.Command.Kind == SchedulerCommandKind.RemoveTarget)
+                {
+                    removalPending = true;
+                }
+                else if (accepted.Command.Kind == SchedulerCommandKind.RegisterTarget && removalPending)
+                {
+                    replacementCount++;
+                    removalPending = false;
+                }
+            }
+
+            if (replacementCount != entries.Length - 1)
+            {
+                throw InvalidCommand("Snapshot target history has no matching replacement commands.");
+            }
+        }
+
+        if (history.Select(target => target.StableId).ToHashSet(StringComparer.Ordinal).Count != finalTargets.Count)
+        {
+            throw InvalidCommand("Snapshot target history is incomplete.");
         }
     }
 

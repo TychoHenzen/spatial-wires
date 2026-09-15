@@ -107,6 +107,44 @@ public sealed class PanelWorkbenchSessionTests
     }
 
     [Fact]
+    public void RestoreRejectsPendingDeviceInputForAnUnknownDevice()
+    {
+        var panel = PanelDefinition.Create(new CircuitId("panel/workbench-pending-device"), 2, 1, []);
+        var device = DeviceDefinition.Create(
+            new ComponentId("device/pending"),
+            TimedBackend(
+                DevicePortDefinition.Create("in", DevicePortDirection.Input),
+                DevicePortDefinition.Create("out", DevicePortDirection.Output)));
+        var graph = DeviceGraphDefinition.Create(new DefinitionId("graph/pending"), [device], []);
+        var definition = WorkbenchDefinition.Restore(
+            panel,
+            ChipDefinitionCatalog.Create([]),
+            PanelOwnedChipNetworkDefinition.Create(panel.Id, []),
+            [],
+            graph,
+            [new WorkbenchDevicePlacement(device.Id, new GridCoordinate(0, 0))]);
+        var session = new PanelWorkbenchSession(definition);
+        session.SetPaused(false);
+        Assert.True(session.TryDriveDeviceInput(
+            device.Id,
+            "in",
+            DeviceSignal.Scalar(LogicValue.High),
+            out var diagnostic), diagnostic?.Message);
+
+        var snapshot = session.CaptureSnapshot();
+        var pending = snapshot.RunningMutations[0] with
+        {
+            DeviceInput = new WorkbenchDeviceInputDrive(
+                new ComponentId("device/missing"),
+                "in",
+                DeviceSignal.Scalar(LogicValue.High))
+        };
+        var malformed = snapshot with { RunningMutations = [pending] };
+
+        Assert.Throws<ArgumentException>(() => PanelWorkbenchSession.RestoreSnapshot(malformed));
+    }
+
+    [Fact]
     public void RemovingOneOfSeveralSharedInputCellsKeepsTheCommittedPortValue()
     {
         var panel = PanelDefinition.Create(
@@ -370,6 +408,106 @@ public sealed class PanelWorkbenchSessionTests
             ],
             session.GetCableLaneHistory(lane.Id)
                 .Select(item => (item.ScheduledTick, item.Signal.Bits[0], item.DeliveredTick)));
+    }
+
+    [Fact]
+    public void SessionSnapshotRestoresChipRuntimeInFlightCableAndPendingEdits()
+    {
+        var owner = EmptyPanel(8, 2);
+        var chipPanel = PanelDefinition.Create(
+            new CircuitId("panel/workbench-snapshot-chip"),
+            3,
+            1,
+            [
+                PortCell("chip-in", 0, 0, CellKind.InputPort, CardinalDirection.East, "signal"),
+                Cell("chip-wire", 1, 0, CellKind.Wire),
+                PortCell("chip-out", 2, 0, CellKind.OutputPort, CardinalDirection.East, "out")
+            ]);
+        var chip = ChipDefinition.Create(
+            new DefinitionId("chip/workbench-snapshot"),
+            chipPanel,
+            [
+                new ChipPortDefinition("signal", new PortId("signal"), ChipPortDirection.Input),
+                new ChipPortDefinition("out", new PortId("out"), ChipPortDirection.Output)
+            ],
+            1,
+            1,
+            "snapshot-chip");
+        var session = new PanelWorkbenchSession(owner);
+        var chipInstance = new ComponentId("chip/workbench-snapshot-instance");
+        Assert.True(session.TryPlaceChip(chip, chipInstance, new GridCoordinate(0, 1), out var diagnostic),
+            diagnostic?.Message);
+
+        var source = DeviceDefinition.Create(
+            new ComponentId("device/snapshot-source"),
+            TimedDeviceBackendDefinition.Create(
+                [DevicePortDefinition.Create("out", DevicePortDirection.Output)],
+                [new TimedOutputChange(5, "out", DeviceSignal.Scalar(LogicValue.High))]));
+        var sink = DeviceDefinition.Create(
+            new ComponentId("device/snapshot-sink"),
+            TimedBackend(
+                DevicePortDefinition.Create("in", DevicePortDirection.Input),
+                DevicePortDefinition.Create("out", DevicePortDirection.Output)));
+        Assert.True(session.TryPlaceDevice(source, new GridCoordinate(5, 1), out diagnostic), diagnostic?.Message);
+        Assert.True(session.TryPlaceDevice(sink, new GridCoordinate(6, 1), out diagnostic), diagnostic?.Message);
+        var lane = CableLaneDefinition.Create(
+            new ComponentId("lane/snapshot"),
+            DevicePortEndpoint.Create(source.Id, "out"),
+            DevicePortEndpoint.Create(sink.Id, "in"),
+            latency: 2);
+        Assert.True(session.TryAddCableBundle(
+            CableBundleDefinition.Create(new ComponentId("bundle/snapshot"), [lane.Id]),
+            [lane],
+            out diagnostic), diagnostic?.Message);
+        Assert.True(session.CommitStaged(out diagnostic), diagnostic?.Message);
+
+        Assert.True(session.TryDriveChipInput(chipInstance, "signal", LogicValue.High, out diagnostic),
+            diagnostic?.Message);
+        Assert.True(session.CommitStaged(out diagnostic), diagnostic?.Message);
+        session.SetPaused(false);
+        for (var tick = 0; tick <= 5; tick++)
+        {
+            Assert.Equal(tick, session.StepMicrotick().Tick);
+        }
+
+        Assert.Contains(session.CaptureSnapshot().DeviceGraph!.Scheduler.PendingEvents,
+            item => item.EventKind == "device-cable-transition" && item.Key.DueTick == 7);
+        Assert.Equal(LogicValue.High, session.GetChipOutput(chipInstance, "out"));
+
+        Assert.True(session.TryDriveChipInput(chipInstance, "signal", LogicValue.Low, out diagnostic),
+            diagnostic?.Message);
+        session.SetPaused(true);
+        Assert.True(session.TryPaint(new GridCoordinate(7, 0), CellKind.Wire, CardinalDirection.East,
+            out diagnostic), diagnostic?.Message);
+
+        var snapshot = session.CaptureSnapshot();
+        var restored = PanelWorkbenchSession.RestoreSnapshot(snapshot);
+        Assert.Equal(session.SaveId, restored.SaveId);
+        Assert.Equal(session.CurrentTick, restored.CurrentTick);
+        Assert.Equal(session.CommandLog.ToArray(), restored.CommandLog.ToArray());
+        Assert.Equal(session.PendingCommandCount, restored.PendingCommandCount);
+        Assert.Equal(session.StagedEditCount, restored.StagedEditCount);
+        Assert.Equal(session.GetChipOutput(chipInstance, "out"), restored.GetChipOutput(chipInstance, "out"));
+        Assert.Equal(session.GetCableLaneHistory(lane.Id).ToArray(), restored.GetCableLaneHistory(lane.Id).ToArray());
+
+        for (var tick = 6; tick <= 7; tick++)
+        {
+            var original = session.StepMicrotick();
+            var copy = restored.StepMicrotick();
+            Assert.Equal(tick, original.Tick);
+            Assert.Equal(original.Hash, copy.Hash);
+            Assert.Equal(original.Outputs.OrderBy(pair => pair.Key).ToArray(),
+                copy.Outputs.OrderBy(pair => pair.Key).ToArray());
+            Assert.Equal(session.CommandLog.ToArray(), restored.CommandLog.ToArray());
+            Assert.Equal(session.GetCableLaneHistory(lane.Id).ToArray(), restored.GetCableLaneHistory(lane.Id).ToArray());
+        }
+
+        Assert.Contains(session.GetCableLaneHistory(lane.Id), item =>
+            item.Signal.Bits[0] == LogicValue.High &&
+            item.DeliveredTick == 7 &&
+            item.Status == CableTransitionStatus.Delivered);
+        Assert.Equal(session.Definition.Panel.GetCell(new GridCoordinate(7, 0))?.Kind,
+            restored.Definition.Panel.GetCell(new GridCoordinate(7, 0))?.Kind);
     }
 
     private static PanelDefinition EmptyPanel(int width, int height) =>

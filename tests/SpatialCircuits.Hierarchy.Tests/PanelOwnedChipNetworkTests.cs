@@ -309,6 +309,49 @@ public sealed class PanelOwnedChipNetworkTests
         Assert.Equal(oldOutput, instance.GetOutput("out"));
     }
 
+    [Fact]
+    public void RuntimeSnapshotRestoresNestedChipRuntimeAndTick()
+    {
+        var leaf = CreatePassThroughChip("chip/snapshot-leaf", "panel/snapshot-leaf", "buffer");
+        var parentPanel = CreatePassThroughPanel("panel/snapshot-parent");
+        var parent = ChipDefinition.Create(
+            new DefinitionId("chip/snapshot-parent"),
+            parentPanel,
+            [
+                new ChipPortDefinition("signal", new PortId("signal"), ChipPortDirection.Input),
+                new ChipPortDefinition("out", new PortId("out"), ChipPortDirection.Output)
+            ],
+            1,
+            1,
+            "snapshot-parent",
+            childNetwork: PanelOwnedChipNetworkDefinition.Create(
+                parentPanel.Id,
+                [Pin("inner", leaf)]));
+        var catalog = ChipDefinitionCatalog.Create([leaf, parent]);
+        var owner = EmptyPanel("panel/snapshot-owner");
+        var definition = PanelOwnedChipNetworkDefinition.Create(owner.Id, [Pin("outer", parent)]);
+        var original = new PanelOwnedChipNetworkInstance(owner, definition, catalog);
+        var nested = original.GetInstance(new ComponentId("outer"))
+            .Children.GetInstance(new ComponentId("inner"));
+        nested.SetInput("signal", LogicValue.High);
+        Step(original, 4);
+
+        var snapshot = original.CaptureSnapshot();
+        var restored = PanelOwnedChipNetworkInstance.RestoreFromSnapshot(
+            owner,
+            definition,
+            catalog,
+            snapshot);
+
+        Assert.Equal(original.CurrentTick, restored.CurrentTick);
+        Assert.Equal(
+            original.GetInstance(new ComponentId("outer"))
+                .Children.GetInstance(new ComponentId("inner")).GetOutput("out"),
+            restored.GetInstance(new ComponentId("outer"))
+                .Children.GetInstance(new ComponentId("inner")).GetOutput("out"));
+        Assert.Equal(original.Step().Hash, restored.Step().Hash);
+    }
+
     private static ChipDefinition CreatePassThroughChip(string id, string panelId, string symbol) =>
         CreatePassThroughChip(id, CreatePassThroughPanel(panelId), symbol);
 

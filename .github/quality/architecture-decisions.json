@@ -92,9 +92,9 @@
   },
   {
     "findingId": "05cf6b2a4c14156e4331c3d174eb54e16692bf31cf0825f6879bb2ebe76d8efe",
+    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
     "reason": "PBI 7 requires a public hierarchical API and cohesive runner fixture models. Production runner and tests use the API. Independent completion review and Luna advice found no design defect requiring reduction or relocation. Retain this PBI-scoped surface for the current staged snapshot.",
     "author": "Codex independent review",
-    "fingerprint": "bed36c8028f2494368ddb8f6ff00c40c0eb1ea6618ea6de6d51adf4b1a5f7df7",
     "time": "2026-09-14T07:17:32.485Z"
   },
   {
@@ -803,5 +803,2077 @@
     "reason": "PBI #11 requires device and cable runtimes to advance with the workbench and preserve state when graph definitions append at commit boundaries. The fresh independent completion review checked the exact-tick tests. Retain this PBI-scoped runtime API.",
     "author": "Codex independent review",
     "time": "2026-09-14T22:20:18.337Z"
+  },
+  {
+    "findingId": "009083b9492c8602fbc4fa92b8c084ad490abe06607643a9b777e758949c803d",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:45:08.929Z"
+  },
+  {
+    "findingId": "02644227c7eb0ba41299c3ef3fba1f20ea341ffa5379a396b9ac6845eebbdbc7",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:45:36.091Z"
+  },
+  {
+    "findingId": "03095d3f4338d9704b6d11eaaa16700cd122e2109dbd2a0b12794ab599fe347d",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:45:55.345Z"
+  },
+  {
+    "findingId": "04f7093e080d7af88b94c240f262b41022b7fdc77a95894e73ab0576fdf441fb",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "time": "2026-09-15T01:46:16.893Z"
+  },
+  {
+    "findingId": "09f254ed9767f29d8438976d6c28b1935fa98e369808e4c0d429e8cf5f27a283",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "0f746facb8130e44b839ec0383b52f6133800f53cdac3a29b3071ee2c0c36f9e",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "1437ad74530796333b450084144517ae2dfd8e2e29d5325fc0155dc01196ca48",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "1437ad74530796333b450084144517ae2dfd8e2e29d5325fc0155dc01196ca48",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "185370fcd64346fead9ffcaa2c26cda50a4f264e4daf7b7bbb77c2a3e9d3c05c",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "1a4ad6efa8c9bd184857ee28a4f0c42d8aacce66b8a9cad7cadba7a5769a8545",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "1c709208d7b5e32e426c941f14062dc679b7ecfefebb9fec16ae39b69b52acb6",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "1cfb3a4aba4463bec8eb388f8ffd72084bb69208c105aa7ca6a430c3281bd890",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "2165116576ca8bd9e13bf5ba364827c5df83cefbf773aa00829bca6e6dae7db4",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "276cc01c5369861735d040ed6cf257f6ee137a42eeb0904663082f36a8524b27",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "2e682f13dd81aa704cd70ba0b43a529f2f74c52a040668621596a9f500e81aa2",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "2f4e25a190671a221938ba78e6812f8f5997d2a4351b6c94c2f571048fd81bbd",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "30cdad18201acba72ddcc6e8191477b42bc39a7b02580b805980be9cd89cfd83",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "3306040f0f789b5e1a63b21d521c3cbf13ab9c342c4daa53517290b635f426a7",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "34c5cfac2e4781b46b4d8415bc8be2bb4f0ca60488fc8a0ade30939af3291580",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "37a5005f7a08b1191442e34c71d0e1a735599a0416942a9401d52701cc44174c",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "37edfadcf52eef5fdd20496e3a9297add44481255bd4985a386c45ca536435d1",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "3c2cc9df4299367ba6060ecbfa383271ffb09fb1b29a561240b9595594f955e3",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "3c47a28ff4063b68b1f4caf6ffaccf4c6d78f9d8c2b545b02e0e184589e7f1c1",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "3dacb5f17cab6c8002e47f8f15b11a268001f3ddaeff4d0b7325a865905d6b7c",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "402b53c38d0a5fd52a096a7d9e40fd1118b48e72e13a3eb2c746e25e815a8e0f",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "4343e45769b18e641d99e28bad716340b29979bed43f0115dd0957fb9a1e2c07",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "44cb1fcee52691349aea5e152458c6f1360582aac3b2d42259e8d60c1f287ce0",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "475a790031586ef69be763370dc857e14b67ac5f232b7d972de02425d45c1832",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "4b0ad6bbae990a42466a3b81efd7ca552cd0d36661ecd00c5621d4158e5b091b",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "4d602e73bbb56e0c5ab10d250fbf3abeb368a3c20b4dde9e90d297278031c978",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "535847f18029b0277124f55fa0d7ab952ea0c2a73071cae0efd87da695dcb076",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "57b6059496b7dc35da5c58d64fda4c98a8f682642bbaec8c3ce23436d2837b5c",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "591333c73dd36788623be8816fa99777e34a922a27096ccdd77cd893f0a6448b",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "59bdc477cd82495773b945ef18a57011a93cc2aefb8cf5132abbf78e9bca05ea",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "59d81a188bacb58c3b2399e918954cbb0478ff54f8df63d24cc12d4230c46d7b",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "61c895ec99d1278ea70b0a942e3ba59f72a80deff380260eed0822fa0369ea8e",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "629be5aa72e7425f992db31c00bf94555bc195734202fc6a59520dfd503bb043",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "6826c9c9e3bafbd63e709c44297a17edc22db2063ca35ecc8ca2c55f7613ec60",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "6826c9c9e3bafbd63e709c44297a17edc22db2063ca35ecc8ca2c55f7613ec60",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "69e3e3192f6024f48da2d73891c15697864698fc6505d4f89134a76ff5207d8e",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "6d9714d3d36d411807becc19d9eff69bd8e72eedc302f42ba20d584b9164d181",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "701a0443eb6e22c695d6630b687c68cfdd05b428bf7b79f66e0441152bbe7a23",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "7580bfeea6be20c4f0dcd94c525ef4382287051262b21493dc56401b5b556941",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "7b50b67958f8b315a1177027fc4d6499bc9b355245bb3d22dca8dd0e07b5b501",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "80b21fc705113fed2fb95cecbc0ef6c38d73d2f4e63b72fd1c1cdc603c36c3a6",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "80b21fc705113fed2fb95cecbc0ef6c38d73d2f4e63b72fd1c1cdc603c36c3a6",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "823805c6da7751a139b485dc2630c6c1abb9022ef28625d785f0455661402144",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "8310aa713428b123a366936aaa804d34ba3de4a91c870f204c2d953e50f94d1b",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "8310aa713428b123a366936aaa804d34ba3de4a91c870f204c2d953e50f94d1b",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "999737126cda2924e7cb368e5b64099b0ffebc5b53608724e919e7f0b0c7fedf",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "9bd94251b0c40cb52faea32f51df95f6f2344b0e848d415b2b620d853af00eb9",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "a40db431a098340054a7669797794f833f98aede1f10023c78a76cb07f6b13d9",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "a49b127caceaa00fc4a0ad1cf94bc091b243f93c74e4aaecf923a71a734e66f9",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "a65e7d0577f8305c90b61b4b8672ca257fbf27c05efdf5307c51eb7dabcd93ea",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "a83e15c240abf1460a1826db70fea2a5a82f178eda64b3476c0d5b3802a7eeb1",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "ab7faa26609d55490c5e8c821b899716d4b1e4c34837813d55f3fbc992a93eb5",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "af937f5724278ed36e62318c4fa5e1bf4cc2d834eb3e14fc0f26aa13c00fbd8e",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "afa09d7eedf165dc247a941b98a36280fe126d745f713158725619a2b7e3f787",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "b72521ec9c9ff659efca0fa8c953466a04273b7b3b5c134202060851a46813d2",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "be7519c7ed89b526401d9662a774d3c8b26097a2d3fdb27cb3aaee351c8b3e41",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "be7519c7ed89b526401d9662a774d3c8b26097a2d3fdb27cb3aaee351c8b3e41",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "c4b7f6a446ad271deeb53859725f28bc1c9ec439fae789a0bb8c4ba8e0291253",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "d1d65af17ccd3783b0946b9d6ade97405a501484dab1629674a1c7870794c9e8",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "d63653cf6c58b5768692329c1b503af00fa5832813c14757c19b1ad2b17d8d8a",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "d65935798c059c173373173601b055015c09e9932091119750665699c97503ae",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "d83330e772d5323d02199b33db5959c77be6138a8a1c289ae63a385e748513ab",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "df56e48fdd559c0d583b2b64aeb352b5e9793b1cfb09951fbfbc81a39d1b27ee",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "e5f3a5790d26ac2c342602c0e712866ea9ad101c37d4452dc3147a7d18f0173a",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "e5f3a5790d26ac2c342602c0e712866ea9ad101c37d4452dc3147a7d18f0173a",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "e67ccafbddc117a7cd247bcdd54ef0788ec942f4ad388f82a48b763c35c15656",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "ea1871a5d835e85d98d5fa93e869146c2ff92f0a4e32629b3136bad012d1845a",
+    "fingerprint": "baaf92aaa52f64c8d96630fa3d2878e45d9c53fc2c33a2c2f8dd144578b08a1e",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T01:47:00.665369Z"
+  },
+  {
+    "findingId": "009083b9492c8602fbc4fa92b8c084ad490abe06607643a9b777e758949c803d",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "02644227c7eb0ba41299c3ef3fba1f20ea341ffa5379a396b9ac6845eebbdbc7",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "03095d3f4338d9704b6d11eaaa16700cd122e2109dbd2a0b12794ab599fe347d",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "04f7093e080d7af88b94c240f262b41022b7fdc77a95894e73ab0576fdf441fb",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "09f254ed9767f29d8438976d6c28b1935fa98e369808e4c0d429e8cf5f27a283",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "0f746facb8130e44b839ec0383b52f6133800f53cdac3a29b3071ee2c0c36f9e",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "1437ad74530796333b450084144517ae2dfd8e2e29d5325fc0155dc01196ca48",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "1437ad74530796333b450084144517ae2dfd8e2e29d5325fc0155dc01196ca48",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "185370fcd64346fead9ffcaa2c26cda50a4f264e4daf7b7bbb77c2a3e9d3c05c",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "1a4ad6efa8c9bd184857ee28a4f0c42d8aacce66b8a9cad7cadba7a5769a8545",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "1c709208d7b5e32e426c941f14062dc679b7ecfefebb9fec16ae39b69b52acb6",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "1cfb3a4aba4463bec8eb388f8ffd72084bb69208c105aa7ca6a430c3281bd890",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "2165116576ca8bd9e13bf5ba364827c5df83cefbf773aa00829bca6e6dae7db4",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "276cc01c5369861735d040ed6cf257f6ee137a42eeb0904663082f36a8524b27",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "2e682f13dd81aa704cd70ba0b43a529f2f74c52a040668621596a9f500e81aa2",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "2f4e25a190671a221938ba78e6812f8f5997d2a4351b6c94c2f571048fd81bbd",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "30cdad18201acba72ddcc6e8191477b42bc39a7b02580b805980be9cd89cfd83",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "3306040f0f789b5e1a63b21d521c3cbf13ab9c342c4daa53517290b635f426a7",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "34c5cfac2e4781b46b4d8415bc8be2bb4f0ca60488fc8a0ade30939af3291580",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "37a5005f7a08b1191442e34c71d0e1a735599a0416942a9401d52701cc44174c",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "37edfadcf52eef5fdd20496e3a9297add44481255bd4985a386c45ca536435d1",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "3c2cc9df4299367ba6060ecbfa383271ffb09fb1b29a561240b9595594f955e3",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "3c47a28ff4063b68b1f4caf6ffaccf4c6d78f9d8c2b545b02e0e184589e7f1c1",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "3dacb5f17cab6c8002e47f8f15b11a268001f3ddaeff4d0b7325a865905d6b7c",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "402b53c38d0a5fd52a096a7d9e40fd1118b48e72e13a3eb2c746e25e815a8e0f",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "4343e45769b18e641d99e28bad716340b29979bed43f0115dd0957fb9a1e2c07",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "44cb1fcee52691349aea5e152458c6f1360582aac3b2d42259e8d60c1f287ce0",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "475a790031586ef69be763370dc857e14b67ac5f232b7d972de02425d45c1832",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "4b0ad6bbae990a42466a3b81efd7ca552cd0d36661ecd00c5621d4158e5b091b",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "4d602e73bbb56e0c5ab10d250fbf3abeb368a3c20b4dde9e90d297278031c978",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "535847f18029b0277124f55fa0d7ab952ea0c2a73071cae0efd87da695dcb076",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "57b6059496b7dc35da5c58d64fda4c98a8f682642bbaec8c3ce23436d2837b5c",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "591333c73dd36788623be8816fa99777e34a922a27096ccdd77cd893f0a6448b",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "59bdc477cd82495773b945ef18a57011a93cc2aefb8cf5132abbf78e9bca05ea",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "59d81a188bacb58c3b2399e918954cbb0478ff54f8df63d24cc12d4230c46d7b",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "61c895ec99d1278ea70b0a942e3ba59f72a80deff380260eed0822fa0369ea8e",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "629be5aa72e7425f992db31c00bf94555bc195734202fc6a59520dfd503bb043",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "6826c9c9e3bafbd63e709c44297a17edc22db2063ca35ecc8ca2c55f7613ec60",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "6826c9c9e3bafbd63e709c44297a17edc22db2063ca35ecc8ca2c55f7613ec60",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "69e3e3192f6024f48da2d73891c15697864698fc6505d4f89134a76ff5207d8e",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "6d9714d3d36d411807becc19d9eff69bd8e72eedc302f42ba20d584b9164d181",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "701a0443eb6e22c695d6630b687c68cfdd05b428bf7b79f66e0441152bbe7a23",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "7580bfeea6be20c4f0dcd94c525ef4382287051262b21493dc56401b5b556941",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "7b50b67958f8b315a1177027fc4d6499bc9b355245bb3d22dca8dd0e07b5b501",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "80b21fc705113fed2fb95cecbc0ef6c38d73d2f4e63b72fd1c1cdc603c36c3a6",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "80b21fc705113fed2fb95cecbc0ef6c38d73d2f4e63b72fd1c1cdc603c36c3a6",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "823805c6da7751a139b485dc2630c6c1abb9022ef28625d785f0455661402144",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "8310aa713428b123a366936aaa804d34ba3de4a91c870f204c2d953e50f94d1b",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "8310aa713428b123a366936aaa804d34ba3de4a91c870f204c2d953e50f94d1b",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "90b4a7369d4936d92370c7fd9f9dd0b1922383cef60cc4b3c32d3f69fb26c170",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "999737126cda2924e7cb368e5b64099b0ffebc5b53608724e919e7f0b0c7fedf",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "9bd94251b0c40cb52faea32f51df95f6f2344b0e848d415b2b620d853af00eb9",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "a40db431a098340054a7669797794f833f98aede1f10023c78a76cb07f6b13d9",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "a49b127caceaa00fc4a0ad1cf94bc091b243f93c74e4aaecf923a71a734e66f9",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "a65e7d0577f8305c90b61b4b8672ca257fbf27c05efdf5307c51eb7dabcd93ea",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "a83e15c240abf1460a1826db70fea2a5a82f178eda64b3476c0d5b3802a7eeb1",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "ab7faa26609d55490c5e8c821b899716d4b1e4c34837813d55f3fbc992a93eb5",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "af937f5724278ed36e62318c4fa5e1bf4cc2d834eb3e14fc0f26aa13c00fbd8e",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "afa09d7eedf165dc247a941b98a36280fe126d745f713158725619a2b7e3f787",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "b72521ec9c9ff659efca0fa8c953466a04273b7b3b5c134202060851a46813d2",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "be7519c7ed89b526401d9662a774d3c8b26097a2d3fdb27cb3aaee351c8b3e41",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "be7519c7ed89b526401d9662a774d3c8b26097a2d3fdb27cb3aaee351c8b3e41",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "c4b7f6a446ad271deeb53859725f28bc1c9ec439fae789a0bb8c4ba8e0291253",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "d1d65af17ccd3783b0946b9d6ade97405a501484dab1629674a1c7870794c9e8",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "d63653cf6c58b5768692329c1b503af00fa5832813c14757c19b1ad2b17d8d8a",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "d65935798c059c173373173601b055015c09e9932091119750665699c97503ae",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "d83330e772d5323d02199b33db5959c77be6138a8a1c289ae63a385e748513ab",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "df56e48fdd559c0d583b2b64aeb352b5e9793b1cfb09951fbfbc81a39d1b27ee",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "e5f3a5790d26ac2c342602c0e712866ea9ad101c37d4452dc3147a7d18f0173a",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "e5f3a5790d26ac2c342602c0e712866ea9ad101c37d4452dc3147a7d18f0173a",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "e67ccafbddc117a7cd247bcdd54ef0788ec942f4ad388f82a48b763c35c15656",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "ea1871a5d835e85d98d5fa93e869146c2ff92f0a4e32629b3136bad012d1845a",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "f51eff14452f680712201769d3df7b82508388883b92a63040494d92ad3752f5",
+    "fingerprint": "a955675d3a7da58e196634e1535744615e7cd01ce14cd46d68bb65cefe8593f7",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T02:08:08.147897Z"
+  },
+  {
+    "findingId": "009083b9492c8602fbc4fa92b8c084ad490abe06607643a9b777e758949c803d",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "02644227c7eb0ba41299c3ef3fba1f20ea341ffa5379a396b9ac6845eebbdbc7",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "03095d3f4338d9704b6d11eaaa16700cd122e2109dbd2a0b12794ab599fe347d",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "04f7093e080d7af88b94c240f262b41022b7fdc77a95894e73ab0576fdf441fb",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "09f254ed9767f29d8438976d6c28b1935fa98e369808e4c0d429e8cf5f27a283",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "0f746facb8130e44b839ec0383b52f6133800f53cdac3a29b3071ee2c0c36f9e",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "1437ad74530796333b450084144517ae2dfd8e2e29d5325fc0155dc01196ca48",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "185370fcd64346fead9ffcaa2c26cda50a4f264e4daf7b7bbb77c2a3e9d3c05c",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "1a4ad6efa8c9bd184857ee28a4f0c42d8aacce66b8a9cad7cadba7a5769a8545",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "1c709208d7b5e32e426c941f14062dc679b7ecfefebb9fec16ae39b69b52acb6",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "1cfb3a4aba4463bec8eb388f8ffd72084bb69208c105aa7ca6a430c3281bd890",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "2165116576ca8bd9e13bf5ba364827c5df83cefbf773aa00829bca6e6dae7db4",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "276cc01c5369861735d040ed6cf257f6ee137a42eeb0904663082f36a8524b27",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "2e682f13dd81aa704cd70ba0b43a529f2f74c52a040668621596a9f500e81aa2",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "2f4e25a190671a221938ba78e6812f8f5997d2a4351b6c94c2f571048fd81bbd",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "30cdad18201acba72ddcc6e8191477b42bc39a7b02580b805980be9cd89cfd83",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "3306040f0f789b5e1a63b21d521c3cbf13ab9c342c4daa53517290b635f426a7",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "34c5cfac2e4781b46b4d8415bc8be2bb4f0ca60488fc8a0ade30939af3291580",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "37a5005f7a08b1191442e34c71d0e1a735599a0416942a9401d52701cc44174c",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "37edfadcf52eef5fdd20496e3a9297add44481255bd4985a386c45ca536435d1",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "3c2cc9df4299367ba6060ecbfa383271ffb09fb1b29a561240b9595594f955e3",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "3c47a28ff4063b68b1f4caf6ffaccf4c6d78f9d8c2b545b02e0e184589e7f1c1",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "3dacb5f17cab6c8002e47f8f15b11a268001f3ddaeff4d0b7325a865905d6b7c",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "402b53c38d0a5fd52a096a7d9e40fd1118b48e72e13a3eb2c746e25e815a8e0f",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "4343e45769b18e641d99e28bad716340b29979bed43f0115dd0957fb9a1e2c07",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "44cb1fcee52691349aea5e152458c6f1360582aac3b2d42259e8d60c1f287ce0",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "475a790031586ef69be763370dc857e14b67ac5f232b7d972de02425d45c1832",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "4b0ad6bbae990a42466a3b81efd7ca552cd0d36661ecd00c5621d4158e5b091b",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "4d602e73bbb56e0c5ab10d250fbf3abeb368a3c20b4dde9e90d297278031c978",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "535847f18029b0277124f55fa0d7ab952ea0c2a73071cae0efd87da695dcb076",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "57b6059496b7dc35da5c58d64fda4c98a8f682642bbaec8c3ce23436d2837b5c",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "591333c73dd36788623be8816fa99777e34a922a27096ccdd77cd893f0a6448b",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "59bdc477cd82495773b945ef18a57011a93cc2aefb8cf5132abbf78e9bca05ea",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "59d81a188bacb58c3b2399e918954cbb0478ff54f8df63d24cc12d4230c46d7b",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "5f80a2cb44da93bfbb4ea1612066b63b5966821f62946ce6ec1f2f8ae97ff1a4",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "61c895ec99d1278ea70b0a942e3ba59f72a80deff380260eed0822fa0369ea8e",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "629be5aa72e7425f992db31c00bf94555bc195734202fc6a59520dfd503bb043",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "6826c9c9e3bafbd63e709c44297a17edc22db2063ca35ecc8ca2c55f7613ec60",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "69e3e3192f6024f48da2d73891c15697864698fc6505d4f89134a76ff5207d8e",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "6d9714d3d36d411807becc19d9eff69bd8e72eedc302f42ba20d584b9164d181",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "701a0443eb6e22c695d6630b687c68cfdd05b428bf7b79f66e0441152bbe7a23",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "7580bfeea6be20c4f0dcd94c525ef4382287051262b21493dc56401b5b556941",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "7b50b67958f8b315a1177027fc4d6499bc9b355245bb3d22dca8dd0e07b5b501",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "80b21fc705113fed2fb95cecbc0ef6c38d73d2f4e63b72fd1c1cdc603c36c3a6",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "823805c6da7751a139b485dc2630c6c1abb9022ef28625d785f0455661402144",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "8310aa713428b123a366936aaa804d34ba3de4a91c870f204c2d953e50f94d1b",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "90b4a7369d4936d92370c7fd9f9dd0b1922383cef60cc4b3c32d3f69fb26c170",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "951671ecb92f506717216909705a4cf707ff05584756320ac44985085ad12711",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "97579b60f9ab088c12ee051f320eda7102d3713af4b98b42c804f53b44ede534",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "999737126cda2924e7cb368e5b64099b0ffebc5b53608724e919e7f0b0c7fedf",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "9bd94251b0c40cb52faea32f51df95f6f2344b0e848d415b2b620d853af00eb9",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "a40db431a098340054a7669797794f833f98aede1f10023c78a76cb07f6b13d9",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "a49b127caceaa00fc4a0ad1cf94bc091b243f93c74e4aaecf923a71a734e66f9",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "a65e7d0577f8305c90b61b4b8672ca257fbf27c05efdf5307c51eb7dabcd93ea",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "a83e15c240abf1460a1826db70fea2a5a82f178eda64b3476c0d5b3802a7eeb1",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "ab7faa26609d55490c5e8c821b899716d4b1e4c34837813d55f3fbc992a93eb5",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "af937f5724278ed36e62318c4fa5e1bf4cc2d834eb3e14fc0f26aa13c00fbd8e",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "afa09d7eedf165dc247a941b98a36280fe126d745f713158725619a2b7e3f787",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "b30e5760b504a126f037f7d19e5392dacb178d96ec4d1d346c337d397a07b92a",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "b72521ec9c9ff659efca0fa8c953466a04273b7b3b5c134202060851a46813d2",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "be7519c7ed89b526401d9662a774d3c8b26097a2d3fdb27cb3aaee351c8b3e41",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "c4b7f6a446ad271deeb53859725f28bc1c9ec439fae789a0bb8c4ba8e0291253",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "c6ec49a7206e6043729fd6158daccea599b53769de404a0ae63938daa42c785c",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "d1d65af17ccd3783b0946b9d6ade97405a501484dab1629674a1c7870794c9e8",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "d63653cf6c58b5768692329c1b503af00fa5832813c14757c19b1ad2b17d8d8a",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "d65935798c059c173373173601b055015c09e9932091119750665699c97503ae",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "d83330e772d5323d02199b33db5959c77be6138a8a1c289ae63a385e748513ab",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "dd1289764da5691175e46a0dd00fc2ea275d26bf6619e9c32b575f08f7bd0324",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "df56e48fdd559c0d583b2b64aeb352b5e9793b1cfb09951fbfbc81a39d1b27ee",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "e5f3a5790d26ac2c342602c0e712866ea9ad101c37d4452dc3147a7d18f0173a",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "e67ccafbddc117a7cd247bcdd54ef0788ec942f4ad388f82a48b763c35c15656",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "ea1871a5d835e85d98d5fa93e869146c2ff92f0a4e32629b3136bad012d1845a",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "f19d9af99daba3155a5c94b2812191c41e58523a124dd5b42d1b40ea70d2e8e9",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "f51eff14452f680712201769d3df7b82508388883b92a63040494d92ad3752f5",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "fe67fccf346993da5a9b267a47f757d2b2f5fd67fb9458ef5021543846f65888",
+    "fingerprint": "f6f5fb4f22ad112f07bde2155327f59f4f739d1b1ed330593893061da01378e6",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T06:55:19.767594Z"
+  },
+  {
+    "findingId": "009083b9492c8602fbc4fa92b8c084ad490abe06607643a9b777e758949c803d",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "02644227c7eb0ba41299c3ef3fba1f20ea341ffa5379a396b9ac6845eebbdbc7",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "03095d3f4338d9704b6d11eaaa16700cd122e2109dbd2a0b12794ab599fe347d",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "04f7093e080d7af88b94c240f262b41022b7fdc77a95894e73ab0576fdf441fb",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "09f254ed9767f29d8438976d6c28b1935fa98e369808e4c0d429e8cf5f27a283",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "0f746facb8130e44b839ec0383b52f6133800f53cdac3a29b3071ee2c0c36f9e",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "1437ad74530796333b450084144517ae2dfd8e2e29d5325fc0155dc01196ca48",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "185370fcd64346fead9ffcaa2c26cda50a4f264e4daf7b7bbb77c2a3e9d3c05c",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "1a4ad6efa8c9bd184857ee28a4f0c42d8aacce66b8a9cad7cadba7a5769a8545",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "1c709208d7b5e32e426c941f14062dc679b7ecfefebb9fec16ae39b69b52acb6",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "1cfb3a4aba4463bec8eb388f8ffd72084bb69208c105aa7ca6a430c3281bd890",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "2165116576ca8bd9e13bf5ba364827c5df83cefbf773aa00829bca6e6dae7db4",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "276cc01c5369861735d040ed6cf257f6ee137a42eeb0904663082f36a8524b27",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "2e682f13dd81aa704cd70ba0b43a529f2f74c52a040668621596a9f500e81aa2",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "2f4e25a190671a221938ba78e6812f8f5997d2a4351b6c94c2f571048fd81bbd",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "30cdad18201acba72ddcc6e8191477b42bc39a7b02580b805980be9cd89cfd83",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "3306040f0f789b5e1a63b21d521c3cbf13ab9c342c4daa53517290b635f426a7",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "34c5cfac2e4781b46b4d8415bc8be2bb4f0ca60488fc8a0ade30939af3291580",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "37a5005f7a08b1191442e34c71d0e1a735599a0416942a9401d52701cc44174c",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "37edfadcf52eef5fdd20496e3a9297add44481255bd4985a386c45ca536435d1",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "3c2cc9df4299367ba6060ecbfa383271ffb09fb1b29a561240b9595594f955e3",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "3c47a28ff4063b68b1f4caf6ffaccf4c6d78f9d8c2b545b02e0e184589e7f1c1",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "3dacb5f17cab6c8002e47f8f15b11a268001f3ddaeff4d0b7325a865905d6b7c",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "402b53c38d0a5fd52a096a7d9e40fd1118b48e72e13a3eb2c746e25e815a8e0f",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "4343e45769b18e641d99e28bad716340b29979bed43f0115dd0957fb9a1e2c07",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "44cb1fcee52691349aea5e152458c6f1360582aac3b2d42259e8d60c1f287ce0",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "475a790031586ef69be763370dc857e14b67ac5f232b7d972de02425d45c1832",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "4b0ad6bbae990a42466a3b81efd7ca552cd0d36661ecd00c5621d4158e5b091b",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "4d602e73bbb56e0c5ab10d250fbf3abeb368a3c20b4dde9e90d297278031c978",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "535847f18029b0277124f55fa0d7ab952ea0c2a73071cae0efd87da695dcb076",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "576b34a10ce59fef7db5e9267424bf6b03ceb3fda27b3e3e359c5578fcd52cff",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "57b6059496b7dc35da5c58d64fda4c98a8f682642bbaec8c3ce23436d2837b5c",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "591333c73dd36788623be8816fa99777e34a922a27096ccdd77cd893f0a6448b",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "59bdc477cd82495773b945ef18a57011a93cc2aefb8cf5132abbf78e9bca05ea",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "59d81a188bacb58c3b2399e918954cbb0478ff54f8df63d24cc12d4230c46d7b",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "5f80a2cb44da93bfbb4ea1612066b63b5966821f62946ce6ec1f2f8ae97ff1a4",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "61c895ec99d1278ea70b0a942e3ba59f72a80deff380260eed0822fa0369ea8e",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "629be5aa72e7425f992db31c00bf94555bc195734202fc6a59520dfd503bb043",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "6826c9c9e3bafbd63e709c44297a17edc22db2063ca35ecc8ca2c55f7613ec60",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "69e3e3192f6024f48da2d73891c15697864698fc6505d4f89134a76ff5207d8e",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "6d9714d3d36d411807becc19d9eff69bd8e72eedc302f42ba20d584b9164d181",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "701a0443eb6e22c695d6630b687c68cfdd05b428bf7b79f66e0441152bbe7a23",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "7580bfeea6be20c4f0dcd94c525ef4382287051262b21493dc56401b5b556941",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "793c01351c18259afb2a3b40f6eff6a58c7f63e29836572db6893575b15de5da",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "7b50b67958f8b315a1177027fc4d6499bc9b355245bb3d22dca8dd0e07b5b501",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "80b21fc705113fed2fb95cecbc0ef6c38d73d2f4e63b72fd1c1cdc603c36c3a6",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "823805c6da7751a139b485dc2630c6c1abb9022ef28625d785f0455661402144",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "8310aa713428b123a366936aaa804d34ba3de4a91c870f204c2d953e50f94d1b",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "90b4a7369d4936d92370c7fd9f9dd0b1922383cef60cc4b3c32d3f69fb26c170",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "951671ecb92f506717216909705a4cf707ff05584756320ac44985085ad12711",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "97579b60f9ab088c12ee051f320eda7102d3713af4b98b42c804f53b44ede534",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "999737126cda2924e7cb368e5b64099b0ffebc5b53608724e919e7f0b0c7fedf",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "9bd94251b0c40cb52faea32f51df95f6f2344b0e848d415b2b620d853af00eb9",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "a49b127caceaa00fc4a0ad1cf94bc091b243f93c74e4aaecf923a71a734e66f9",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "a65e7d0577f8305c90b61b4b8672ca257fbf27c05efdf5307c51eb7dabcd93ea",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "a83e15c240abf1460a1826db70fea2a5a82f178eda64b3476c0d5b3802a7eeb1",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "ab7faa26609d55490c5e8c821b899716d4b1e4c34837813d55f3fbc992a93eb5",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "af937f5724278ed36e62318c4fa5e1bf4cc2d834eb3e14fc0f26aa13c00fbd8e",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "afa09d7eedf165dc247a941b98a36280fe126d745f713158725619a2b7e3f787",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "b1bcdf8eae336ae2709a2fc9f41e6972795c9a39ef70cc4530fce12619738a54",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "b30e5760b504a126f037f7d19e5392dacb178d96ec4d1d346c337d397a07b92a",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "b72521ec9c9ff659efca0fa8c953466a04273b7b3b5c134202060851a46813d2",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "be7519c7ed89b526401d9662a774d3c8b26097a2d3fdb27cb3aaee351c8b3e41",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "c4b7f6a446ad271deeb53859725f28bc1c9ec439fae789a0bb8c4ba8e0291253",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "c6ec49a7206e6043729fd6158daccea599b53769de404a0ae63938daa42c785c",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "d1d65af17ccd3783b0946b9d6ade97405a501484dab1629674a1c7870794c9e8",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "d63653cf6c58b5768692329c1b503af00fa5832813c14757c19b1ad2b17d8d8a",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "d65935798c059c173373173601b055015c09e9932091119750665699c97503ae",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "d83330e772d5323d02199b33db5959c77be6138a8a1c289ae63a385e748513ab",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "dd1289764da5691175e46a0dd00fc2ea275d26bf6619e9c32b575f08f7bd0324",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "df56e48fdd559c0d583b2b64aeb352b5e9793b1cfb09951fbfbc81a39d1b27ee",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "e5f3a5790d26ac2c342602c0e712866ea9ad101c37d4452dc3147a7d18f0173a",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "e67ccafbddc117a7cd247bcdd54ef0788ec942f4ad388f82a48b763c35c15656",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "ea1871a5d835e85d98d5fa93e869146c2ff92f0a4e32629b3136bad012d1845a",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "f19d9af99daba3155a5c94b2812191c41e58523a124dd5b42d1b40ea70d2e8e9",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "f51eff14452f680712201769d3df7b82508388883b92a63040494d92ad3752f5",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "fe67fccf346993da5a9b267a47f757d2b2f5fd67fb9458ef5021543846f65888",
+    "fingerprint": "ce08af6564a3a149e9dfdd59b10bab3f817d3a39e6e1ea500ecc5f8c08942c5a",
+    "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T08:22:10.006207Z"
   }
 ]

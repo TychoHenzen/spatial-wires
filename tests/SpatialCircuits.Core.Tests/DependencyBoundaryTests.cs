@@ -10,6 +10,8 @@ public sealed class DependencyBoundaryTests
         "src/SpatialCircuits.Core/SpatialCircuits.Core.csproj",
         "src/SpatialCircuits.Cells/SpatialCircuits.Cells.csproj",
         "src/SpatialCircuits.Hierarchy/SpatialCircuits.Hierarchy.csproj",
+        "src/SpatialCircuits.Workbench/SpatialCircuits.Workbench.csproj",
+        "src/SpatialCircuits.Persistence/SpatialCircuits.Persistence.csproj",
         "src/SpatialCircuits.Runner/SpatialCircuits.Runner.csproj",
     ];
 
@@ -18,6 +20,8 @@ public sealed class DependencyBoundaryTests
         "SpatialCircuits.Core",
         "SpatialCircuits.Cells",
         "SpatialCircuits.Hierarchy",
+        "SpatialCircuits.Workbench",
+        "SpatialCircuits.Persistence",
         "SpatialCircuits.Runner",
     ];
 

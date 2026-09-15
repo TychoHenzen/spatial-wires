@@ -18,6 +18,7 @@ $portableProjectNames = @(
     "SpatialCircuits.Cells",
     "SpatialCircuits.Hierarchy",
     "SpatialCircuits.Workbench",
+    "SpatialCircuits.Persistence",
     "SpatialCircuits.Runner"
 )
 

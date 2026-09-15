@@ -1,4 +1,6 @@
 using System.Collections.Immutable;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using SpatialCircuits.Core;
 
@@ -9,6 +11,11 @@ public sealed record DeviceNodeInputTransition(long Tick, string PortName, Devic
 public sealed record DeviceNodeTimer(string TimerId, long DueTick);
 
 public sealed record DeviceNodeBackendFailure(ComponentId DeviceId, string ExceptionType, string Message);
+
+public sealed record DeviceNodeBackendAssemblySource(
+    ComponentId DeviceId,
+    System.Reflection.Assembly? Assembly,
+    string? Sha256);
 
 public sealed class DeviceNodeStepContext
 {
@@ -75,15 +82,22 @@ public sealed class DeviceNodeOutputCapability
 public sealed class DeviceNodeBackendBinding
 {
     private Action<DeviceNodeStepContext>? _onStep;
+    private readonly System.Reflection.Assembly _behaviorAssembly;
     private int _active = 1;
 
     public DeviceNodeBackendBinding(Action<DeviceNodeStepContext> onStep)
     {
         ArgumentNullException.ThrowIfNull(onStep);
         _onStep = onStep;
+        _behaviorAssembly = onStep.Method.Module.Assembly;
+        BehaviorAssemblyFingerprint = Fingerprint(_behaviorAssembly);
     }
 
     public bool IsActive => Volatile.Read(ref _active) != 0;
+
+    public System.Reflection.Assembly BehaviorAssembly => _behaviorAssembly;
+
+    public string BehaviorAssemblyFingerprint { get; }
 
     public void Invalidate()
     {
@@ -101,5 +115,22 @@ public sealed class DeviceNodeBackendBinding
         }
 
         Volatile.Read(ref _onStep)?.Invoke(context);
+    }
+
+    private static string Fingerprint(System.Reflection.Assembly assembly)
+    {
+        var path = assembly.Location;
+        if (!string.IsNullOrEmpty(path) && File.Exists(path))
+        {
+            using var stream = File.OpenRead(path);
+            return Convert.ToHexString(SHA256.HashData(stream)).ToLowerInvariant();
+        }
+
+        var identity = string.Join(
+            "\0",
+            assembly.FullName ?? string.Empty,
+            assembly.ManifestModule.ModuleVersionId.ToString("D"),
+            assembly.GetName().Version?.ToString() ?? "0.0.0.0");
+        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(identity))).ToLowerInvariant();
     }
 }

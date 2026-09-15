@@ -111,6 +111,39 @@ public static class RunnerApplication
             return exchangeRecords.All(record => record.Passed) ? Success : FailedExpectation;
         }
 
+        if (fixture.Action == FixtureAction.DurableReplayScenario)
+        {
+            DurableReplayPracticeResult practice;
+            try
+            {
+                practice = DurableReplayPractice.Run(fixture.DurableReplayScenario!.Microticks);
+            }
+            catch (Exception exception) when (exception is ArgumentException or InvalidOperationException)
+            {
+                return Fail(output, new FixtureDiagnostic(
+                    FixtureDiagnosticCodes.DurableReplayScenarioInvalid,
+                    "$.durableReplayScenario",
+                    exception.Message));
+            }
+
+            for (var index = 0; index < practice.LiveHashes.Length; index++)
+            {
+                TraceOutput.WriteDurableReplayTrace(output, new DurableReplayTraceRecord(
+                    fixture.TraceSchema,
+                    fixture.FixtureId,
+                    index,
+                    index,
+                    practice.LiveHashes[index],
+                    practice.ReplayHashes[index],
+                    practice.Commands.Length,
+                    practice.Saved,
+                    practice.Reloaded,
+                    string.Equals(practice.LiveHashes[index], practice.ReplayHashes[index], StringComparison.Ordinal)));
+            }
+
+            return practice.Succeeded ? Success : FailedExpectation;
+        }
+
         var records = FixtureExecutor.Execute(fixture);
         foreach (var record in records)
         {

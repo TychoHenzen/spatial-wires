@@ -13,7 +13,8 @@ public sealed class RunnerFixture
         ScheduledDrivePlan? scheduledDrive = null,
         PanelScenarioPlan? panelScenario = null,
         ChipNetworkScenarioPlan? chipNetworkScenario = null,
-        DeviceExchangeScenarioPlan? deviceExchangeScenario = null)
+        DeviceExchangeScenarioPlan? deviceExchangeScenario = null,
+        DurableReplayScenarioPlan? durableReplayScenario = null)
     {
         ArgumentNullException.ThrowIfNull(cases);
 
@@ -26,6 +27,7 @@ public sealed class RunnerFixture
         PanelScenario = panelScenario;
         ChipNetworkScenario = chipNetworkScenario;
         DeviceExchangeScenario = deviceExchangeScenario;
+        DurableReplayScenario = durableReplayScenario;
     }
 
     public FixtureVersion FixtureSchema { get; }
@@ -45,6 +47,8 @@ public sealed class RunnerFixture
     public ChipNetworkScenarioPlan? ChipNetworkScenario { get; }
 
     public DeviceExchangeScenarioPlan? DeviceExchangeScenario { get; }
+
+    public DurableReplayScenarioPlan? DurableReplayScenario { get; }
 }
 
 public sealed record ScheduledDrivePlan(

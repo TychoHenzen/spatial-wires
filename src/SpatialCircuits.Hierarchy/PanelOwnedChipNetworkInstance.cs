@@ -18,6 +18,18 @@ public sealed record ChipNetworkTickResult(
     PanelTickResult OwnerPanel,
     ImmutableArray<ChipInstanceTickResult> Chips);
 
+public sealed record PanelOwnedChipNetworkRuntimeSnapshot(
+    CircuitId OwnerPanelId,
+    PanelRuntimeSnapshot OwnerPanel,
+    ImmutableArray<ChipInstanceRuntimeSnapshot> Chips);
+
+public sealed record ChipInstanceRuntimeSnapshot(
+    ComponentId InstanceId,
+    DefinitionId DefinitionId,
+    string ContentHash,
+    PanelRuntimeSnapshot Panel,
+    ImmutableArray<ChipInstanceRuntimeSnapshot> Children);
+
 /// <summary>Runs one panel and its panel-owned child chips on independent hidden source grids.</summary>
 public sealed class PanelOwnedChipNetworkInstance
 {
@@ -38,6 +50,25 @@ public sealed class PanelOwnedChipNetworkInstance
         : this(ownerPanel, new PanelRuntimeInstance(ownerPanel, customCellRules, initialTick), definition, catalog,
             customCellRules, isRoot: true)
     {
+    }
+
+    public static PanelOwnedChipNetworkInstance RestoreFromSnapshot(
+        PanelDefinition ownerPanel,
+        PanelOwnedChipNetworkDefinition definition,
+        ChipDefinitionCatalog catalog,
+        PanelOwnedChipNetworkRuntimeSnapshot snapshot,
+        CustomCellRuleRegistry? customCellRules = null)
+    {
+        ArgumentNullException.ThrowIfNull(snapshot);
+        ArgumentNullException.ThrowIfNull(snapshot.OwnerPanel);
+        var restored = new PanelOwnedChipNetworkInstance(
+            ownerPanel,
+            definition,
+            catalog,
+            customCellRules,
+            snapshot.OwnerPanel.Scheduler.CurrentTick);
+        restored.RestoreSnapshot(snapshot);
+        return restored;
     }
 
     internal PanelOwnedChipNetworkInstance(
@@ -97,6 +128,59 @@ public sealed class PanelOwnedChipNetworkInstance
             : throw new KeyNotFoundException($"Chip instance '{instanceId}' is not defined in this panel network.");
 
     public LogicValue GetOutput(PortId portId) => _ownerRuntime.GetOutput(portId);
+
+    public PanelOwnedChipNetworkRuntimeSnapshot CaptureSnapshot()
+    {
+        EnsureNotStepping();
+        if (!IsRoot)
+        {
+            throw new InvalidOperationException("Only the root chip network can capture a complete snapshot.");
+        }
+
+        return new PanelOwnedChipNetworkRuntimeSnapshot(
+            OwnerPanelId,
+            _ownerRuntime.CaptureSnapshot(),
+            CaptureInstanceSnapshots());
+    }
+
+    internal void RestoreSnapshot(PanelOwnedChipNetworkRuntimeSnapshot snapshot)
+    {
+        EnsureNotStepping();
+        ArgumentNullException.ThrowIfNull(snapshot);
+        if (!IsRoot || snapshot.OwnerPanelId != OwnerPanelId || snapshot.OwnerPanel is null ||
+            snapshot.Chips.IsDefault)
+        {
+            throw new ArgumentException("Chip network snapshot does not match its root panel.", nameof(snapshot));
+        }
+
+        _ownerRuntime.RestoreSnapshot(snapshot.OwnerPanel);
+        RestoreInstanceSnapshots(snapshot.Chips);
+    }
+
+    private ImmutableArray<ChipInstanceRuntimeSnapshot> CaptureInstanceSnapshots() => _instances.Values
+        .OrderBy(instance => instance.InstanceId.Value, StringComparer.Ordinal)
+        .Select(instance => instance.CaptureSnapshot())
+        .ToImmutableArray();
+
+    private void RestoreInstanceSnapshots(ImmutableArray<ChipInstanceRuntimeSnapshot> snapshots)
+    {
+        EnsureNotStepping();
+        if (snapshots.IsDefault || snapshots.Length != _instances.Count)
+        {
+            throw new ArgumentException("Chip instance snapshots do not match the network definition.", nameof(snapshots));
+        }
+
+        var byId = snapshots.ToDictionary(snapshot => snapshot.InstanceId.Value, StringComparer.Ordinal);
+        if (!byId.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(_instances.Keys))
+        {
+            throw new ArgumentException("Chip instance snapshot identifiers do not match the network definition.", nameof(snapshots));
+        }
+
+        foreach (var instance in _instances.Values.OrderBy(item => item.InstanceId.Value, StringComparer.Ordinal))
+        {
+            instance.RestoreSnapshot(byId[instance.InstanceId.Value]);
+        }
+    }
 
     public void SetInput(PortId portId, LogicValue value)
     {
@@ -498,6 +582,27 @@ public sealed class PanelOwnedChipNetworkInstance
         }
 
         internal LogicValue GetConnectedOutput(string portName) => GetOutput(portName);
+
+        internal ChipInstanceRuntimeSnapshot CaptureSnapshot() => new(
+            InstanceId,
+            _definition.Id,
+            _definition.ContentHash,
+            _runtime.CaptureSnapshot(),
+            _children.CaptureInstanceSnapshots());
+
+        internal void RestoreSnapshot(ChipInstanceRuntimeSnapshot snapshot)
+        {
+            ArgumentNullException.ThrowIfNull(snapshot);
+            if (snapshot.InstanceId != InstanceId || snapshot.DefinitionId != _definition.Id ||
+                !string.Equals(snapshot.ContentHash, _definition.ContentHash, StringComparison.Ordinal) ||
+                snapshot.Panel is null || snapshot.Children.IsDefault)
+            {
+                throw new ArgumentException("Chip instance snapshot does not match its pinned definition.", nameof(snapshot));
+            }
+
+            _runtime.RestoreSnapshot(snapshot.Panel);
+            _children.RestoreInstanceSnapshots(snapshot.Children);
+        }
 
         internal void DriveConnectedInput(string portName, LogicValue value)
         {

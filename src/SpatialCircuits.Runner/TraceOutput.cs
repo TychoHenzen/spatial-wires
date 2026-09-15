@@ -159,6 +159,26 @@ public static class TraceOutput
         });
     }
 
+    public static void WriteDurableReplayTrace(TextWriter writer, DurableReplayTraceRecord record)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(record);
+
+        WriteLine(writer, json =>
+        {
+            WriteVersion(json, record.TraceSchema);
+            json.WriteString("fixtureId", record.FixtureId);
+            json.WriteNumber("sequence", record.Sequence);
+            json.WriteNumber("microtick", record.Microtick);
+            json.WriteString("liveHash", record.LiveHash);
+            json.WriteString("replayHash", record.ReplayHash);
+            json.WriteNumber("recordedCommandCount", record.RecordedCommandCount);
+            json.WriteBoolean("saved", record.Saved);
+            json.WriteBoolean("reloaded", record.Reloaded);
+            json.WriteBoolean("passed", record.Passed);
+        });
+    }
+
     public static void WriteDiagnostic(TextWriter writer, FixtureDiagnostic diagnostic)
     {
         ArgumentNullException.ThrowIfNull(writer);

@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
@@ -21,11 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SpatialCircuits.Core\SpatialCircuits.Core.csproj" />
     <ProjectReference Include="..\..\src\SpatialCircuits.Persistence\SpatialCircuits.Persistence.csproj" />
-    <ProjectReference Include="..\..\src\SpatialCircuits.Cells\SpatialCircuits.Cells.csproj" />
-    <ProjectReference Include="..\..\src\SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj" />
     <ProjectReference Include="..\..\src\SpatialCircuits.Runner\SpatialCircuits.Runner.csproj" />
   </ItemGroup>
-
 </Project>

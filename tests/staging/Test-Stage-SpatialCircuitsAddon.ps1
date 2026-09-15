@@ -71,6 +71,7 @@ try {
         "SpatialCircuits.Cells",
         "SpatialCircuits.Hierarchy",
         "SpatialCircuits.Workbench",
+        "SpatialCircuits.Persistence",
         "SpatialCircuits.Runner"
     )) {
         $projectFile = Join-Path $firstOutput "src\$projectName\$projectName.csproj"
