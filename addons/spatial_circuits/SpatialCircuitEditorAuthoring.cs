@@ -124,7 +124,7 @@ public sealed class SpatialCircuitEditorAuthoringSession
         {
             var panel = SpatialCircuitResourceAdapter.ToPanelDefinition(resource);
             reference = CreatePanelReference(resource);
-            var nextSession = new PanelWorkbenchSession(panel);
+            var nextSession = new PanelWorkbenchSession(panel, Session.CycleTicks, Session.CustomCellRules);
             Session = nextSession;
             References.Register(reference, resource, () => CreatePanelReference(resource));
             diagnostic = string.Empty;
@@ -303,7 +303,7 @@ public sealed class SpatialCircuitEditorAuthoringSession
             [],
             null,
             []);
-        return new PanelWorkbenchSession(definition);
+        return new PanelWorkbenchSession(definition, Session.CycleTicks, Session.CustomCellRules);
     }
 }
 
@@ -352,13 +352,17 @@ public static class SpatialCircuitEditorAuthoringPractice
             if (ClassDB.ClassExists(nameof(SpatialCircuitPanelResource)))
             {
                 loadedPanel = ResourceLoader.Load<Resource>(panelPath);
-            }
-            if (loadedPanel is SpatialCircuitPanelResource loadedPanelResource &&
-                SpatialCircuitEditorIdentity.HashPanel(
-                    SpatialCircuitResourceAdapter.ToPanelDefinition(loadedPanelResource)) !=
-                panelReference.ContentHash)
-            {
-                throw new InvalidOperationException("Saved panel hash does not match its pinned reference.");
+                if (loadedPanel is not SpatialCircuitPanelResource loadedPanelResource)
+                {
+                    throw new InvalidOperationException("Saved panel resource could not be reloaded.");
+                }
+
+                if (SpatialCircuitEditorIdentity.HashPanel(
+                        SpatialCircuitResourceAdapter.ToPanelDefinition(loadedPanelResource)) !=
+                    panelReference.ContentHash)
+                {
+                    throw new InvalidOperationException("Saved panel hash does not match its pinned reference.");
+                }
             }
 
             if (!editor.TryPackageChip(
@@ -376,13 +380,15 @@ public static class SpatialCircuitEditorAuthoringPractice
                 throw new InvalidOperationException("Saved chip resource could not be written.");
             }
 
+            var runtimeChip = editor.CurrentChip ?? throw new InvalidOperationException("Editor chip is missing.");
             if (ClassDB.ClassExists(nameof(SpatialCircuitResource)))
             {
                 loadedChip = ResourceLoader.Load<Resource>(chipPath);
-            }
-            var runtimeChip = editor.CurrentChip ?? throw new InvalidOperationException("Editor chip is missing.");
-            if (loadedChip is SpatialCircuitResource loadedChipResource)
-            {
+                if (loadedChip is not SpatialCircuitResource loadedChipResource)
+                {
+                    throw new InvalidOperationException("Saved chip resource could not be reloaded.");
+                }
+
                 runtimeChip = SpatialCircuitResourceAdapter.ToDefinition(loadedChipResource);
             }
 

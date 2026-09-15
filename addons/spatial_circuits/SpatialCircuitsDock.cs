@@ -464,7 +464,7 @@ public partial class SpatialCircuitsDock : EditorDock
             return;
         }
 
-        var chip = _session.Definition.ChipCatalog.Definitions.LastOrDefault();
+        var chip = _authoring.CurrentChip ?? _session.Definition.ChipCatalog.Definitions.LastOrDefault();
         if (chip is null)
         {
             _status.Text = "Package the panel before placing a chip.";
