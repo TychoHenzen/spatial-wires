@@ -268,19 +268,33 @@ public sealed class NodeDeviceBackendDefinition : DeviceBackendDefinition
 {
     internal const string TargetStableIdPrefix = "node-backend/";
 
-    private NodeDeviceBackendDefinition(ImmutableArray<DevicePortDefinition> ports) : base(ports)
+    private NodeDeviceBackendDefinition(
+        ImmutableArray<DevicePortDefinition> ports,
+        string? bindingId,
+        int bindingVersion) : base(ports)
     {
+        BindingId = bindingId;
+        BindingVersion = bindingVersion;
     }
+
+    public string? BindingId { get; }
+
+    public int BindingVersion { get; }
 
     internal static string TargetStableId(ComponentId deviceId) => TargetStableIdPrefix + deviceId.Value;
 
-    public static NodeDeviceBackendDefinition Create(IEnumerable<DevicePortDefinition> ports)
+    public static NodeDeviceBackendDefinition Create(
+        IEnumerable<DevicePortDefinition> ports,
+        string? bindingId = null,
+        int bindingVersion = 0)
     {
         ArgumentNullException.ThrowIfNull(ports);
         var portList = ports.ToArray();
         if (portList.Length == 0 || portList.Any(port => port is null) ||
             portList.Select(port => port.Name).Distinct(StringComparer.Ordinal).Count() != portList.Length ||
-            !portList.Any(port => port.Direction == DevicePortDirection.Output))
+            !portList.Any(port => port.Direction == DevicePortDirection.Output) ||
+            bindingId is null && bindingVersion != 0 ||
+            bindingId is not null && (!ChipData.IsStableId(bindingId) || bindingVersion <= 0))
         {
             throw new ArgumentException(
                 "Node backend ports must be non-empty, uniquely named, and include an output port.",
@@ -288,7 +302,9 @@ public sealed class NodeDeviceBackendDefinition : DeviceBackendDefinition
         }
 
         return new NodeDeviceBackendDefinition(
-            portList.OrderBy(port => port.Name, StringComparer.Ordinal).ToImmutableArray());
+            portList.OrderBy(port => port.Name, StringComparer.Ordinal).ToImmutableArray(),
+            bindingId,
+            bindingVersion);
     }
 }
 

@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 using SpatialCircuits.Cells;
 using SpatialCircuits.Core;
 using SpatialCircuits.Hierarchy;
@@ -130,6 +131,9 @@ public sealed record DurableDeviceRuntimeSnapshot(
     string? NodeBehaviorFingerprint)
 {
     public ImmutableArray<DurableNodeInputTransition> NodeInputHistory { get; init; } = [];
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public ImmutableArray<DurableNodePresentationEvent> PresentationEvents { get; init; }
 }
 
 public sealed record DurableSignalPort(string PortName, string Signal);
@@ -137,6 +141,8 @@ public sealed record DurableSignalPort(string PortName, string Signal);
 public sealed record DurableDeviceTimer(long DueTick, string PortName, string Signal);
 
 public sealed record DurableNodeInputTransition(long Tick, string PortName, string Signal);
+
+public sealed record DurableNodePresentationEvent(long Tick, string EventId);
 
 public sealed record DurableCableLaneRuntimeSnapshot(
     string LaneId,
@@ -289,7 +295,14 @@ public sealed record DurableDeviceBackend(
     string Kind,
     ImmutableArray<DurableDevicePort> Ports,
     DurablePanelDefinition? Panel,
-    ImmutableArray<DurableTimedOutputChange> Changes);
+    ImmutableArray<DurableTimedOutputChange> Changes)
+{
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? BindingId { get; init; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public int BindingVersion { get; init; }
+}
 
 public sealed record DurableDevicePort(string Name, string Direction, int Width, string ValueContract);
 

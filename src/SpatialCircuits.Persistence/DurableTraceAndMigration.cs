@@ -16,6 +16,8 @@ public sealed record DurableTraceEntry(
     public ImmutableArray<DurableTraceEvent> DeliveredEvents { get; init; } = [];
 
     public ImmutableArray<DurableTraceDiagnostic> Diagnostics { get; init; } = [];
+
+    public ImmutableArray<DurableTracePresentationEvent> PresentationEvents { get; init; } = [];
 }
 
 public sealed record DurableTraceValue(string Path, string Value);
@@ -39,6 +41,11 @@ public sealed record DurableTraceDiagnostic(
     string Message,
     long Tick,
     SchedulerPhase Phase);
+
+public sealed record DurableTracePresentationEvent(
+    string DeviceId,
+    long Tick,
+    string EventId);
 
 public sealed record DurableTraceExport(
     int SchemaVersion,
@@ -98,7 +105,22 @@ public static class DurableTraceAndMigration
                         diagnostic.Message,
                         diagnostic.Tick,
                         diagnostic.Phase))
-                    .ToImmutableArray()
+                    .ToImmutableArray(),
+                PresentationEvents = item.Source.StartsWith("device-graph/", StringComparison.Ordinal) &&
+                                      snapshot.DeviceGraph is { } graph
+                    ? graph.Devices
+                        .Where(device => device.PresentationEvents.Any(presentation =>
+                            presentation.Tick == item.Trace.Tick))
+                        .SelectMany(device => device.PresentationEvents
+                            .Where(presentation => presentation.Tick == item.Trace.Tick)
+                            .Select(presentation => new DurableTracePresentationEvent(
+                                device.DeviceId.Value,
+                                presentation.Tick,
+                                presentation.EventId)))
+                        .OrderBy(presentation => presentation.DeviceId, StringComparer.Ordinal)
+                        .ThenBy(presentation => presentation.EventId, StringComparer.Ordinal)
+                        .ToImmutableArray()
+                    : []
             })
             .ToImmutableArray();
         var unsigned = new DurableTraceExport(

@@ -86,9 +86,23 @@ public sealed class DeterministicScheduler
     {
         EnsureCanMutateOutsideStep();
         ValidateStableId(stableId, nameof(stableId));
+        var supersededRemoval = _acceptedCommands.FirstOrDefault(command =>
+            !_appliedCommandOrdinals.Contains(command.AcceptedOrdinal) &&
+            command.Command.Kind == SchedulerCommandKind.RemoveTarget &&
+            command.Command.ApplyAtTick == CurrentTick &&
+            string.Equals(command.Command.TargetStableId, stableId, StringComparison.Ordinal));
+        if (supersededRemoval is not null)
+        {
+            _appliedCommandOrdinals.Add(supersededRemoval.AcceptedOrdinal);
+        }
+
         if (_targets.TryGetValue(stableId, out var existing) && existing.Active)
         {
-            RecordAppliedTargetCommand(SchedulerCommand.RemoveTarget(stableId, CurrentTick));
+            if (supersededRemoval is null)
+            {
+                RecordAppliedTargetCommand(SchedulerCommand.RemoveTarget(stableId, CurrentTick));
+            }
+
             RemoveTargetCore(stableId, []);
         }
 
@@ -127,6 +141,30 @@ public sealed class DeterministicScheduler
         var accepted = new AcceptedSchedulerCommand(_nextAcceptedOrdinal++, command);
         _acceptedCommands.Add(accepted);
         return accepted.AcceptedOrdinal;
+    }
+
+    public long AcceptAppliedTargetCommand(SchedulerCommand command)
+    {
+        ArgumentNullException.ThrowIfNull(command);
+        EnsureCanMutateOutsideStep();
+        if (command.Kind is not (SchedulerCommandKind.RegisterTarget or SchedulerCommandKind.RemoveTarget) ||
+            command.ApplyAtTick != CurrentTick)
+        {
+            throw InvalidCommand("Only current-tick target lifecycle commands can be applied immediately.");
+        }
+
+        ValidateCommand(command);
+        var acceptedOrdinal = RecordAppliedTargetCommand(command);
+        if (command.Kind == SchedulerCommandKind.RegisterTarget)
+        {
+            RegisterTargetCore(command.TargetStableId);
+        }
+        else
+        {
+            RemoveTargetCore(command.TargetStableId, []);
+        }
+
+        return acceptedOrdinal;
     }
 
     public void SeedEvent(ScheduledEvent scheduledEvent)
@@ -332,6 +370,15 @@ public sealed class DeterministicScheduler
             if (accepted.Command.Kind == SchedulerCommandKind.RemoveTarget)
             {
                 _pendingInvalidations.Add(accepted);
+            }
+            else if (accepted.Command.Kind == SchedulerCommandKind.RegisterTarget &&
+                     _pendingInvalidations.FirstOrDefault(item =>
+                         string.Equals(item.Command.TargetStableId, accepted.Command.TargetStableId,
+                             StringComparison.Ordinal)) is { } pendingRemoval)
+            {
+                ApplyCommand(pendingRemoval, diagnostics);
+                _pendingInvalidations.Remove(pendingRemoval);
+                ApplyCommand(accepted, diagnostics);
             }
             else
             {
@@ -579,11 +626,12 @@ public sealed class DeterministicScheduler
         return new SchedulerTargetHandle(stableId, incarnation);
     }
 
-    private void RecordAppliedTargetCommand(SchedulerCommand command)
+    private long RecordAppliedTargetCommand(SchedulerCommand command)
     {
         var accepted = new AcceptedSchedulerCommand(_nextAcceptedOrdinal++, command);
         _acceptedCommands.Add(accepted);
         _appliedCommandOrdinals.Add(accepted.AcceptedOrdinal);
+        return accepted.AcceptedOrdinal;
     }
 
     private void RemoveTargetCore(

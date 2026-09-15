@@ -277,7 +277,11 @@ internal static class DurableDefinitionCodec
             "node",
             ToDto(node.Ports),
             null,
-            []),
+            [])
+        {
+            BindingId = node.BindingId,
+            BindingVersion = node.BindingVersion
+        },
         _ => throw new InvalidDataException($"Device backend type '{backend.GetType().Name}' is unsupported.")
     };
 
@@ -299,7 +303,10 @@ internal static class DurableDefinitionCodec
                     change.DelayTicks,
                     change.PortName,
                     ParseSignal(change.Signal)))),
-            "node" when dto.Panel is null && dto.Changes.IsEmpty => NodeDeviceBackendDefinition.Create(ports),
+            "node" when dto.Panel is null && dto.Changes.IsEmpty => NodeDeviceBackendDefinition.Create(
+                ports,
+                dto.BindingId,
+                dto.BindingVersion),
             _ => throw new InvalidDataException("Device backend kind or payload is inconsistent.")
         };
     }

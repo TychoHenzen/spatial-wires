@@ -3,6 +3,7 @@ using Godot;
 using SpatialCircuits.Core;
 using SpatialCircuits.GodotAdapter;
 using SpatialCircuits.Hierarchy;
+using SpatialCircuits.Persistence;
 using static GdUnit4.Assertions;
 
 namespace SpatialWires.Godot.Tests;
@@ -10,6 +11,30 @@ namespace SpatialWires.Godot.Tests;
 [TestSuite]
 public sealed class SpatialCircuitNodeBindingTests
 {
+    [TestCase]
+    [RequireGodotRuntime]
+    public void NodeMonitorPracticeEmitsFutureAlarmPresentationWithoutAdvancingInsideCallback()
+    {
+        var sceneTree = Engine.GetMainLoop() as SceneTree;
+        AssertThat(sceneTree).IsNotNull();
+
+        var result = SpatialCircuitNodeMonitorPractice.Run(sceneTree!);
+
+        AssertThat(result.Succeeded).IsTrue();
+        AssertThat(result.CallbackTick).IsEqual(0L);
+        AssertThat(result.GraphTickAfterStep).IsEqual(2L);
+        AssertThat(result.InvalidPresentationRejected).IsTrue();
+        AssertThat(result.PresentationEvents.Any(item =>
+            item.EventId == "alarm" && item.Tick == 1L)).IsTrue();
+        AssertThat(result.Session.DeviceGraph!.GetNodePresentationEvents(new ComponentId("node-monitor"))
+            .Single().EventId).IsEqual("alarm");
+        var saved = DurableSnapshotCodec.Deserialize(DurableSnapshotCodec.Serialize(result.Session));
+        AssertThat(saved.Succeeded).IsTrue();
+        AssertThat(saved.Session!.DeviceGraph!.CaptureSnapshot().Devices.Single(device =>
+                device.DeviceId == new ComponentId("node-monitor")).PresentationEvents.Single().EventId)
+            .IsEqual("alarm");
+    }
+
     [TestCase]
     [RequireGodotRuntime]
     public void TreeExitInvalidatesNodeAndReleasesItsOutputAtLaneLatency()

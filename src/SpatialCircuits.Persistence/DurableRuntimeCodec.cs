@@ -282,7 +282,12 @@ internal static class DurableRuntimeCodec
         NodeInputHistory = device.NodeInputHistory.Select(input => new DurableNodeInputTransition(
             input.Tick,
             input.PortName,
-            input.Signal.ToString())).ToImmutableArray()
+            input.Signal.ToString())).ToImmutableArray(),
+        PresentationEvents = device.PresentationEvents.IsDefaultOrEmpty
+            ? default
+            : device.PresentationEvents.Select(item => new DurableNodePresentationEvent(
+                item.Tick,
+                item.EventId)).ToImmutableArray()
     };
 
     private static DeviceRuntimeSnapshot FromDto(DurableDeviceRuntimeSnapshot device)
@@ -315,7 +320,12 @@ internal static class DurableRuntimeCodec
             NodeInputHistory = device.NodeInputHistory.Select(input => new DeviceNodeInputTransition(
                 input.Tick,
                 input.PortName,
-                ParseSignal(input.Signal))).ToImmutableArray()
+                ParseSignal(input.Signal))).ToImmutableArray(),
+            PresentationEvents = device.PresentationEvents.IsDefault
+                ? []
+                : device.PresentationEvents.Select(item => new DeviceNodePresentationEvent(
+                    item.Tick,
+                    item.EventId)).ToImmutableArray()
         };
     }
 
