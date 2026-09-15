@@ -4,6 +4,7 @@ using SpatialCircuits.Cells;
 using SpatialCircuits.Core;
 using SpatialCircuits.GodotAdapter;
 using SpatialCircuits.Hierarchy;
+using SpatialCircuits.Workbench;
 using static GdUnit4.Assertions;
 
 namespace SpatialWires.IndependentConsumer.Tests;
@@ -29,6 +30,52 @@ public sealed class IndependentConsumerAddonTests
         {
             node.Free();
             resource.Dispose();
+        }
+    }
+
+    [TestCase]
+    [RequireGodotRuntime]
+    public void StagedAddonExposesEditorAuthoringAndPortableIdentity()
+    {
+        var result = SpatialCircuitEditorAuthoringPractice.Run();
+        try
+        {
+            AssertThat(result.Succeeded).IsTrue();
+            AssertThat(result.PanelReference.ContentHash).IsEqual(
+                SpatialCircuitEditorIdentity.HashPanel(
+                    SpatialCircuitResourceAdapter.ToPanelDefinition(result.PanelResource)));
+            AssertThat(result.ChipReference.ContentHash).IsEqual(
+                SpatialCircuitResourceAdapter.ToDefinition(result.ChipResource).ContentHash);
+        }
+        finally
+        {
+            result.PanelResource.Dispose();
+            result.ChipResource.Dispose();
+        }
+    }
+
+    [TestCase]
+    [RequireGodotRuntime]
+    public void StagedEditorAuthoringSavesAndReloadsAPanelResource()
+    {
+        var path = $"user://independent-editor-panel-{Guid.NewGuid():N}.tres";
+        var editor = new SpatialCircuitEditorAuthoringSession(new PanelWorkbenchSession(
+            PanelDefinition.Create(new CircuitId("panel/independent-editor"), 1, 1, [])));
+        SpatialCircuitPanelResource? loaded = null;
+        try
+        {
+            AssertThat(editor.TrySavePanel(path, out var reference, out var diagnostic)).IsTrue();
+            AssertThat(diagnostic).IsEqual(string.Empty);
+            loaded = ResourceLoader.Load<SpatialCircuitPanelResource>(path);
+            AssertThat(loaded).IsNotNull();
+            AssertThat(SpatialCircuitEditorIdentity.HashPanel(
+                SpatialCircuitResourceAdapter.ToPanelDefinition(loaded!)))
+                .IsEqual(reference!.ContentHash);
+        }
+        finally
+        {
+            loaded?.Dispose();
+            DirAccess.RemoveAbsolute(ProjectSettings.GlobalizePath(path));
         }
     }
 

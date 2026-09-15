@@ -198,30 +198,9 @@ renderer/rendering_method="gl_compatibility"
 
 }
 
-function Enable-HostAdapterPractice {
+function Add-IndependentPracticeTest {
     param([Parameter(Mandatory)][string] $ProjectRoot)
 
-    $projectPath = Join-Path $ProjectRoot "SpatialWires.IndependentConsumer.csproj"
-    $projectText = [System.IO.File]::ReadAllText($projectPath)
-    if ($projectText.IndexOf("SpatialCircuitResourceAdapter.cs", [System.StringComparison]::Ordinal) -ge 0) {
-        throw "Resource adapter practice references are already present."
-    }
-
-    $adapterSource = [System.Security.SecurityElement]::Escape((Join-Path $repositoryRoot "SpatialCircuitResourceAdapter.cs"))
-    $projectItems = @"
-  <ItemGroup>
-    <Compile Include="$adapterSource" Link="SpatialCircuitResourceAdapter.cs" />
-  </ItemGroup>
-"@
-
-    $closingTag = "</Project>"
-    $closingIndex = $projectText.LastIndexOf($closingTag, [System.StringComparison]::Ordinal)
-    if ($closingIndex -lt 0) {
-        throw "Generated independent-consumer project has no closing Project element."
-    }
-
-    $projectText = $projectText.Insert($closingIndex, $projectItems)
-    [System.IO.File]::WriteAllText($projectPath, $projectText, [System.Text.UTF8Encoding]::new($false))
     Copy-Item -LiteralPath $practiceTestSource -Destination (Join-Path $ProjectRoot "tests\IndependentConsumerAddonTests.cs")
 }
 
@@ -286,7 +265,7 @@ try {
         -TimeoutMilliseconds 120000 `
         -WorkingDirectory $resolvedRunRoot | Out-Null
 
-    Enable-HostAdapterPractice -ProjectRoot $resolvedRunRoot
+    Add-IndependentPracticeTest -ProjectRoot $resolvedRunRoot
 
     Invoke-RequiredProcess `
         -Name "gdUnit4 Resource and Node adapter practice" `

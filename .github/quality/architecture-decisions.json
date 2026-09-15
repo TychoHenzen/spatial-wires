@@ -4422,5 +4422,950 @@
     "reason": "PBI #14 requires the public sparse Node-cell binding, placement, replay, and worker-boundary surface in one acceptance slice.",
     "author": "Codex",
     "time": "2026-09-15T14:30:42.377Z"
+  },
+  {
+    "findingId": "071422132407254e5e9cbd7faec58bb87ee87e7c91b31dac0380321504a0dfb4",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "0876f7e8831a3cefef34c4002529e80322d257cc18ba6aa20f50db6b6657099b",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "158719855b55f95fe032df171d3eaa834fa348d8caf563887fae1919dd667224",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "1f7398d26555356682f9078b4d1143f06f0a68787c0521a281886ee8774abc63",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "225a1475ff05f9400418d8cb7e0f3852e304683ee93d7896adcf5fb7979dcee5",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "2baecf4abd125292a0a689d53cc948e90645bce77490a4067ed49838961fec0f",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "371c2cb55d4fd0a354775dfbb14cab3ec272f36edabd1cdd35ef3fc6cc4f0eed",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "46ec6680c706442d56e14b3265baf8864b7b1c6dfc66b66b0758e5680ad296cc",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "4af2e8f99ab16a927a87042ed98788e34f0437eccc5f0e6bd51c5056f38f83ad",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "4be35f709f4ab7d1f199df53019540b3062537c60b30fc6ea737d29c0b0c6bf4",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "4fd6ee3de3f59b4fa7b51e578283e48c6a4ec7d316594eebc0a44535ec6fa061",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "50a2b321b49b66faba7da80ab646105b979d03802c2f389c4798e29f90e6bf35",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "5441ddb747fe3e4b5e052252aa7cc95e41a134223d3033a39db81d13574e96d8",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "573d0ae93d63c9c28efafed5f4c198504f492db95b844331f67d8d82aa9d03fd",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "5772d9260da8b436576fd7d84aac6454c0bb464d08c08b307fc731d423384791",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "587c6186c7d1acd4c1a09020833dc8266247f8b6797e2697777d9dd81ae4bfd8",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "61ada128d6fc29ff8e31cb3720ae9cde7d07626c9f0a672a6ed8646d49ca74c4",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "6e33a81bd702b49f0eb73c8d65c1e7224da6cae44d2bae2189ac081a739f8f9f",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "780071c47504c1a7179800a38b708301af6636046a9d04920b3fa8d63117e81a",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "7df94ee9eb7e1c9a7b7dc191fb4490858a48f252898f3dc87bd90f460dcb5f03",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "848e85780341a472cfe5ea9df2147c634c6519a14c90464612c8be9ac89268dd",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "97581699b08b00fc4f2ac3517b71cfe730b4aeca8bcf56288216fdb6b952d921",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "97916dbfc2af660d20549283bed99d782aafd0573e094ef8e19ad2fd20cb1322",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "97f6607e149f7d661401bcfbfdbbc9855d5e30ee9e7a28c40ed22d767af4a6e7",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "98790cdd85c0d972c7870fa4a629b35f12a6a7d5a577cace231762e19bc2496f",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "9c78c28f6892f25a95183917486a48abd319f1db6ef5eefe73bd47c10cf8fdf3",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "b7f99d51872bf5c99be71567fd8615880a466776d72be88b8b1fcb5f32209048",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "b9e1a9782127c17f7e805141558967c0054e8b86cc3cf081534fc479cf28fd29",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "bee32bdcd5ca18030586892ec8e3368b6f2da893666d07912fcf67426b4cb05c",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "c35865b027a778cab34c374b6301106a760d22c5110cab96fa71df9ec5b3495e",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "d986b2dce19e56ba1d13c6c1c5eb7aa8b046fb9fe59038cd672a88125b67c39a",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "dc588328a06f88ed15350815f0a0d3fd226b47cdbfaa360eb79e17d180464405",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "dd1148defc525f953164d67554fadae978f0c6843bdcd6407fd6aece54080457",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "e114e6c1906d37ff5d95c542e8b717a1cdda933e610bb6a9a68b6a2d6d270aad",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "e6e53c5ac36b240ff367b7f9a6d1aefa53fcbe5a319477eda5af853e8cdb4fb5",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "e943c7234fc27cd761dffe51c0c6760ad0c94fe19e15dd668e61831a486cf755",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "ec0c0ba0c91c75ba709efe23b044b4f33a9680e7124560c592e8f0250a1e27e0",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "ee3b29d00dcd9b083f8a41244a484b537be2c0ae85fe8ab611b9b09dfa434663",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
+  },
+  {
+    "findingId": "f3e57c6ed7f95b3ff359cd41b947e9c8abfe056579342723d152b596e29f4a7c",
+    "fingerprint": "c5f7b96f1447160cebde7c91903fab1dccdfbd90c4b24c1e1038c686cd2a7144",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T15:16:20.466Z"
   }
-]
+,
+  {
+    "findingId": "02841c3e3d90e73c456915d43726142df34a33ffecec254a91161119f59a77c6",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.566Z"
+  },
+  {
+    "findingId": "082cdbe87cb55786447ad07402bba19628de4bdfa4f241b9372aad340514b8c0",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "08d2b9c01e616857b03047d309b4e9d14edb1db6a4ca096a0ea88a59b438c409",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "101e65bd5338ae4500c88cfc9ea329b50734078d40adf2fcc59e4fa91135188f",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "121819aeef2cfd777ffbb737f995de87db5c3d72b9bf57f4151b9b396e511b18",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "158719855b55f95fe032df171d3eaa834fa348d8caf563887fae1919dd667224",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "1f7398d26555356682f9078b4d1143f06f0a68787c0521a281886ee8774abc63",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "225a1475ff05f9400418d8cb7e0f3852e304683ee93d7896adcf5fb7979dcee5",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "2fb38bb3dd5ae1017fe0ccbc7e44cce72a89e1e4b5fb66ea188255b61ea7f7c3",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "36553aca5dc7cc9d460b61fedee7de28670869984995f86bc0e47ad31748dce4",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "371c2cb55d4fd0a354775dfbb14cab3ec272f36edabd1cdd35ef3fc6cc4f0eed",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "3e9166160efc4a026ae6caef931044287b6f4aace203eead13a508e71a4afa7a",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "428e60131ac78ba01e6140287c939ed88dcb27c9d69b8e630842067d80c9a3de",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "4349b4a44b3e520aa91790bd901abd1446c8ea3fc673dfe488f5bbbe305af9d8",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "46ec6680c706442d56e14b3265baf8864b7b1c6dfc66b66b0758e5680ad296cc",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "4be35f709f4ab7d1f199df53019540b3062537c60b30fc6ea737d29c0b0c6bf4",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "4fd6ee3de3f59b4fa7b51e578283e48c6a4ec7d316594eebc0a44535ec6fa061",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "50a2b321b49b66faba7da80ab646105b979d03802c2f389c4798e29f90e6bf35",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "51ec13a89691eacc418c758e1151bdb2361ee2158cec9d25f791cc66b5ee1fc7",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "5772d9260da8b436576fd7d84aac6454c0bb464d08c08b307fc731d423384791",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "652772b531da189870a1eab875ee0bb573531f523349c9207d65e954cb924d60",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "66b36c645f88a155b6d8282e4f32326400e251b888410189e9bd4df772efa2d6",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "6c4c9b89c7313fbb317ff2e483623ced55da8efa799b36aa8a9574d43b969322",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "6e33a81bd702b49f0eb73c8d65c1e7224da6cae44d2bae2189ac081a739f8f9f",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "6fda8523e6d6da3b63288311cd670cc6f188e8b77ed14bb69ce92a0b8b91472d",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "852055dee6551fffaf695b041bcb44090049c6ae9c19582c48e06499a788e18b",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "906b0a9d6342ee237ed2256d375f2204ff009aa67bc6f25f3a9b3a400308a2dc",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "97581699b08b00fc4f2ac3517b71cfe730b4aeca8bcf56288216fdb6b952d921",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "97916dbfc2af660d20549283bed99d782aafd0573e094ef8e19ad2fd20cb1322",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "98790cdd85c0d972c7870fa4a629b35f12a6a7d5a577cace231762e19bc2496f",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "b9e1a9782127c17f7e805141558967c0054e8b86cc3cf081534fc479cf28fd29",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "bc316a49e658d1ce6aa3d01db1486b9645cd53b4650e3111eeba7ea94048dd2f",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "bee32bdcd5ca18030586892ec8e3368b6f2da893666d07912fcf67426b4cb05c",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "c1b14815dd6c3a5fbd054fd7a2d28d5169bc81aa0fca8e4830c57b21a9e880c1",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "c35865b027a778cab34c374b6301106a760d22c5110cab96fa71df9ec5b3495e",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "c7d1e76d0faf18627e1341750a03e2998a344ca3f065671b01254d04a61d668e",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "d2bab27de39ed33f94f22f9e6f675c9ff4b204857ea86270629ecccac195aa10",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "d986b2dce19e56ba1d13c6c1c5eb7aa8b046fb9fe59038cd672a88125b67c39a",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "dc588328a06f88ed15350815f0a0d3fd226b47cdbfaa360eb79e17d180464405",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "dc5bbf4212e1c34030e2d20da8d13c164f085564b612f8795ced11c00c4e1841",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "dd1148defc525f953164d67554fadae978f0c6843bdcd6407fd6aece54080457",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "dd1199b0b3cc97c6c7829fbf9222fa8622d478719d91082e625b318a2dca7a89",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "e94327ce7a50ab14877c9fd9779d9110b4d85cf201c1bc5f25ec251e87cdbb49",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "e943c7234fc27cd761dffe51c0c6760ad0c94fe19e15dd668e61831a486cf755",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "ea88ca88bca4fc70664daf31b7889a3db71a5fe2006509508962e378cf6b1339",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "eaa32affccf28cc22d10798de648e2fbba0530b94ebaabf5712336ddcd58ebff",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "ee3b29d00dcd9b083f8a41244a484b537be2c0ae85fe8ab611b9b09dfa434663",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "f3e57c6ed7f95b3ff359cd41b947e9c8abfe056579342723d152b596e29f4a7c",
+    "fingerprint": "41fd812eb70077fb4310c66cd278b2b0d167e815f8e789bc3de768a01c9bdf5c",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:00:32.567Z"
+  },
+  {
+    "findingId": "02841c3e3d90e73c456915d43726142df34a33ffecec254a91161119f59a77c6",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "082cdbe87cb55786447ad07402bba19628de4bdfa4f241b9372aad340514b8c0",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "08d2b9c01e616857b03047d309b4e9d14edb1db6a4ca096a0ea88a59b438c409",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "101e65bd5338ae4500c88cfc9ea329b50734078d40adf2fcc59e4fa91135188f",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "121819aeef2cfd777ffbb737f995de87db5c3d72b9bf57f4151b9b396e511b18",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "158719855b55f95fe032df171d3eaa834fa348d8caf563887fae1919dd667224",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "1f7398d26555356682f9078b4d1143f06f0a68787c0521a281886ee8774abc63",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "225a1475ff05f9400418d8cb7e0f3852e304683ee93d7896adcf5fb7979dcee5",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "2fb38bb3dd5ae1017fe0ccbc7e44cce72a89e1e4b5fb66ea188255b61ea7f7c3",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "36553aca5dc7cc9d460b61fedee7de28670869984995f86bc0e47ad31748dce4",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "371c2cb55d4fd0a354775dfbb14cab3ec272f36edabd1cdd35ef3fc6cc4f0eed",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "3e9166160efc4a026ae6caef931044287b6f4aace203eead13a508e71a4afa7a",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "428e60131ac78ba01e6140287c939ed88dcb27c9d69b8e630842067d80c9a3de",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "4349b4a44b3e520aa91790bd901abd1446c8ea3fc673dfe488f5bbbe305af9d8",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "46ec6680c706442d56e14b3265baf8864b7b1c6dfc66b66b0758e5680ad296cc",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "4be35f709f4ab7d1f199df53019540b3062537c60b30fc6ea737d29c0b0c6bf4",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "4fd6ee3de3f59b4fa7b51e578283e48c6a4ec7d316594eebc0a44535ec6fa061",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "50a2b321b49b66faba7da80ab646105b979d03802c2f389c4798e29f90e6bf35",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "51ec13a89691eacc418c758e1151bdb2361ee2158cec9d25f791cc66b5ee1fc7",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "5772d9260da8b436576fd7d84aac6454c0bb464d08c08b307fc731d423384791",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "652772b531da189870a1eab875ee0bb573531f523349c9207d65e954cb924d60",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "66b36c645f88a155b6d8282e4f32326400e251b888410189e9bd4df772efa2d6",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "6c4c9b89c7313fbb317ff2e483623ced55da8efa799b36aa8a9574d43b969322",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "6e33a81bd702b49f0eb73c8d65c1e7224da6cae44d2bae2189ac081a739f8f9f",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "6fda8523e6d6da3b63288311cd670cc6f188e8b77ed14bb69ce92a0b8b91472d",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "852055dee6551fffaf695b041bcb44090049c6ae9c19582c48e06499a788e18b",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "906b0a9d6342ee237ed2256d375f2204ff009aa67bc6f25f3a9b3a400308a2dc",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "97581699b08b00fc4f2ac3517b71cfe730b4aeca8bcf56288216fdb6b952d921",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "97916dbfc2af660d20549283bed99d782aafd0573e094ef8e19ad2fd20cb1322",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "98790cdd85c0d972c7870fa4a629b35f12a6a7d5a577cace231762e19bc2496f",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "b9e1a9782127c17f7e805141558967c0054e8b86cc3cf081534fc479cf28fd29",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "bc316a49e658d1ce6aa3d01db1486b9645cd53b4650e3111eeba7ea94048dd2f",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "bee32bdcd5ca18030586892ec8e3368b6f2da893666d07912fcf67426b4cb05c",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "c1b14815dd6c3a5fbd054fd7a2d28d5169bc81aa0fca8e4830c57b21a9e880c1",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "c35865b027a778cab34c374b6301106a760d22c5110cab96fa71df9ec5b3495e",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "c7d1e76d0faf18627e1341750a03e2998a344ca3f065671b01254d04a61d668e",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "d2bab27de39ed33f94f22f9e6f675c9ff4b204857ea86270629ecccac195aa10",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "d986b2dce19e56ba1d13c6c1c5eb7aa8b046fb9fe59038cd672a88125b67c39a",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "dc588328a06f88ed15350815f0a0d3fd226b47cdbfaa360eb79e17d180464405",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "dc5bbf4212e1c34030e2d20da8d13c164f085564b612f8795ced11c00c4e1841",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "dd1148defc525f953164d67554fadae978f0c6843bdcd6407fd6aece54080457",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "dd1199b0b3cc97c6c7829fbf9222fa8622d478719d91082e625b318a2dca7a89",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "e94327ce7a50ab14877c9fd9779d9110b4d85cf201c1bc5f25ec251e87cdbb49",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "e943c7234fc27cd761dffe51c0c6760ad0c94fe19e15dd668e61831a486cf755",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "ea88ca88bca4fc70664daf31b7889a3db71a5fe2006509508962e378cf6b1339",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "eaa32affccf28cc22d10798de648e2fbba0530b94ebaabf5712336ddcd58ebff",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "ee3b29d00dcd9b083f8a41244a484b537be2c0ae85fe8ab611b9b09dfa434663",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  },
+  {
+    "findingId": "f3e57c6ed7f95b3ff359cd41b947e9c8abfe056579342723d152b596e29f4a7c",
+    "fingerprint": "8ee9c1b9057adc67406991cbb94b23482f5612f8e8364a1b6cd20eada12ab9ab",
+    "reason": "PBI #15 requires the public editor authoring, import, identity, reference, lifecycle, and runtime practice surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T16:37:52.667Z"
+  }]

@@ -5,6 +5,7 @@ using SpatialCircuits.Core;
 using SpatialCircuits.GodotAdapter;
 using SpatialCircuits.Hierarchy;
 using SpatialCircuits.Runner;
+using SpatialCircuits.Workbench;
 using static GdUnit4.Assertions;
 
 namespace SpatialWires.Godot.Tests;
@@ -61,6 +62,80 @@ public sealed class SpatialCircuitResourceAdapterTests
         AssertThat(invalidDiagnostic.Length > 0).IsTrue();
         AssertThat(ReferenceEquals(publisher.CurrentDefinition, second)).IsTrue();
         AssertThat(publisher.CurrentDefinition!.ContentHash).IsEqual(second.ContentHash);
+    }
+
+    [TestCase]
+    [RequireGodotRuntime]
+    public void ChipResourceRoundTripPreservesChildNetworkAndCanonicalHash()
+    {
+        var panel = PanelDefinition.Create(
+            new CircuitId("panel/editor-child"),
+            2,
+            1,
+            [
+                PanelCellDefinition.Create(
+                    new ComponentId("in"),
+                    new GridCoordinate(0, 0),
+                    CellKind.InputPort,
+                    portId: new PortId("in")),
+                PanelCellDefinition.Create(
+                    new ComponentId("out"),
+                    new GridCoordinate(1, 0),
+                    CellKind.OutputPort,
+                    portId: new PortId("out"))
+            ]);
+        var child = ChipInstanceDefinition.Create(
+            new ComponentId("child"),
+            new DefinitionId("chip/child"),
+            new string('a', 64));
+        var network = PanelOwnedChipNetworkDefinition.Create(
+            panel.Id,
+            [child],
+            [
+                new ChipPortConnection(
+                    ChipPortEndpoint.ChildChip(child.InstanceId, "out"),
+                    ChipPortEndpoint.ParentPanel(new PortId("out")))
+            ]);
+        var definition = ChipDefinition.Create(
+            new DefinitionId("chip/editor-child"),
+            panel,
+            [
+                new ChipPortDefinition("in", new PortId("in"), ChipPortDirection.Input),
+                new ChipPortDefinition("out", new PortId("out"), ChipPortDirection.Output)
+            ],
+            1,
+            1,
+            "editor-child",
+            childNetwork: network);
+
+        var resource = SpatialCircuitResourceAdapter.ToResource(definition);
+        var roundTrip = SpatialCircuitResourceAdapter.ToDefinition(resource);
+
+        AssertThat(roundTrip.ContentHash).IsEqual(definition.ContentHash);
+        AssertThat(roundTrip.ChildNetwork.Instances).IsEqual(definition.ChildNetwork.Instances);
+        AssertThat(roundTrip.ChildNetwork.Connections).IsEqual(definition.ChildNetwork.Connections);
+        resource.Dispose();
+    }
+
+    [TestCase]
+    [RequireGodotRuntime]
+    public void EditorAuthoringSavesAPortablePanelResource()
+    {
+        var path = $"user://editor-panel-{Guid.NewGuid():N}.tres";
+        var editor = new SpatialCircuitEditorAuthoringSession(new PanelWorkbenchSession(
+            PanelDefinition.Create(new CircuitId("panel/editor-save"), 1, 1, [])));
+        try
+        {
+            AssertThat(editor.TrySavePanel(path, out var reference, out var diagnostic)).IsTrue();
+            AssertThat(diagnostic).IsEqual(string.Empty);
+            AssertThat(reference).IsNotNull();
+            AssertThat(global::Godot.FileAccess.FileExists(path)).IsTrue();
+            AssertThat(editor.LastSavedPath).IsEqual(path);
+        }
+        finally
+        {
+            DirAccess.RemoveAbsolute(ProjectSettings.GlobalizePath(path));
+        }
     }
 
     private static ChipDefinitionPlan ReadChipDefinitionPlan()

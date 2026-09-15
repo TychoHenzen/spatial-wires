@@ -25,13 +25,21 @@ public sealed class PublicAddonTypeTests
             AssertThat(deviceStep).IsNotNull();
             AssertThat(deviceStep!.EventHandlerType).IsEqual(typeof(Action<SpatialCircuitNodeStepContext>));
             AssertExportedResourceType<SpatialCircuitResource>("SpatialCircuitResource",
-                "BehaviorVersion", "DefinitionId", "Parameters", "Ports", "SchemaVersion", "SourcePanel", "Symbol");
+                "BehaviorVersion", "ChildNetwork", "DefinitionId", "Parameters", "Ports", "SchemaVersion",
+                "SourcePanel", "Symbol");
             AssertExportedResourceType<SpatialCircuitPanelResource>("SpatialCircuitPanelResource",
                 "Cells", "Height", "PanelId", "Width");
             AssertExportedResourceType<SpatialCircuitCellResource>("SpatialCircuitCellResource",
                 "BehaviorId", "CellId", "Kind", "Orientation", "Parameters", "PortId", "X", "Y");
             AssertExportedResourceType<SpatialCircuitChipPortResource>("SpatialCircuitChipPortResource",
                 "Direction", "Name", "PanelPortId");
+            AssertExportedResourceType<SpatialCircuitChildNetworkResource>("SpatialCircuitChildNetworkResource",
+                "Connections", "Instances");
+            AssertExportedResourceType<SpatialCircuitChildInstanceResource>("SpatialCircuitChildInstanceResource",
+                "ContentHash", "DefinitionId", "InstanceId");
+            AssertExportedResourceType<SpatialCircuitChildConnectionResource>(
+                "SpatialCircuitChildConnectionResource",
+                "SourceInstanceId", "SourcePortName", "TargetInstanceId", "TargetPortName");
         }
         finally
         {
