@@ -1,8 +1,8 @@
 {
   "version": 2,
   "profile": "default",
-  "createdAt": "2026-09-15T16:59:20.714Z",
-  "total": 5377,
+  "createdAt": "2026-09-15T17:05:39.379Z",
+  "total": 5378,
   "files": [
     "addons/gdUnit4/src/dotnet/GdUnit4CSharpApi.cs",
     "addons/spatial_circuits/PanelWorkbenchWaveform.cs",
@@ -331,7 +331,7 @@
     "src/SpatialCircuits.Runner/TamperDetectionPractice.cs::line-length": 64,
     "src/SpatialCircuits.Runner/TamperDetectionProtocol.cs::line-length": 124,
     "src/SpatialCircuits.Runner/TamperDetectionResponder.cs::line-length": 12,
-    "src/SpatialCircuits.Workbench/EditorReferenceContracts.cs::line-length": 18,
+    "src/SpatialCircuits.Workbench/EditorReferenceContracts.cs::line-length": 19,
     "src/SpatialCircuits.Workbench/PanelWorkbenchSession.cs::line-length": 256,
     "src/SpatialCircuits.Workbench/WorkbenchDefinition.cs::line-length": 20,
     "tests/SpatialCircuits.Cells.Tests/PanelRuntimeTests.cs::line-length": 35,

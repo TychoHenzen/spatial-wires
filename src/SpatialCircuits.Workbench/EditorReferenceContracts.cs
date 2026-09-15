@@ -100,6 +100,7 @@ public sealed class SpatialCircuitReferenceCatalog
                     }
                 }
                 catch (Exception exception)
+                    when (exception is ArgumentException or InvalidOperationException)
                 {
                     opened = null;
                     target = null;
