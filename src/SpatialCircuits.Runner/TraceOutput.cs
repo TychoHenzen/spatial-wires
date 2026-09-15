@@ -179,6 +179,37 @@ public static class TraceOutput
         });
     }
 
+    public static void WriteTamperDetectionTrace(TextWriter writer, TamperDetectionTraceRecord record)
+    {
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(record);
+
+        WriteLine(writer, json =>
+        {
+            WriteVersion(json, record.TraceSchema);
+            json.WriteString("fixtureId", record.FixtureId);
+            json.WriteString("caseId", record.CaseId);
+            json.WriteNumber("sequence", record.Sequence);
+            json.WriteNumber("microtick", record.Microtick);
+            if (record.Challenge is { } challenge)
+            {
+                json.WriteString("challenge", challenge);
+            }
+
+            if (record.ExpectedResponse is { } expected)
+            {
+                json.WriteString("expectedResponse", expected);
+            }
+
+            json.WriteString("response", record.Response);
+            json.WriteString("decision", record.Decision);
+            json.WriteBoolean("responseAccepted", record.ResponseAccepted);
+            json.WriteBoolean("alarmLatched", record.AlarmLatched);
+            json.WriteString("hash", record.Hash);
+            json.WriteBoolean("passed", record.Passed);
+        });
+    }
+
     public static void WriteDiagnostic(TextWriter writer, FixtureDiagnostic diagnostic)
     {
         ArgumentNullException.ThrowIfNull(writer);

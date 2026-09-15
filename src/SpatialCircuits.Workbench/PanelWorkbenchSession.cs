@@ -146,6 +146,8 @@ public sealed class PanelWorkbenchSession
     public ImmutableArray<AcceptedSchedulerCommand> DeviceAcceptedCommands =>
         (_deviceGraph?.AcceptedCommands ?? []).ToImmutableArray();
 
+    public DeviceGraphInstance? DeviceGraph => _deviceGraph;
+
     public ImmutableArray<WorkbenchBehaviorAssemblySource> BehaviorAssemblySources
     {
         get

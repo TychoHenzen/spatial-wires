@@ -157,4 +157,45 @@ public sealed class PanelWorkbenchCanvasTests
             dock.Free();
         }
     }
+
+    [TestCase]
+    [RequireGodotRuntime]
+    public void DockTamperBypassPracticeDisconnectsAndAcceptsTheReplacementResponder()
+    {
+        var sceneTree = Engine.GetMainLoop() as SceneTree;
+        AssertThat(sceneTree).IsNotNull();
+        var session = new PanelWorkbenchSession(PanelDefinition.Create(
+            new CircuitId("panel/dock-tamper-practice"),
+            1,
+            1,
+            []));
+        var dock = new SpatialCircuitsDock(session);
+        sceneTree!.Root.AddChild(dock);
+
+        try
+        {
+            var practiceButton = dock.FindChild("TamperBypassPractice", recursive: true, owned: false) as Button;
+            var status = dock.FindChild("PracticeStatus", recursive: true, owned: false) as Label;
+            AssertThat(practiceButton).IsNotNull();
+            AssertThat(status).IsNotNull();
+            practiceButton!.EmitSignal(BaseButton.SignalName.Pressed);
+            AssertThat(status!.Text).Contains("accepted response");
+            AssertThat(status.Text).Contains("no alarm");
+            var result = dock.LastTamperPracticeResult;
+            AssertThat(result).IsNotNull();
+            AssertThat(result!.Succeeded).IsTrue();
+            AssertThat(result.OriginalDisconnected).IsTrue();
+            AssertThat(result.PlayerResponderInserted).IsTrue();
+            AssertThat(result.ResponseAccepted).IsTrue();
+            AssertThat(result.AlarmLatched).IsFalse();
+            AssertThat(result.ResponderComputedExpected).IsTrue();
+            AssertThat(result.TopologyCasesPassed).IsTrue();
+            AssertThat(result.ReplacementCableHistory.Any(item =>
+                item.Status == CableTransitionStatus.Delivered)).IsTrue();
+        }
+        finally
+        {
+            dock.Free();
+        }
+    }
 }

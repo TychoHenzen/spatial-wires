@@ -144,6 +144,29 @@ public static class RunnerApplication
             return practice.Succeeded ? Success : FailedExpectation;
         }
 
+        if (fixture.Action == FixtureAction.TamperDetectionScenario)
+        {
+            IReadOnlyList<TamperDetectionTraceRecord> tamperRecords;
+            try
+            {
+                tamperRecords = TamperDetectionScenarioExecutor.Execute(fixture);
+            }
+            catch (ArgumentException exception)
+            {
+                return Fail(output, new FixtureDiagnostic(
+                    FixtureDiagnosticCodes.TamperDetectionScenarioInvalid,
+                    "$.tamperDetectionScenario",
+                    exception.Message));
+            }
+
+            foreach (var record in tamperRecords)
+            {
+                TraceOutput.WriteTamperDetectionTrace(output, record);
+            }
+
+            return tamperRecords.All(record => record.Passed) ? Success : FailedExpectation;
+        }
+
         var records = FixtureExecutor.Execute(fixture);
         foreach (var record in records)
         {

@@ -2,6 +2,7 @@ using Godot;
 using SpatialCircuits.Cells;
 using SpatialCircuits.Core;
 using SpatialCircuits.Hierarchy;
+using SpatialCircuits.Runner;
 using SpatialCircuits.Workbench;
 
 namespace SpatialCircuits.GodotAdapter;
@@ -87,6 +88,8 @@ public partial class SpatialCircuitsDock : EditorDock
 
     public PanelWorkbenchSession WorkbenchSession => _session;
 
+    public TamperDetectionPracticeResult? LastTamperPracticeResult { get; private set; }
+
     public SpatialCircuitsWorkbenchCanvas WorkbenchCanvas => _canvas;
 
     public override void _ExitTree()
@@ -145,6 +148,7 @@ public partial class SpatialCircuitsDock : EditorDock
         AddButton(assets, "AddTimedDevice", "Add timed device", AddTimedDevice);
         AddButton(assets, "ConnectDevices", "Connect devices", ConnectDevices);
         AddButton(assets, "XorPractice", "XOR practice", RunXorPractice);
+        AddButton(assets, "TamperBypassPractice", "Tamper bypass", RunTamperBypassPractice);
 
         var scroll = new ScrollContainer { Name = "PanelScroll" };
         scroll.SizeFlagsVertical = SizeFlags.ExpandFill;
@@ -463,6 +467,24 @@ public partial class SpatialCircuitsDock : EditorDock
         catch (Exception exception) when (exception is ArgumentException or InvalidOperationException)
         {
             _practiceStatus.Text = $"workbench.practice.failed: {exception.Message}";
+        }
+    }
+
+    private void RunTamperBypassPractice()
+    {
+        Pause();
+        try
+        {
+            var result = TamperDetectionPractice.Run();
+            LastTamperPracticeResult = result;
+            _practiceStatus.Text = result.Succeeded
+                ? $"tamper-bypass: disconnected original, inserted responder, " +
+                  $"accepted response at t{result.Trace.First(item => item.ResponseAccepted).Tick}, no alarm"
+                : "tamper-bypass.failed: protocol or replay trace did not match.";
+        }
+        catch (Exception exception) when (exception is ArgumentException or InvalidOperationException)
+        {
+            _practiceStatus.Text = $"tamper-bypass.failed: {exception.Message}";
         }
     }
 

@@ -2875,5 +2875,754 @@
     "reason": "PBI #12 requires durable persistence and public replay APIs; the independent completion review retains this PBI-scoped surface.",
     "author": "Codex independent review",
     "time": "2026-09-15T08:22:10.006207Z"
+  },
+  {
+    "findingId": "09a0e49f30a50fe24dbcd55ab5005ed8393badf697ac2b9d7b1922f6731a3e70",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "2687060722cd0e9d76f3f1fcfdcb9dcec29d2fbdca73bbdc95b92c42a32b5a66",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "2cff44b29ae501556fa3e9f0676d4326374a5eded50da002c74039bc9c822ef0",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "2e7d5ef4ed286e1dcdf9822bc8c6bfdacaf6f1cdc6166d51e39d1a6dc8d185ec",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "36b30c628aba3896cf66dbbf790386a305c7385cf3b3aa84587d4d71d01ba300",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "3afd34b07aa9392ed9f72896acdb10f2ece9f180e10516e5b74c7eae90afce52",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "4607e711b2901374bd6e0cde21d0b1522378a7f3b5d20f3917fb63f3b671ae87",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "4b439c1de75e7e30cbfe4788b3f0dceae61f6a68ade3dc5eea21613d5e218385",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "57f494b36501b9f228316902af807faad855b4d73f643b385d50ce8c8da33be1",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "5fa6350113c8d2585bc8bdac2a7b3d80b8b35493ecab90103c87d6c3ca6f5070",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "6087127b814dbe550c4e29c3db51483075e7551117febcab112f73fdf0515213",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "62e56d418fc9b837ad8e4a957b4a13e6950432a56c75eca25a24c6e639c136f3",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "669ed46b6715126450f6b76a18e3727fd564af6aa40873d695fc072458567a3f",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "68909de1a7b13c46b8c32f7608c29436e83be069e160ff4e8dde1a6b3742347b",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "764657b7632b8c4a9c7391bf639b739ff406cb2f0a31c88d45b343096db37b02",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "76b977a7b72d3a83d5c6b227fcb9806ddac06fb57cb43c199819f5fecb187c1a",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "7da381b9ebb6808cef51e64cb320de648ca0222fde88ca823ba786cb785b117c",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "89093e1f131ec088524daf548e907b1988e919c975afffe75b6d502becca30e5",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "8b109a24b94de7f232ca3605e26b531b54a8af6c4bdcd6399bb99b1e7a9fb355",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "8f94456fa73909fcbe95ae12323f1daa4983a8b1630e881db38fd1ff68d405af",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "8fc025ce49d2a27830542cb2416dbaa158dbe81bd64dd3451850d7036a1fed40",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "90b7f8266792c372000f44591989d71b1e2164bf64d2ebeba8f25e3f8cd8ff57",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "90d627b2007d514209a2b4eaf4ffbdbc076ffdb8f6e04314969618aeae2f80b0",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "9b3b1208eda01421a00d5cecd92dcd81f425bb42fc7fe8fac205dc13179540d2",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "af263ab9fb5460deb97ae79b1ef9fdd3d9c5632c19faad1e9313c9e3c2c0150f",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "b1906f3a7ba509ecad00d97ff066c3b8094905748589e7a128ce0994ba04d87d",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "b3fd928d153685575835db7a8723e9bfcaacfc25325e7003403e755fdb1a609c",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "b75b0494ef089e9722f3950dfbfa7e845f6007cf581d6d5fcdc54a8e7283b231",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "ba533e848bb995509b0810bdebb36c4f49a338b192d08cc60a8217eed75b9a16",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "bbce96903c4b504f19ecec4776fdbe2c2d3e14e121792541587bc77549753b33",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "bc8f83055c3faba9cbbf5e14fbd9c459426b7529db7e35050ec7f4e4d0cf8921",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "bdd4907eceeeb8afa5be4faa77902566663b1ef193162aaa7585b54f3171389d",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "be745730ffaf34d8ea52e38c90b0ba9223d7a6651370ef6ab7db68c044e4b30c",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "bea231b0588724e55b15848e0d1bbce1710cf47e1ef8a680b375052d8ccc34bf",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "c0550fdc83dfd1bc048433499967450422fb2c62aa03fe678c85868f452411ba",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "c72d8bb7ce70368a1decc516d368d7f335e0bcc6417e3afe5ec7377e80812b00",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "ceab84490183f8cc92aa1f91c46b1a67a272d907fe27fd1b3a629b025ca65b6d",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "d40d12f23d84e20189aa12cd76b1f78d6eaf76ae48a33880fa8bea03316005b2",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "dc76c37cb0f6a822567d1fadc554667a46dbd82d522fe4e5a1d2bb89abcf6eda",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "ddfe38083740e757a8ade024d597cd78c24f36565af5577632504a8c237e530c",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "de26cb835dcb2284745a362f636d2036103815fc13d0a11edc40b363629dd222",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "e3535d038594e64bfc7d7579403ce672af04f3823eebc31db893df21fd590fbb",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "ea2291fa37d01661a7c68948d913a11f34c060ee210d36afef20caaee23ddc11",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "fa291efd0638dd6958fb25a0489cedae9f54581d0c8aef1574151b1085dabe8d",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "fcef70affa5a43efc70932077607a74aecf40a7c77f4426a26b74273a30cf84a",
+    "fingerprint": "bc3fd5f2dd441148baafd41e56a66d9c3fa04381455ab24f13e2c8e9958c2ea2",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex independent review",
+    "time": "2026-09-15T09:11:25.892490Z"
+  },
+  {
+    "findingId": "1074242a3342286ac05a4dc12e2c54fe6805d00d88626be008437fe3d9d31caf",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "1228983520d510f980d51f0fd108384a30afb307f6a5df9f3273c569845d0912",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "216d5d80e3e44c52e6856d1a0734fb445676e52f29e8b8bef3b5e1cff22a6ee9",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "36ee887ac16a0b094e88974b691c49a147518f33147e62b5dfb681a17cfa489b",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "3c1fe60d8088de8e5eb4088b4db87b9ce362fcfb6b99c3fb2aa8ebf7bf2428de",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "5120658b448692abd11241dd74c72148abd7eeff2c04ab8ee24f905b45383c39",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "559758f7d95b71622e3f2e28ccaec4e3406ad52c349e0b30613db73d2d48d90b",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "578b442f90ba1c69ba1abd4952cfaaead1c44722810946d0849c9493d3655dc5",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "5c47f318092082e646aeabb3f06e5ad56c2818bf46a3af1196abee50a97bb946",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "5d7661ced8f1782abb5fa529fa722cde18e4ed57f0350565e81f71c38020d5f4",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "6a46d7b3ab30e353ea4d5b93cfcf25184f8b16faa2574f8c70fa14b2c6bc02da",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "6d8cbe6e5875de81138fc7d9e928dc4a64222da9763fe60427f05f808d64856b",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "7e34f78600c193077cbae54b8e75c5d516093a9da3bbf7dfa96cd3c522703c90",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "817233dd3c810e41fc6b680a5f836940ea6add5e26bc06fe5dafc69bdc987727",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "95ed7d42dc065ecb6a0b9a7131385d39770092cef94bc8cbd3e38f38762f056d",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "a60089245a13a4b1bd21b12ab7132f77024002dc2236e697a874f17f1f0cdbfd",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "af4090f658ac9f1815336497f2ad424842645b4f0de22c35800327b5f7c60139",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "b3923c6101bd32b8dce13d1b03255eaa5e19d30bbbb13e01906eabb576b72fcd",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "b60f3afc621322d6b885a47823082dca3e50b63895cc81ea6b1995ff3536a098",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "b8d4bf978b16879f2d9261f31630c85f74d3749e238ee6fdb1f300b6891330e2",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "c9e460e67ac63d1568058a7db87348a79162fe763630df7f02aba9029ee93947",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "cbd7526b96a6d5cbf570cb799df26ded3bfd8d1b0c9c3531491a7a771c7fc2fb",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "cf9df8523bbcf44427c6e23cad7c4dbab3274ef12aa321130dd609294018ef11",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "d1dbb80297cf7b676a7a6faa63c6c346a31b51b156b426165413e4d990786bed",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "d69a487969fe3d5b3b3cdec034750e29a89aeb79688675c88815755bc36919de",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "df02b9ed81c79646d19153ee7635fc025b6d496754ba0373ad88ceeb66b90c36",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "e092d4f56b675c53cac0235e37096db9530c61715e31c7c0ae244a6ea81cb7b3",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "e0ade6ae1587dd619b02f970aeb5446c1f3e2f521efc712bfc973e996d79f34d",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "e574a4fcfcddfd3937122d98b393cff0cbda7614d5969e54433b60bd24e60c8b",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "e7abce68b1bfb972a4183aeecb35aa94b9b8d1f86a0beb844c336d3244e03073",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "ef565929aa7357f786c92902db9e534557bb8c4dcb1158e47c5c3c345260ab50",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "f0067b6f7c7ab546bf097dfd0eeaec3b24307a18f5f14ade59e9e3b95a5d14e4",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "fa6053ba027ae1afe59ba6a9c53888b55d108542d805467dee550f2112ec99c1",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:19:28.902465Z"
+  },
+  {
+    "findingId": "09a0e49f30a50fe24dbcd55ab5005ed8393badf697ac2b9d7b1922f6731a3e70",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "2cff44b29ae501556fa3e9f0676d4326374a5eded50da002c74039bc9c822ef0",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "2e7d5ef4ed286e1dcdf9822bc8c6bfdacaf6f1cdc6166d51e39d1a6dc8d185ec",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "36b30c628aba3896cf66dbbf790386a305c7385cf3b3aa84587d4d71d01ba300",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "3afd34b07aa9392ed9f72896acdb10f2ece9f180e10516e5b74c7eae90afce52",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "62e56d418fc9b837ad8e4a957b4a13e6950432a56c75eca25a24c6e639c136f3",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "764657b7632b8c4a9c7391bf639b739ff406cb2f0a31c88d45b343096db37b02",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "76b977a7b72d3a83d5c6b227fcb9806ddac06fb57cb43c199819f5fecb187c1a",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "8b109a24b94de7f232ca3605e26b531b54a8af6c4bdcd6399bb99b1e7a9fb355",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "8fc025ce49d2a27830542cb2416dbaa158dbe81bd64dd3451850d7036a1fed40",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "90b7f8266792c372000f44591989d71b1e2164bf64d2ebeba8f25e3f8cd8ff57",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "90d627b2007d514209a2b4eaf4ffbdbc076ffdb8f6e04314969618aeae2f80b0",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "9b3b1208eda01421a00d5cecd92dcd81f425bb42fc7fe8fac205dc13179540d2",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "b1906f3a7ba509ecad00d97ff066c3b8094905748589e7a128ce0994ba04d87d",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "b3fd928d153685575835db7a8723e9bfcaacfc25325e7003403e755fdb1a609c",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "b75b0494ef089e9722f3950dfbfa7e845f6007cf581d6d5fcdc54a8e7283b231",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "ba533e848bb995509b0810bdebb36c4f49a338b192d08cc60a8217eed75b9a16",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "bc8f83055c3faba9cbbf5e14fbd9c459426b7529db7e35050ec7f4e4d0cf8921",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "bdd4907eceeeb8afa5be4faa77902566663b1ef193162aaa7585b54f3171389d",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "be745730ffaf34d8ea52e38c90b0ba9223d7a6651370ef6ab7db68c044e4b30c",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "bea231b0588724e55b15848e0d1bbce1710cf47e1ef8a680b375052d8ccc34bf",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "c0550fdc83dfd1bc048433499967450422fb2c62aa03fe678c85868f452411ba",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "c72d8bb7ce70368a1decc516d368d7f335e0bcc6417e3afe5ec7377e80812b00",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "ceab84490183f8cc92aa1f91c46b1a67a272d907fe27fd1b3a629b025ca65b6d",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "d40d12f23d84e20189aa12cd76b1f78d6eaf76ae48a33880fa8bea03316005b2",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "ddfe38083740e757a8ade024d597cd78c24f36565af5577632504a8c237e530c",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "de26cb835dcb2284745a362f636d2036103815fc13d0a11edc40b363629dd222",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "e3535d038594e64bfc7d7579403ce672af04f3823eebc31db893df21fd590fbb",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
+  },
+  {
+    "findingId": "fa291efd0638dd6958fb25a0489cedae9f54581d0c8aef1574151b1085dabe8d",
+    "fingerprint": "7b0346db1f54095ca489c159958e8f7454cefc84ed1e671adf9fe67a94cfa932",
+    "reason": "PBI #13 requires the pure protocol, public responder construction, and cross-layer fixture surface in one acceptance slice.",
+    "author": "Codex",
+    "time": "2026-09-15T11:21:34.677326Z"
   }
 ]

@@ -8,5 +8,6 @@ public enum FixtureAction
     PanelScenario,
     ChipNetworkScenario,
     DeviceExchangeScenario,
-    DurableReplayScenario
+    DurableReplayScenario,
+    TamperDetectionScenario
 }
