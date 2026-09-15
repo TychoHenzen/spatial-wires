@@ -7,7 +7,7 @@ $env:GODOT_BIN = 'C:\Development\Godot_v4.7.1-stable_mono_win64\Godot_v4.7.1-sta
 powershell -NoProfile -File .\scripts\Run-IndependentCopyPractice.ps1 -GodotExecutable $env:GODOT_BIN
 ```
 
-The command creates a blank Godot .NET consumer outside the repository. It stages `addons/spatial_circuits` and the Core, Cells, Hierarchy, Workbench, and Runner source projects under the temporary root's `src` directory. The temporary project references those staged projects. The later GdUnit phase links the host-side Resource converter and Node binding from the repository. This verifies staged-addon integration with explicit source dependencies. It does not verify a standalone binary package or a build with no repository source inputs.
+The command creates a blank Godot .NET consumer outside the repository. It stages `addons/spatial_circuits` and the Core, Cells, Hierarchy, Workbench, Persistence, and Runner source projects under the temporary root's `src` directory. The temporary project references those staged projects. The later GdUnit phase links the host-side Resource converter and Node binding from the repository. This verifies staged-addon integration with explicit source dependencies. It does not verify a standalone binary package or a build with no repository source inputs.
 
 Successful output includes these fields:
 

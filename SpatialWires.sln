@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Workbench",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Workbench.Tests", "tests\SpatialCircuits.Workbench.Tests\SpatialCircuits.Workbench.Tests.csproj", "{75C4EB62-CCF1-47E6-9045-7CB24824F6CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Persistence", "src\SpatialCircuits.Persistence\SpatialCircuits.Persistence.csproj", "{5150FB14-C4BF-40A7-8D80-28A0F7992BB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpatialCircuits.Persistence.Tests", "tests\SpatialCircuits.Persistence.Tests\SpatialCircuits.Persistence.Tests.csproj", "{0BB28357-7769-4A13-BBEC-183F3A1FD01D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +89,14 @@ Global
 		{75C4EB62-CCF1-47E6-9045-7CB24824F6CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75C4EB62-CCF1-47E6-9045-7CB24824F6CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75C4EB62-CCF1-47E6-9045-7CB24824F6CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5150FB14-C4BF-40A7-8D80-28A0F7992BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5150FB14-C4BF-40A7-8D80-28A0F7992BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5150FB14-C4BF-40A7-8D80-28A0F7992BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5150FB14-C4BF-40A7-8D80-28A0F7992BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BB28357-7769-4A13-BBEC-183F3A1FD01D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB28357-7769-4A13-BBEC-183F3A1FD01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB28357-7769-4A13-BBEC-183F3A1FD01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB28357-7769-4A13-BBEC-183F3A1FD01D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,5 +106,7 @@ Global
 		{DD9BF411-1877-40D0-9FFF-F0675F49F084} = {9030C887-AD50-4AA0-BC23-FE9E5F49D4CD}
 		{3A99D0FC-12B2-4AA5-8EDE-54A775CA11B8} = {D70224BE-70A7-4264-A901-52783373FC60}
 		{75C4EB62-CCF1-47E6-9045-7CB24824F6CC} = {9030C887-AD50-4AA0-BC23-FE9E5F49D4CD}
+		{5150FB14-C4BF-40A7-8D80-28A0F7992BB8} = {D70224BE-70A7-4264-A901-52783373FC60}
+		{0BB28357-7769-4A13-BBEC-183F3A1FD01D} = {9030C887-AD50-4AA0-BC23-FE9E5F49D4CD}
 	EndGlobalSection
 EndGlobal

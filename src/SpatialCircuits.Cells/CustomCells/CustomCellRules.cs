@@ -142,6 +142,13 @@ public sealed class CustomCellRuleRegistry
         _rules = builder.ToImmutable();
     }
 
+    public ImmutableArray<CustomCellRuleAssemblySource> AssemblySources => _rules.Values
+        .OrderBy(registration => registration.BehaviorId.Value, StringComparer.Ordinal)
+        .Select(registration => new CustomCellRuleAssemblySource(
+            registration.BehaviorId,
+            registration.RuleFactory.Method.Module.Assembly))
+        .ToImmutableArray();
+
     private static bool ReferencesGodotAssembly(Assembly ruleAssembly)
     {
         var loadContext = AssemblyLoadContext.GetLoadContext(ruleAssembly) ?? AssemblyLoadContext.Default;
@@ -225,6 +232,8 @@ public sealed class CustomCellRuleRegistry
     }
 }
 
+public sealed record CustomCellRuleAssemblySource(BehaviorId BehaviorId, Assembly Assembly);
+
 public sealed record CustomCellRuleRegistration(
     BehaviorId BehaviorId,
     ImmutableArray<CustomCellPort> Ports,
@@ -259,7 +268,18 @@ public sealed record PanelRuntimeSnapshot(
     SchedulerSnapshot Scheduler,
     ImmutableArray<ProbeSample> ProbeHistory)
 {
+    public ImmutableArray<SchedulerTargetSnapshot> TargetIncarnations { get; init; }
+
+    public ImmutableArray<PanelTargetIncarnationSnapshot> TargetIncarnationTimeline { get; init; }
+
+    public string StateIntegrityHash { get; init; } = string.Empty;
 }
+
+public sealed record PanelTargetIncarnationSnapshot(
+    string StableId,
+    long Incarnation,
+    bool Active,
+    string DefinitionHash);
 
 public sealed record PanelRuntimeCellSnapshot(
     ComponentId CellId,

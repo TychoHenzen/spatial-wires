@@ -35,7 +35,8 @@ public static partial class FixtureValidator
                 FixtureAction.ScheduledDrive or
                 FixtureAction.PanelScenario or
                 FixtureAction.ChipNetworkScenario or
-                FixtureAction.DeviceExchangeScenario))
+                FixtureAction.DeviceExchangeScenario or
+                FixtureAction.DurableReplayScenario))
         {
             Add(diagnostics, FixtureDiagnosticCodes.ActionUnsupported, "$.action", "Fixture action is not supported.");
         }
@@ -55,6 +56,10 @@ public static partial class FixtureValidator
         else if (fixture.Action == FixtureAction.DeviceExchangeScenario)
         {
             ValidateDeviceExchangeScenario(fixture.DeviceExchangeScenario, diagnostics);
+        }
+        else if (fixture.Action == FixtureAction.DurableReplayScenario)
+        {
+            ValidateDurableReplayScenario(fixture.DurableReplayScenario, diagnostics);
         }
         else if (fixture.Cases.Length == 0)
         {
@@ -129,6 +134,25 @@ public static partial class FixtureValidator
                 Add(diagnostics, FixtureDiagnosticCodes.DeviceExchangeScenarioInvalid,
                     $"{root}.deliveryExpectations[{index}]", "A lane cannot have duplicate delivery expectations at one tick.");
             }
+        }
+    }
+
+    private static void ValidateDurableReplayScenario(
+        DurableReplayScenarioPlan? plan,
+        ICollection<FixtureDiagnostic> diagnostics)
+    {
+        const string root = "$.durableReplayScenario";
+        if (plan is null)
+        {
+            Add(diagnostics, FixtureDiagnosticCodes.DurableReplayScenarioRequired, root,
+                "Durable replay scenarios require a durableReplayScenario object.");
+            return;
+        }
+
+        if (plan.Microticks < 1 || plan.Microticks > MaxScheduledDriveMicroticks)
+        {
+            Add(diagnostics, FixtureDiagnosticCodes.DurableReplayScenarioInvalid, root,
+                $"Microticks must be between 1 and {MaxScheduledDriveMicroticks}.");
         }
     }
 

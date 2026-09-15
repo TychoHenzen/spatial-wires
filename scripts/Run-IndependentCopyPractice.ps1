@@ -109,6 +109,7 @@ function Write-PracticeProject {
         "SpatialCircuits.Cells\SpatialCircuits.Cells.csproj",
         "SpatialCircuits.Hierarchy\SpatialCircuits.Hierarchy.csproj",
         "SpatialCircuits.Workbench\SpatialCircuits.Workbench.csproj",
+        "SpatialCircuits.Persistence\SpatialCircuits.Persistence.csproj",
         "SpatialCircuits.Runner\SpatialCircuits.Runner.csproj"
     ) | ForEach-Object {
         $projectPath = [System.Security.SecurityElement]::Escape((Join-Path $stagedSourceRoot $_))

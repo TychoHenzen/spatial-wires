@@ -7,5 +7,6 @@ public enum FixtureAction
     ScheduledDrive,
     PanelScenario,
     ChipNetworkScenario,
-    DeviceExchangeScenario
+    DeviceExchangeScenario,
+    DurableReplayScenario
 }

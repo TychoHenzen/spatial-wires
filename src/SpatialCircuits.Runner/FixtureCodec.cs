@@ -92,6 +92,19 @@ public static class FixtureCodec
                 deviceExchangeScenario: exchangeScenario);
         }
 
+        if (actionText == "durableReplayScenario")
+        {
+            var durableReplay = ReadDurableReplayScenario(
+                RequireProperty(root, "durableReplayScenario", "$.durableReplayScenario"));
+            return new RunnerFixture(
+                fixtureSchema,
+                traceSchema,
+                fixtureId,
+                FixtureAction.DurableReplayScenario,
+                [],
+                durableReplayScenario: durableReplay);
+        }
+
         var casesElement = RequireProperty(root, "cases", "$.cases");
         RequireKind(casesElement, JsonValueKind.Array, "$.cases");
 
@@ -260,6 +273,14 @@ public static class FixtureCodec
             ReadInt32(RequireProperty(element, "linkLatency", $"{path}.linkLatency"), $"{path}.linkLatency"),
             expectations,
             deliveryExpectations);
+    }
+
+    private static DurableReplayScenarioPlan ReadDurableReplayScenario(JsonElement element)
+    {
+        const string path = "$.durableReplayScenario";
+        RequireKind(element, JsonValueKind.Object, path);
+        return new DurableReplayScenarioPlan(
+            ReadInt32(RequireProperty(element, "microticks", $"{path}.microticks"), $"{path}.microticks"));
     }
 
     private static ChipDefinitionPlan ReadChipDefinition(JsonElement element, int index)

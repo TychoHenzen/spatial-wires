@@ -195,6 +195,8 @@ public sealed record SchedulerCommand(
     long SourceIncarnation = 0,
     SchedulerPhase EventPhase = SchedulerPhase.Deliver)
 {
+    public long? CausalOriginTick { get; init; }
+
     public static SchedulerCommand RegisterTarget(string targetStableId, long applyAtTick = 0) => new(
         SchedulerCommandKind.RegisterTarget,
         applyAtTick,
@@ -330,12 +332,26 @@ public sealed class SchedulerSnapshotBoundaryException : SchedulerException
     }
 }
 
+public sealed record SchedulerTraceState(
+    long NextAcceptedOrdinal,
+    long NextCausalOrdinal,
+    ImmutableArray<AcceptedSchedulerCommand> AcceptedCommands,
+    ImmutableHashSet<long> AppliedCommandOrdinals,
+    ImmutableArray<SchedulerTargetSnapshot> Targets,
+    ImmutableArray<SchedulerDriveSnapshot> Drives,
+    ImmutableArray<ScheduledEvent> PendingEvents,
+    ImmutableArray<SchedulerTemporalRoot> TemporalRoots,
+    ImmutableHashSet<string> CancelledTemporalRoots);
+
 public sealed record SchedulerTickTrace(
     long Tick,
     ImmutableArray<ScheduledEvent> DeliveredEvents,
     ImmutableDictionary<SchedulerPortAddress, LogicValue> ResolvedInputs,
     ImmutableArray<SchedulerDiagnostic> Diagnostics,
-    string Hash);
+    string Hash)
+{
+    public SchedulerTraceState? State { get; init; }
+}
 
 public sealed record SchedulerTickResult(
     long Tick,
@@ -364,7 +380,16 @@ public sealed record SchedulerSnapshot(
     ImmutableArray<SchedulerDriveSnapshot> Drives,
     ImmutableArray<SchedulerTemporalRoot> TemporalRoots,
     ImmutableHashSet<string> CancelledTemporalRoots,
-    ImmutableArray<SchedulerTickTrace> Trace);
+    ImmutableArray<SchedulerTickTrace> Trace)
+{
+    public ImmutableArray<SchedulerTargetSnapshot> TargetHistory { get; init; }
+
+    public string StateIntegrityHash { get; init; } = string.Empty;
+
+    public string TraceIntegrityHash { get; init; } = string.Empty;
+
+    public long TraceStartTick { get; init; }
+}
 
 public sealed class SchedulerEvaluationContext
 {

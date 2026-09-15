@@ -11,6 +11,8 @@ public sealed class PureProjectBuildTests
         "SpatialCircuits.Core",
         "SpatialCircuits.Cells",
         "SpatialCircuits.Hierarchy",
+        "SpatialCircuits.Workbench",
+        "SpatialCircuits.Persistence",
     ];
 
     // covers: spatial-circuits/package-baseline :: Enforced dependency boundary :: Pure projects build independently

@@ -596,6 +596,57 @@ public sealed class DeviceGraphInstanceTests
     }
 
     [Fact]
+    public void RuntimeSnapshotRestoresOfflineNodeReplayCursor()
+    {
+        var deviceId = new ComponentId("node");
+        var definition = DeviceGraphDefinition.Create(
+            new DefinitionId("graph/node-replay-snapshot"),
+            [DeviceDefinition.Create(deviceId, NodeBackend(
+                DevicePortDefinition.Create("output", DevicePortDirection.Output)))],
+            []);
+        var live = new DeviceGraphInstance(definition);
+        live.AttachNodeBackend(deviceId, new DeviceNodeBackendBinding(context =>
+        {
+            if (context.Tick == 0)
+            {
+                Assert.True(context.Outputs.RequestOutput(
+                    context.Tick + 1, "output", DeviceSignal.Scalar(LogicValue.High)));
+            }
+            else if (context.Tick == 2)
+            {
+                Assert.True(context.Outputs.RequestOutput(
+                    context.Tick + 1, "output", DeviceSignal.Scalar(LogicValue.Low)));
+            }
+        }));
+        for (var tick = 0; tick < 5; tick++)
+        {
+            Assert.Equal(tick, live.Step().Tick);
+        }
+
+        var commands = live.AcceptedCommands;
+        var replay = new DeviceGraphInstance(definition);
+        replay.ReplayNodeBackendCommands(commands);
+        Assert.Equal(0, replay.Step().Tick);
+        Assert.Equal(1, replay.Step().Tick);
+        var checkpoint = replay.CaptureSnapshot();
+        Assert.Equal(commands.ToArray(), checkpoint.ReplayCommands.ToArray());
+        Assert.InRange(checkpoint.NextReplayCommandIndex, 1, commands.Length - 1);
+
+        var resumed = new DeviceGraphInstance(definition);
+        resumed.RestoreSnapshot(checkpoint);
+        for (var tick = 2; tick < 5; tick++)
+        {
+            var replayResult = replay.Step();
+            var resumedResult = resumed.Step();
+            Assert.Equal(tick, replayResult.Tick);
+            Assert.Equal(replayResult.Tick, resumedResult.Tick);
+            Assert.Equal(replay.CaptureSnapshot().Scheduler.Trace[^1].Hash,
+                resumed.CaptureSnapshot().Scheduler.Trace[^1].Hash);
+            Assert.True(replay.AcceptedCommands.SequenceEqual(resumed.AcceptedCommands));
+        }
+    }
+
+    [Fact]
     public void RestoreRejectsMalformedPendingNodeOutputEvents()
     {
         var deviceId = new ComponentId("node");
