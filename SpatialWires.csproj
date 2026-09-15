@@ -8,6 +8,12 @@
   <ItemGroup>
     <Compile Remove="src\**\*.cs" />
     <Compile Remove="tests\**\*.cs" />
+    <Compile Remove="benchmarks\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'ExportRelease'">
+    <Compile Remove="addons\spatial_circuits\SpatialCircuitsEditorPlugin.cs" />
+    <Compile Remove="addons\spatial_circuits\SpatialCircuitsDock.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,4 +24,5 @@
     <ProjectReference Include="src\SpatialCircuits.Persistence\SpatialCircuits.Persistence.csproj" />
     <ProjectReference Include="src\SpatialCircuits.Runner\SpatialCircuits.Runner.csproj" />
   </ItemGroup>
+
 </Project>

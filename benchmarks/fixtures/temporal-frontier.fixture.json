@@ -1,0 +1,25 @@
+{
+  "fixtureSchema": { "major": 1, "minor": 0 },
+  "traceSchema": { "major": 1, "minor": 0 },
+  "fixtureId": "benchmarks/temporal-frontier-v1",
+  "action": "panelScenario",
+  "panelScenario": {
+    "panelId": "benchmarks/temporal-frontier-v1",
+    "width": 64,
+    "height": 8,
+    "microticks": 256,
+    "cells": [
+      { "cellId": "input", "x": 0, "y": 0, "kind": "input-port", "orientation": "east", "portId": "drive" },
+      { "cellId": "wire-1", "x": 1, "y": 0, "kind": "wire", "orientation": "east" },
+      { "cellId": "nand", "x": 2, "y": 0, "kind": "nand", "orientation": "east", "parameters": { "delay": 2 } },
+      { "cellId": "filter", "x": 3, "y": 0, "kind": "stability-filter", "orientation": "east", "parameters": { "consecutive-ticks": 3 } },
+      { "cellId": "probe", "x": 4, "y": 0, "kind": "probe", "orientation": "east" },
+      { "cellId": "clock", "x": 20, "y": 4, "kind": "clock", "orientation": "east", "parameters": { "high-ticks": 2, "low-ticks": 5 } }
+    ],
+    "inputs": [
+      { "tick": 0, "portId": "drive", "value": "High" },
+      { "tick": 128, "portId": "drive", "value": "Low" }
+    ],
+    "expectations": []
+  }
+}

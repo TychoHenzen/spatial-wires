@@ -32,6 +32,7 @@ public sealed class PanelRuntimeInstance
     private PanelCellDefinition?[] _cells;
     private RuntimeCellState[] _states;
     private CustomCellRuleBinding?[] _customRules;
+    private int[] _activeCellIndices;
     private SchedulerTargetHandle?[] _targetHandles;
     private ImmutableArray<CellPortSpec>[] _portSpecs;
     private ImmutableArray<RuntimeConnection>[] _outgoing;
@@ -43,13 +44,22 @@ public sealed class PanelRuntimeInstance
     public PanelRuntimeInstance(
         PanelDefinition definition,
         CustomCellRuleRegistry? customCellRules = null,
-        long initialTick = 0)
+        long initialTick = 0,
+        PanelExecutionMode executionMode = PanelExecutionMode.Reference)
     {
         ArgumentNullException.ThrowIfNull(definition);
+        if (!Enum.IsDefined(executionMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(executionMode), executionMode,
+                "Panel execution mode is invalid.");
+        }
+
         Id = definition.Id;
         Width = definition.Width;
         Height = definition.Height;
+        ExecutionMode = executionMode;
         _cells = definition.Cells.ToArray();
+        _activeCellIndices = BuildActiveCellIndices(_cells);
         _customCellRuleRegistry = customCellRules ?? CustomCellRuleRegistry.Empty;
         _customRules = ResolveCustomRules(_cells);
         _states = _cells
@@ -81,6 +91,20 @@ public sealed class PanelRuntimeInstance
     public int Height { get; }
 
     public long CurrentTick => _scheduler.CurrentTick;
+
+    public PanelExecutionMode ExecutionMode { get; private set; }
+
+    public void SetExecutionMode(PanelExecutionMode executionMode)
+    {
+        EnsureNotStepping();
+        if (!Enum.IsDefined(executionMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(executionMode), executionMode,
+                "Panel execution mode is invalid.");
+        }
+
+        ExecutionMode = executionMode;
+    }
 
     public ImmutableArray<ProbeSample> ProbeHistory => _probeHistory.ToImmutableArray();
 
@@ -950,6 +974,7 @@ public sealed class PanelRuntimeInstance
         }
 
         _cells = validatedCells;
+        _activeCellIndices = BuildActiveCellIndices(_cells);
         _customRules = validatedRules;
         _states[index] = new RuntimeCellState(null);
         _targetHandles[index] = null;
@@ -987,6 +1012,7 @@ public sealed class PanelRuntimeInstance
         }
 
         _cells = validatedCells;
+        _activeCellIndices = BuildActiveCellIndices(_cells);
         _customRules = validatedRules;
         _states[index] = CreateRuntimeCellState(replacement, _customRules[index]);
         if (IsActive(replacement))
@@ -1010,48 +1036,67 @@ public sealed class PanelRuntimeInstance
         var states = _workingStates
             ?? throw new InvalidOperationException("Panel evaluation is outside a panel step.");
         var proposals = new List<SchedulerProposal>();
-        for (var index = 0; index < _cells.Length; index++)
+        if (ExecutionMode == PanelExecutionMode.Optimized)
         {
-            var cell = _cells[index];
-            if (!IsActive(cell))
+            foreach (var index in _activeCellIndices)
             {
-                continue;
+                EvaluateCellAt(context, states, proposals, index);
             }
-
-            var state = states[index];
-            var outputs = EvaluateCell(context, index, cell!, state, proposals);
-            foreach (var connection in _outgoing[index])
+        }
+        else
+        {
+            for (var index = 0; index < _cells.Length; index++)
             {
-                if (!outputs.TryGetValue(connection.SourcePort, out var value))
-                {
-                    continue;
-                }
-
-                var previous = state.LastForwarded.GetValueOrDefault(
-                    connection.SourcePort,
-                    LogicValue.HighImpedance);
-                if (previous == value)
-                {
-                    continue;
-                }
-
-                var source = cell!;
-                var target = _cells[connection.TargetIndex]!;
-                var targetHandle = _targetHandles[connection.TargetIndex]!.Value;
-                proposals.Add(SchedulerProposal.ForNextTick(
-                    target.Id.Value,
-                    targetHandle.Incarnation,
-                    connection.TargetPort,
-                    source.Id.Value,
-                    connection.SourcePort,
-                    "drive",
-                    value,
-                    sourceIncarnation: _targetHandles[index]!.Value.Incarnation));
-                state.LastForwarded[connection.SourcePort] = value;
+                EvaluateCellAt(context, states, proposals, index);
             }
         }
 
         return proposals;
+    }
+
+    private void EvaluateCellAt(
+        SchedulerEvaluationContext context,
+        RuntimeCellState[] states,
+        List<SchedulerProposal> proposals,
+        int index)
+    {
+        var cell = _cells[index];
+        if (!IsActive(cell))
+        {
+            return;
+        }
+
+        var state = states[index];
+        var outputs = EvaluateCell(context, index, cell!, state, proposals);
+        foreach (var connection in _outgoing[index])
+        {
+            if (!outputs.TryGetValue(connection.SourcePort, out var value))
+            {
+                continue;
+            }
+
+            var previous = state.LastForwarded.GetValueOrDefault(
+                connection.SourcePort,
+                LogicValue.HighImpedance);
+            if (previous == value)
+            {
+                continue;
+            }
+
+            var source = cell!;
+            var target = _cells[connection.TargetIndex]!;
+            var targetHandle = _targetHandles[connection.TargetIndex]!.Value;
+            proposals.Add(SchedulerProposal.ForNextTick(
+                target.Id.Value,
+                targetHandle.Incarnation,
+                connection.TargetPort,
+                source.Id.Value,
+                connection.SourcePort,
+                "drive",
+                value,
+                sourceIncarnation: _targetHandles[index]!.Value.Incarnation));
+            state.LastForwarded[connection.SourcePort] = value;
+        }
     }
 
     private Dictionary<string, LogicValue> EvaluateCell(
@@ -1806,6 +1851,12 @@ public sealed class PanelRuntimeInstance
 
     private static bool IsActive(PanelCellDefinition? cell) =>
         cell is not null && cell.Kind != CellKind.Empty;
+
+    private static int[] BuildActiveCellIndices(PanelCellDefinition?[] cells) =>
+        cells.Select((cell, index) => (cell, index))
+            .Where(item => IsActive(item.cell))
+            .Select(item => item.index)
+            .ToArray();
 
     private static string ComputeStateIntegrityHash(PanelRuntimeSnapshot snapshot)
     {

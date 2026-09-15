@@ -112,7 +112,19 @@ public sealed class PanelOwnedChipNetworkInstance
 
     public long CurrentTick => _ownerRuntime.CurrentTick;
 
+    public PanelExecutionMode ExecutionMode => _ownerRuntime.ExecutionMode;
+
     public ImmutableArray<ProbeSample> ProbeHistory => _ownerRuntime.ProbeHistory;
+
+    public void SetExecutionMode(PanelExecutionMode executionMode)
+    {
+        EnsureNotStepping();
+        _ownerRuntime.SetExecutionMode(executionMode);
+        foreach (var instance in _instances.Values)
+        {
+            instance.Children.SetExecutionMode(executionMode);
+        }
+    }
 
     internal bool IsRoot { get; }
 

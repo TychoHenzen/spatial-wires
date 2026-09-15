@@ -1,7 +1,10 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)]
-    [string] $GodotExecutable
+    [string] $GodotExecutable,
+
+    [Parameter()]
+    [string] $PackageRoot
 )
 
 $ErrorActionPreference = "Stop"
@@ -10,12 +13,13 @@ Set-StrictMode -Version Latest
 $repositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $fixtureRoot = Join-Path $repositoryRoot "tests\fixtures\blank-consumer"
 $gdUnitRoot = Join-Path $repositoryRoot "addons\gdUnit4"
-$stageScript = Join-Path $repositoryRoot "scripts\Stage-SpatialCircuitsAddon.ps1"
+$packageScript = Join-Path $repositoryRoot "scripts\Package-SpatialCircuitsRelease.ps1"
 $toolchainScript = Join-Path $repositoryRoot "scripts\Test-Toolchain.ps1"
 $processModule = Join-Path $repositoryRoot "scripts\SpatialWires.Process.psm1"
 $solutionPath = Join-Path $repositoryRoot "SpatialWires.sln"
 $temporaryBase = [System.IO.Path]::GetTempPath()
 $runRoot = Join-Path $temporaryBase ("spatial-wires-blank-consumer-" + [Guid]::NewGuid().ToString("N"))
+$generatedPackageRoot = $null
 $previousLifecycleReport = [Environment]::GetEnvironmentVariable("SPATIAL_WIRES_EDITOR_LIFECYCLE_REPORT", "Process")
 
 Import-Module $processModule -Force
@@ -74,6 +78,97 @@ function Invoke-RequiredProcess {
     return $result
 }
 
+function Add-PortableSources {
+    param([string] $ProjectPath)
+
+    $projectText = [System.IO.File]::ReadAllText($ProjectPath)
+    $projectRoot = Split-Path -Parent $ProjectPath
+    $sources = @(
+        "src\SpatialCircuits.Core\**\*.cs",
+        "src\SpatialCircuits.Cells\**\*.cs",
+        "src\SpatialCircuits.Hierarchy\**\*.cs",
+        "src\SpatialCircuits.Workbench\**\*.cs",
+        "src\SpatialCircuits.Persistence\**\*.cs",
+        "src\SpatialCircuits.Runner\**\*.cs"
+    ) | ForEach-Object {
+        "    <Compile Include=`"$(Join-Path $projectRoot $_)`" />"
+    }
+    $runnerProgram = Join-Path $projectRoot "src\SpatialCircuits.Runner\Program.cs"
+    $items = "  <ItemGroup>`n    <Compile Remove=`"src\**\*.cs`" />`n" + ($sources -join "`n") + "`n    <Compile Remove=`"$runnerProgram`" />`n  </ItemGroup>`n"
+    $closingTag = "</Project>"
+    $closingIndex = $projectText.LastIndexOf($closingTag, [System.StringComparison]::Ordinal)
+    if ($closingIndex -lt 0) {
+        throw "Blank-consumer project has no closing Project element."
+    }
+
+    $projectText = $projectText.Insert($closingIndex, $items)
+    [System.IO.File]::WriteAllText($ProjectPath, $projectText, [System.Text.UTF8Encoding]::new($false))
+}
+
+function Get-Sha256 {
+    param([string] $Path)
+
+    $stream = [System.IO.File]::OpenRead($Path)
+    try {
+        $algorithm = [System.Security.Cryptography.SHA256]::Create()
+        try {
+            return ([System.BitConverter]::ToString($algorithm.ComputeHash($stream))).Replace("-", "").ToLowerInvariant()
+        }
+        finally {
+            $algorithm.Dispose()
+        }
+    }
+    finally {
+        $stream.Dispose()
+    }
+}
+
+function Assert-Package {
+    param([string] $Root)
+
+    if (-not (Test-Path -LiteralPath $Root -PathType Container)) {
+        throw "Package root does not exist: '$Root'."
+    }
+
+    $metadataPath = Join-Path $Root "spatial-circuits.package.json"
+    if (-not (Test-Path -LiteralPath $metadataPath -PathType Leaf)) {
+        throw "Package metadata does not exist: '$metadataPath'."
+    }
+
+    $metadata = Get-Content -LiteralPath $metadataPath -Raw | ConvertFrom-Json
+    if ($metadata.schemaVersion -ne 1 -or $metadata.godotVersion -ne "4.7.1" -or
+        $metadata.addonPath -ne "addons/spatial_circuits" -or $metadata.sourcePath -ne "src") {
+        throw "Package metadata does not describe the portable Godot 4.7.1 package."
+    }
+
+    $paths = @($metadata.files | ForEach-Object { $_.path })
+    if ($paths.Count -eq 0 -or (($paths | Sort-Object) -join "`n") -cne ($paths -join "`n")) {
+        throw "Package metadata paths are missing or unsorted."
+    }
+
+    foreach ($entry in @($metadata.files)) {
+        if ([System.IO.Path]::IsPathRooted($entry.path)) {
+            throw "Package metadata contains an absolute path: '$($entry.path)'."
+        }
+
+        $filePath = Join-Path $Root $entry.path.Replace("/", [System.IO.Path]::DirectorySeparatorChar)
+        if (-not (Test-Path -LiteralPath $filePath -PathType Leaf) -or
+            (Get-Sha256 $filePath) -cne $entry.sha256) {
+            throw "Package hash validation failed for '$($entry.path)'."
+        }
+    }
+
+    if (@(Get-ChildItem -LiteralPath $Root -File -Recurse |
+            Where-Object { $_.Extension -in @(".dll", ".exe", ".pdb") }).Count -gt 0) {
+        throw "Package contains a binary artifact."
+    }
+
+    return [pscustomobject]@{
+        MetadataSha256 = Get-Sha256 $metadataPath
+        FileCount = $paths.Count
+    }
+}
+
 try {
     Invoke-RequiredProcess `
         -Name "toolchain check" `
@@ -84,12 +179,20 @@ try {
 
     New-Item -ItemType Directory -Path $runRoot | Out-Null
     Copy-Item -Path (Join-Path $fixtureRoot "*") -Destination $runRoot -Recurse -Force
-    $stageResult = Invoke-RequiredProcess `
-        -Name "addon staging" `
-        -FilePath $powershellExecutable `
-        -ArgumentList @("-NoProfile", "-File", $stageScript, "-RepositoryRoot", $repositoryRoot, "-OutputRoot", $runRoot) `
-        -TimeoutMilliseconds 30000 `
-        -WorkingDirectory $repositoryRoot
+    if ([string]::IsNullOrWhiteSpace($PackageRoot)) {
+        $generatedPackageRoot = Join-Path $temporaryBase ("spatial-wires-blank-package-" + [Guid]::NewGuid().ToString("N"))
+        Invoke-RequiredProcess `
+            -Name "release package" `
+            -FilePath $powershellExecutable `
+            -ArgumentList @("-NoProfile", "-File", $packageScript, "-RepositoryRoot", $repositoryRoot, "-OutputRoot", $generatedPackageRoot) `
+            -TimeoutMilliseconds 30000 `
+            -WorkingDirectory $repositoryRoot | Out-Null
+        $PackageRoot = $generatedPackageRoot
+    }
+
+    $resolvedPackageRoot = (Resolve-Path -LiteralPath $PackageRoot).Path
+    $package = Assert-Package -Root $resolvedPackageRoot
+    Copy-Item -Path (Join-Path $resolvedPackageRoot "*") -Destination $runRoot -Recurse -Force
 
     $consumerAddons = Join-Path $runRoot "addons"
     New-Item -ItemType Directory -Path $consumerAddons -Force | Out-Null
@@ -98,6 +201,7 @@ try {
     $consumerProject = Join-Path $runRoot "SpatialWires.BlankConsumer.csproj"
     $runSettings = Join-Path $runRoot "gdunit4.runsettings"
     $lifecycleReport = Join-Path $runRoot "editor-lifecycle-report.json"
+    Add-PortableSources -ProjectPath $consumerProject
 
     Invoke-RequiredProcess `
         -Name "repository managed build" `
@@ -150,7 +254,9 @@ try {
         } | Out-Null
 
     Write-Output "Blank-consumer gdUnit4 acceptance passed."
-    Write-Output "Staging process code: $($stageResult.ExitCode)"
+    Write-Output "Package root: $resolvedPackageRoot"
+    Write-Output "Package files: $($package.FileCount)"
+    Write-Output "Package metadata SHA-256: $($package.MetadataSha256)"
 }
 finally {
     [Environment]::SetEnvironmentVariable("SPATIAL_WIRES_EDITOR_LIFECYCLE_REPORT", $previousLifecycleReport, "Process")
@@ -161,5 +267,9 @@ finally {
         if (Test-Path -LiteralPath $normalizedRunRoot) {
             Remove-Item -LiteralPath $normalizedRunRoot -Recurse -Force
         }
+    }
+
+    if ($null -ne $generatedPackageRoot -and (Test-Path -LiteralPath $generatedPackageRoot)) {
+        Remove-Item -LiteralPath $generatedPackageRoot -Recurse -Force
     }
 }
