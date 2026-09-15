@@ -36,7 +36,8 @@ public static partial class FixtureValidator
                 FixtureAction.PanelScenario or
                 FixtureAction.ChipNetworkScenario or
                 FixtureAction.DeviceExchangeScenario or
-                FixtureAction.DurableReplayScenario))
+                FixtureAction.DurableReplayScenario or
+                FixtureAction.TamperDetectionScenario))
         {
             Add(diagnostics, FixtureDiagnosticCodes.ActionUnsupported, "$.action", "Fixture action is not supported.");
         }
@@ -60,6 +61,10 @@ public static partial class FixtureValidator
         else if (fixture.Action == FixtureAction.DurableReplayScenario)
         {
             ValidateDurableReplayScenario(fixture.DurableReplayScenario, diagnostics);
+        }
+        else if (fixture.Action == FixtureAction.TamperDetectionScenario)
+        {
+            ValidateTamperDetectionScenario(fixture.TamperDetectionScenario, diagnostics);
         }
         else if (fixture.Cases.Length == 0)
         {
@@ -153,6 +158,42 @@ public static partial class FixtureValidator
         {
             Add(diagnostics, FixtureDiagnosticCodes.DurableReplayScenarioInvalid, root,
                 $"Microticks must be between 1 and {MaxScheduledDriveMicroticks}.");
+        }
+    }
+
+    private static void ValidateTamperDetectionScenario(
+        TamperDetectionScenarioPlan? plan,
+        ICollection<FixtureDiagnostic> diagnostics)
+    {
+        const string root = "$.tamperDetectionScenario";
+        if (plan is null)
+        {
+            Add(diagnostics, FixtureDiagnosticCodes.TamperDetectionScenarioRequired, root,
+                "Tamper-detection scenarios require a tamperDetectionScenario object.");
+            return;
+        }
+
+        if (plan.Microticks < 1 || plan.Microticks > MaxScheduledDriveMicroticks ||
+            plan.Cases.IsDefaultOrEmpty)
+        {
+            Add(diagnostics, FixtureDiagnosticCodes.TamperDetectionScenarioInvalid, root,
+                $"Microticks must be between 1 and {MaxScheduledDriveMicroticks}, with at least one case.");
+            return;
+        }
+
+        var ids = new HashSet<string>(StringComparer.Ordinal);
+        for (var index = 0; index < plan.Cases.Length; index++)
+        {
+            var testCase = plan.Cases[index];
+            var path = $"{root}.cases[{index}]";
+            if (string.IsNullOrWhiteSpace(testCase.CaseId) || !ids.Add(testCase.CaseId) ||
+                !Enum.IsDefined(testCase.Topology) || !Enum.IsDefined(testCase.Response) ||
+                testCase.ResponseOffset < 0 || testCase.ResponseOffset >= plan.Microticks ||
+                testCase.ExpectedAlarmTick < -1 || testCase.ExpectedAlarmTick >= plan.Microticks)
+            {
+                Add(diagnostics, FixtureDiagnosticCodes.TamperDetectionScenarioInvalid, path,
+                    "Tamper cases need unique identifiers, supported modes, and in-range response and alarm ticks.");
+            }
         }
     }
 

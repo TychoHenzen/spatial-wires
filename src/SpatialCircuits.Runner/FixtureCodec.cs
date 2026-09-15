@@ -105,6 +105,19 @@ public static class FixtureCodec
                 durableReplayScenario: durableReplay);
         }
 
+        if (actionText == "tamperDetectionScenario")
+        {
+            var tamperDetection = ReadTamperDetectionScenario(
+                RequireProperty(root, "tamperDetectionScenario", "$.tamperDetectionScenario"));
+            return new RunnerFixture(
+                fixtureSchema,
+                traceSchema,
+                fixtureId,
+                FixtureAction.TamperDetectionScenario,
+                [],
+                tamperDetectionScenario: tamperDetection);
+        }
+
         var casesElement = RequireProperty(root, "cases", "$.cases");
         RequireKind(casesElement, JsonValueKind.Array, "$.cases");
 
@@ -282,6 +295,58 @@ public static class FixtureCodec
         return new DurableReplayScenarioPlan(
             ReadInt32(RequireProperty(element, "microticks", $"{path}.microticks"), $"{path}.microticks"));
     }
+
+    private static TamperDetectionScenarioPlan ReadTamperDetectionScenario(JsonElement element)
+    {
+        const string path = "$.tamperDetectionScenario";
+        RequireKind(element, JsonValueKind.Object, path);
+        var casesElement = RequireProperty(element, "cases", $"{path}.cases");
+        RequireKind(casesElement, JsonValueKind.Array, $"{path}.cases");
+        var cases = casesElement.EnumerateArray()
+            .Select((item, index) =>
+            {
+                var itemPath = $"{path}.cases[{index}]";
+                RequireKind(item, JsonValueKind.Object, itemPath);
+                return new TamperDetectionCasePlan(
+                    ReadString(RequireProperty(item, "caseId", $"{itemPath}.caseId"), $"{itemPath}.caseId"),
+                    ParseTamperTopology(ReadString(
+                        RequireProperty(item, "topology", $"{itemPath}.topology"), $"{itemPath}.topology"), itemPath),
+                    ParseTamperResponse(ReadString(
+                        RequireProperty(item, "response", $"{itemPath}.response"), $"{itemPath}.response"), itemPath),
+                    ReadInt32(RequireProperty(item, "responseOffset", $"{itemPath}.responseOffset"), $"{itemPath}.responseOffset"),
+                    ReadBool(RequireProperty(item, "expectedAccepted", $"{itemPath}.expectedAccepted"), $"{itemPath}.expectedAccepted"),
+                    ReadBool(RequireProperty(item, "expectedAlarm", $"{itemPath}.expectedAlarm"), $"{itemPath}.expectedAlarm"),
+                    ReadInt32(RequireProperty(item, "expectedAlarmTick", $"{itemPath}.expectedAlarmTick"), $"{itemPath}.expectedAlarmTick"));
+            })
+            .ToImmutableArray();
+        return new TamperDetectionScenarioPlan(
+            ReadInt32(RequireProperty(element, "microticks", $"{path}.microticks"), $"{path}.microticks"),
+            cases);
+    }
+
+    private static TamperTopology ParseTamperTopology(string value, string path) => value switch
+    {
+        "intact" => TamperTopology.Intact,
+        "disconnected" => TamperTopology.Disconnected,
+        "passiveTap" => TamperTopology.PassiveTap,
+        "activeSplice" => TamperTopology.ActiveSplice,
+        "playerBuiltResponder" => TamperTopology.PlayerBuiltResponder,
+        _ => throw new FixtureStructureException(path)
+    };
+
+    private static TamperResponseKind ParseTamperResponse(string value, string path) => value switch
+    {
+        "correct" => TamperResponseKind.Correct,
+        "missing" => TamperResponseKind.Missing,
+        "early" => TamperResponseKind.Early,
+        "late" => TamperResponseKind.Late,
+        "duplicate" => TamperResponseKind.Duplicate,
+        "malformed" => TamperResponseKind.Malformed,
+        "unknown" => TamperResponseKind.Unknown,
+        "highImpedance" => TamperResponseKind.HighImpedance,
+        "incorrect" => TamperResponseKind.Incorrect,
+        _ => throw new FixtureStructureException(path)
+    };
 
     private static ChipDefinitionPlan ReadChipDefinition(JsonElement element, int index)
     {
@@ -540,6 +605,16 @@ public static class FixtureCodec
         }
 
         return value;
+    }
+
+    private static bool ReadBool(JsonElement element, string path)
+    {
+        if (element.ValueKind is not (JsonValueKind.True or JsonValueKind.False))
+        {
+            throw new FixtureStructureException(path);
+        }
+
+        return element.GetBoolean();
     }
 
     private static void RequireKind(JsonElement element, JsonValueKind expected, string path)

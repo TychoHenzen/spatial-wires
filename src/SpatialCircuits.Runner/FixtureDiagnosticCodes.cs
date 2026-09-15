@@ -23,6 +23,8 @@ public static class FixtureDiagnosticCodes
     public const string DeviceExchangeScenarioInvalid = "FIXTURE_DEVICE_EXCHANGE_SCENARIO_INVALID";
     public const string DurableReplayScenarioRequired = "FIXTURE_DURABLE_REPLAY_SCENARIO_REQUIRED";
     public const string DurableReplayScenarioInvalid = "FIXTURE_DURABLE_REPLAY_SCENARIO_INVALID";
+    public const string TamperDetectionScenarioRequired = "FIXTURE_TAMPER_DETECTION_SCENARIO_REQUIRED";
+    public const string TamperDetectionScenarioInvalid = "FIXTURE_TAMPER_DETECTION_SCENARIO_INVALID";
     public const string PathRequired = "FIXTURE_PATH_REQUIRED";
     public const string FileNotFound = "FIXTURE_FILE_NOT_FOUND";
     public const string FileUnreadable = "FIXTURE_FILE_UNREADABLE";

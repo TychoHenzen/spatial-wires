@@ -1,0 +1,101 @@
+{
+  "fixtureSchema": { "major": 1, "minor": 0 },
+  "traceSchema": { "major": 1, "minor": 0 },
+  "fixtureId": "stage-12-tamper-detection",
+  "action": "tamperDetectionScenario",
+  "tamperDetectionScenario": {
+    "microticks": 700,
+    "cases": [
+      {
+        "caseId": "intact",
+        "topology": "intact",
+        "response": "correct",
+        "responseOffset": 48,
+        "expectedAccepted": true,
+        "expectedAlarm": false,
+        "expectedAlarmTick": -1
+      },
+      {
+        "caseId": "passive-tap",
+        "topology": "passiveTap",
+        "response": "correct",
+        "responseOffset": 48,
+        "expectedAccepted": true,
+        "expectedAlarm": false,
+        "expectedAlarmTick": -1
+      },
+      {
+        "caseId": "active-splice",
+        "topology": "activeSplice",
+        "response": "correct",
+        "responseOffset": 48,
+        "expectedAccepted": false,
+        "expectedAlarm": true,
+        "expectedAlarmTick": 48
+      },
+      {
+        "caseId": "disconnected-missing",
+        "topology": "disconnected",
+        "response": "missing",
+        "responseOffset": 0,
+        "expectedAccepted": false,
+        "expectedAlarm": true,
+        "expectedAlarmTick": 97
+      },
+      {
+        "caseId": "early",
+        "topology": "intact",
+        "response": "early",
+        "responseOffset": 32,
+        "expectedAccepted": false,
+        "expectedAlarm": true,
+        "expectedAlarmTick": 32
+      },
+      {
+        "caseId": "late",
+        "topology": "intact",
+        "response": "late",
+        "responseOffset": 97,
+        "expectedAccepted": false,
+        "expectedAlarm": true,
+        "expectedAlarmTick": 97
+      },
+      {
+        "caseId": "duplicate",
+        "topology": "intact",
+        "response": "duplicate",
+        "responseOffset": 48,
+        "expectedAccepted": true,
+        "expectedAlarm": true,
+        "expectedAlarmTick": 49
+      },
+      {
+        "caseId": "malformed",
+        "topology": "intact",
+        "response": "malformed",
+        "responseOffset": 48,
+        "expectedAccepted": false,
+        "expectedAlarm": true,
+        "expectedAlarmTick": 48
+      },
+      {
+        "caseId": "unknown",
+        "topology": "intact",
+        "response": "unknown",
+        "responseOffset": 48,
+        "expectedAccepted": false,
+        "expectedAlarm": true,
+        "expectedAlarmTick": 48
+      },
+      {
+        "caseId": "high-impedance",
+        "topology": "intact",
+        "response": "highImpedance",
+        "responseOffset": 48,
+        "expectedAccepted": false,
+        "expectedAlarm": true,
+        "expectedAlarmTick": 48
+      }
+    ]
+  }
+}
