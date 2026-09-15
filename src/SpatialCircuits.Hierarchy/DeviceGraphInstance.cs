@@ -798,9 +798,23 @@ public sealed class DeviceGraphInstance
             }
 
             var command = recorded.Command;
+            if (command.ApplyAtTick < previousApplyAtTick)
+            {
+                throw new ArgumentException("Device graph replay commands are not ordered by apply tick.", nameof(snapshot));
+            }
+
+            var wasAccepted = snapshot.Scheduler.AcceptedCommands.Any(command =>
+                command.AcceptedOrdinal == recorded.AcceptedOrdinal && command.Command == recorded.Command);
+            if ((index < snapshot.NextReplayCommandIndex) != wasAccepted ||
+                index >= snapshot.NextReplayCommandIndex &&
+                recorded.Command.ApplyAtTick < snapshot.Scheduler.CurrentTick)
+            {
+                throw new ArgumentException("Device graph replay cursor does not match accepted commands.", nameof(snapshot));
+            }
+
             if (IsLaneTargetLifecycleCommand(snapshot.Definition, command))
             {
-                previousApplyAtTick = Math.Max(previousApplyAtTick, command.ApplyAtTick);
+                previousApplyAtTick = command.ApplyAtTick;
                 continue;
             }
 
@@ -808,11 +822,6 @@ public sealed class DeviceGraphInstance
             {
                 throw new ArgumentException("Device graph snapshot replay commands are invalid.", nameof(snapshot));
             }
-            if (command.ApplyAtTick < previousApplyAtTick)
-            {
-                throw new ArgumentException("Device graph replay commands are not ordered by apply tick.", nameof(snapshot));
-            }
-
             if (!incarnations.TryGetValue(command.TargetStableId, out var expectedIncarnation))
             {
                 throw new ArgumentException("Device graph replay command targets an unknown Node backend.", nameof(snapshot));
@@ -836,14 +845,6 @@ public sealed class DeviceGraphInstance
 
             previousApplyAtTick = command.ApplyAtTick;
 
-            var wasAccepted = snapshot.Scheduler.AcceptedCommands.Any(command =>
-                command.AcceptedOrdinal == recorded.AcceptedOrdinal && command.Command == recorded.Command);
-            if ((index < snapshot.NextReplayCommandIndex) != wasAccepted ||
-                index >= snapshot.NextReplayCommandIndex &&
-                recorded.Command.ApplyAtTick < snapshot.Scheduler.CurrentTick)
-            {
-                throw new ArgumentException("Device graph replay cursor does not match accepted commands.", nameof(snapshot));
-            }
         }
 
         if (snapshot.Scheduler.AcceptedCommands.Any(accepted =>
